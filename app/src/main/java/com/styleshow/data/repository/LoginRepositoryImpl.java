@@ -1,36 +1,39 @@
 package com.styleshow.data.repository;
 
-import javax.inject.Inject;
-
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
-import com.styleshow.data.Result;
 import com.styleshow.data.remote.LoginDataSource;
 import com.styleshow.domain.repository.LoginRepository;
 
-// TODO: store logged in user
 public class LoginRepositoryImpl implements LoginRepository {
 
-    private LoginDataSource dataSource;
+    private final @NonNull LoginDataSource dataSource;
 
     // If user credentials will be cached in local storage, it is recommended it be encrypted
     // @see https://developer.android.com/training/articles/keystore
-    private FirebaseUser user = null;
+    //private FirebaseUser user = null;
 
-    public LoginRepositoryImpl(LoginDataSource dataSource) {
+    public LoginRepositoryImpl(@NonNull LoginDataSource dataSource) {
         this.dataSource = dataSource;
     }
 
+    public @Nullable FirebaseUser getCurrentUser() {
+        return dataSource.getCurrentUser();
+    }
+
     public boolean isLoggedIn() {
-        return user != null;
+        return getCurrentUser() != null;
     }
 
     public void logout() {
-        // TODO
+        dataSource.logout();
     }
 
-    public Result<FirebaseUser> login(@Nullable String username, @Nullable String password) {
-        // TODO
-        return new Result.Success<>(null);
+    @Override
+    public Task<AuthResult> login(@Nullable String email, @Nullable String password) {
+        return dataSource.login(email, password);
     }
 }

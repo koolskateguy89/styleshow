@@ -1,26 +1,33 @@
 package com.styleshow.ui.login;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 
 /**
  * Authentication result : success (user details) or error message.
  */
 class LoginResult {
-    @Nullable
-    private Object success; // TODO: replace with FirebaseUser?
-    @Nullable
-    private Integer error;
+    private boolean success = false;
+    @StringRes
+    private @Nullable Integer error;
+
+    @Override
+    public String toString() {
+        return "LoginResult{" +
+                "success=" + success +
+                ", error=" + error +
+                '}';
+    }
 
     LoginResult(@Nullable Integer error) {
         this.error = error;
     }
 
-    LoginResult(@Nullable Object success) {
+    LoginResult(boolean success) {
         this.success = success;
     }
 
-    @Nullable
-    Object getSuccess() {
+    boolean getSuccess() {
         return success;
     }
 

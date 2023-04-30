@@ -15,6 +15,8 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainActivity";
+
     ActivityMainBinding binding;
 
     @Inject
@@ -28,16 +30,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         boolean loggedIn = loginRepository.isLoggedIn();
-        Log.d("MainActivity", String.format("loggedIn = %s", loggedIn));
-
-        loggedIn = false;
+        Log.d(TAG, "loggedIn = " + loggedIn);
 
         Intent intent;
         if (loggedIn) {
-            Log.d("MainActivity", "going to Home");
+            Log.i(TAG, "Already logged in, going to Home");
             intent = new Intent(this, MainNavigationActivity.class);
         } else {
-            Log.d("MainActivity", "going to Login");
+            Log.d(TAG, "Not logged in, going to Login");
             intent = new Intent(this, LoginActivity.class);
         }
 

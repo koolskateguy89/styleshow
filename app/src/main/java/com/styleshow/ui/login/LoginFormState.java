@@ -1,16 +1,19 @@
 package com.styleshow.ui.login;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 
 /**
  * Data validation state of the login form.
  */
 class LoginFormState {
-    @Nullable private final Integer emailError;
-    @Nullable private final Integer passwordError;
-    private boolean isDataValid;
+    @StringRes
+    private final @Nullable Integer emailError;
+    @StringRes
+    private final @Nullable Integer passwordError;
+    private final boolean isDataValid;
 
-    LoginFormState(@Nullable Integer emailError, @Nullable Integer passwordError) {
+    LoginFormState(@StringRes @Nullable Integer emailError, @StringRes @Nullable Integer passwordError) {
         this.emailError = emailError;
         this.passwordError = passwordError;
         this.isDataValid = false;
@@ -22,11 +25,13 @@ class LoginFormState {
         this.isDataValid = isDataValid;
     }
 
+    @StringRes
     @Nullable
     Integer getEmailError() {
         return emailError;
     }
 
+    @StringRes
     @Nullable
     Integer getPasswordError() {
         return passwordError;

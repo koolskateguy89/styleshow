@@ -14,6 +14,7 @@ public class SearchFragment extends Fragment {
 
     private FragmentSearchBinding binding;
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         SearchViewModel searchViewModel =

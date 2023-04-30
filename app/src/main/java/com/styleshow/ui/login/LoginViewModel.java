@@ -2,24 +2,23 @@ package com.styleshow.ui.login;
 
 import javax.inject.Inject;
 
+import android.util.Log;
 import android.util.Patterns;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
 import com.google.firebase.auth.FirebaseUser;
 import com.styleshow.R;
-import com.styleshow.data.Result;
 import com.styleshow.domain.repository.LoginRepository;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 
 @HiltViewModel
 public class LoginViewModel extends ViewModel {
 
-    private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
-    private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
-    private LoginRepository loginRepository;
+    private final MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
+    private final MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
+    private final LoginRepository loginRepository;
 
     @Inject
     LoginViewModel(LoginRepository loginRepository) {
@@ -36,14 +35,16 @@ public class LoginViewModel extends ViewModel {
 
     public void login(@Nullable String email, @Nullable String password) {
         // can be launched in a separate asynchronous job
-        Result<FirebaseUser> result = loginRepository.login(email, password);
+        loginRepository.login(email, password).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                var user = task.getResult().getUser();
+                Log.d("LoginViewModel", "user = " + user);
 
-        if (result instanceof Result.Success) {
-            FirebaseUser data = ((Result.Success<FirebaseUser>) result).getData();
-            //loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
-        } else {
-            //loginResult.setValue(new LoginResult(R.string.login_failed));
-        }
+                loginResult.setValue(new LoginResult(true));
+            } else {
+                loginResult.setValue(new LoginResult(R.string.login_failed));
+            }
+        });
     }
 
     public void loginDataChanged(@Nullable String email, @Nullable String password) {
@@ -54,6 +55,10 @@ public class LoginViewModel extends ViewModel {
         } else {
             loginFormState.setValue(new LoginFormState(true));
         }
+    }
+
+    public FirebaseUser getCurrentUser() {
+        return loginRepository.getCurrentUser();
     }
 
     // A placeholder username validation check

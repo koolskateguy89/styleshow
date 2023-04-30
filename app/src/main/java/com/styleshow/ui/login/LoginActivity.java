@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import com.google.firebase.auth.FirebaseUser;
 import com.styleshow.R;
 import com.styleshow.databinding.ActivityLoginBinding;
 import com.styleshow.ui.MainNavigationActivity;
@@ -21,6 +22,8 @@ import dagger.hilt.android.AndroidEntryPoint;
 // TODO: /data - loginrepository & logindatasource
 @AndroidEntryPoint
 public class LoginActivity extends AppCompatActivity {
+
+    private static final String TAG = "LoginActivity";
 
     LoginViewModel loginViewModel;
     ActivityLoginBinding binding;
@@ -54,20 +57,21 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         loginViewModel.getLoginResult().observe(this, loginResult -> {
+            Log.d(TAG, "login result: " + loginResult);
             if (loginResult == null)
                 return;
 
-            //loadingProgressBar.setVisibility(View.GONE);
             if (loginResult.getError() != null) {
+                Log.d(TAG, "login failed: " + loginResult.getError());
                 showLoginFailed(loginResult.getError());
-            }
-            if (loginResult.getSuccess() != null) {
-                updateUiWithUser(loginResult.getSuccess());
-            }
-            setResult(Activity.RESULT_OK);
 
-            //Complete and destroy login activity once successful
-            finish();
+                loginButton.setEnabled(true);
+            }
+            if (loginResult.getSuccess()) {
+                var user = loginViewModel.getCurrentUser();
+                Log.d(TAG, "login success, user: " + user);
+                updateUiWithUser(user);
+            }
         });
 
         TextWatcher afterTextChangedListener = new TextWatcher() {
@@ -90,32 +94,34 @@ public class LoginActivity extends AppCompatActivity {
         emailEditText.addTextChangedListener(afterTextChangedListener);
         passwordEditText.addTextChangedListener(afterTextChangedListener);
 
+        Runnable login = () -> {
+            Log.d(TAG, "logging in...");
+
+            // disable button while logging in
+            loginButton.setEnabled(false);
+
+            loginViewModel.login(emailEditText.getText().toString(),
+                    passwordEditText.getText().toString());
+        };
+
         passwordEditText.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                loginViewModel.login(emailEditText.getText().toString(),
-                        passwordEditText.getText().toString());
+                login.run();
             }
             return false;
         });
 
-        loginButton.setOnClickListener(view -> {
-            loginViewModel.login(emailEditText.getText().toString(),
-                    passwordEditText.getText().toString());
-
-            Log.d("LoginActivity", "login button clicked");
-
-            //Intent intent = new Intent(this, HomeActivity.class);
-            Intent intent = new Intent(this, MainNavigationActivity.class);
-            startActivity(intent);
-            finish();
-        });
+        loginButton.setOnClickListener(v -> login.run());
     }
 
-    private void updateUiWithUser(Object model) {
-        //String welcome = getString(R.string.welcome) + model.getDisplayName();
-        String welcome = getString(R.string.welcome) + "idk, i guess user name";
-        // TODO : initiate successful logged in experience
+    // TODO?: rename
+    private void updateUiWithUser(FirebaseUser user) {
+        String welcome = getString(R.string.welcome) + " " + user.getDisplayName();
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
+
+        Intent intent = new Intent(this, MainNavigationActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void showLoginFailed(@StringRes Integer errorString) {
