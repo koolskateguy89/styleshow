@@ -1,6 +1,5 @@
 package com.styleshow.ui.login;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -65,6 +64,7 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d(TAG, "login failed: " + loginResult.getError());
                 showLoginFailed(loginResult.getError());
 
+                // re-enable button if login failed
                 loginButton.setEnabled(true);
             }
             if (loginResult.getSuccess()) {

@@ -14,7 +14,7 @@ p = perhaps, not really sure what it is/how to do/where to do
 - [n] (6%) Create and use your own content provider.
 - [n] (2%) Use SharedPreferences.
 - [ ] (4%) Create and use a local database.
-- [n] (4%) Use firebase for storing and retrieving data.
+- [m] (4%) Use firebase for storing and retrieving data.
 - [ ] (2%) Receive Broadcast events and make use of them in meaningful ways.
 - [p] (2%) Extend and use an existing View class.
 - [p] (2%) Implement and use a ShareActionProvider.

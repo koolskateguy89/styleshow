@@ -18,6 +18,7 @@ TODO:
 - [ ] topbar kinda thing with StyleShow logo
 - [x] open MessagesActivity
   - [ ] Properly customise button that does this (icon etc.)
+- [ ] floating action button to create new post
  */
 
 public class HomeFragment extends Fragment {

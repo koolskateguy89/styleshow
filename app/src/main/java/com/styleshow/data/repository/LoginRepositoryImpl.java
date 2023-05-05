@@ -20,14 +20,17 @@ public class LoginRepositoryImpl implements LoginRepository {
         this.dataSource = dataSource;
     }
 
+    @Override
     public @Nullable FirebaseUser getCurrentUser() {
         return dataSource.getCurrentUser();
     }
 
+    @Override
     public boolean isLoggedIn() {
         return getCurrentUser() != null;
     }
 
+    @Override
     public void logout() {
         dataSource.logout();
     }

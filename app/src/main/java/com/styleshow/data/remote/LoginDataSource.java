@@ -27,7 +27,7 @@ public class LoginDataSource {
                 String.format("Logging in as %s, with password %s", email, password)
         );
 
-        var signInTask = mAuth.signInWithEmailAndPassword(email, password)
+        return mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
@@ -37,8 +37,6 @@ public class LoginDataSource {
                         Log.w(TAG, "signInWithEmail:failure", task.getException());
                     }
                 });
-
-        return signInTask;
     }
 
     public void logout() {
@@ -46,5 +44,4 @@ public class LoginDataSource {
             mAuth.signOut();
         }
     }
-
 }

@@ -17,9 +17,6 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary true
-        }
     }
 
     buildTypes {
@@ -29,14 +26,13 @@ android {
         }
     }
     compileOptions {
+        // Android actually only support up to 11 but some features like
+        // switch expressions & text blocks (released after 11) work
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
     buildFeatures {
         viewBinding true
-    }
-    kotlinOptions {
-        jvmTarget = '1.8'
     }
 }
 
@@ -61,13 +57,19 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:31.5.0')
     implementation 'com.google.firebase:firebase-analytics'
     // https://firebase.google.com/docs/android/setup#available-libraries
+    // Auth
     implementation 'com.google.firebase:firebase-auth'
-    implementation 'com.google.firebase:firebase-database'
+    // Cloud Firestore
+    implementation 'com.google.firebase:firebase-firestore'
 
     // Dagger Hilt
     implementation 'com.google.dagger:hilt-android:2.45'
     // Hilt compiler: https://stackoverflow.com/a/72105049
     annotationProcessor 'com.google.dagger:hilt-compiler:2.45'
+
+    // Picasso: https://github.com/square/picasso
+    // image downloading & caching
+    implementation 'com.squareup.picasso:picasso:2.8'
 
     // Resolving dependency conflict: https://stackoverflow.com/a/75298544
     constraints {

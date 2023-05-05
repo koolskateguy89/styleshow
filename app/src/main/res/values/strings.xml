@@ -59,4 +59,11 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
+
+    <!-- Profile fragment -->
+    <string name="action_sign_out">Sign Out</string>
+    <string name="signed_out">Profile</string>
+
+    <!-- Search Fragment -->
+    <string name="query_hint">Username</string>
 </resources>

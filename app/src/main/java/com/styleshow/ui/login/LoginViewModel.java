@@ -61,17 +61,12 @@ public class LoginViewModel extends ViewModel {
         return loginRepository.getCurrentUser();
     }
 
-    // A placeholder username validation check
     private boolean isEmailValid(@Nullable String email) {
-        if (email == null) {
-            return false;
-        }
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+        return email != null && Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
-    // A placeholder password validation check
+    // i think firebase has min 6 chars
     private boolean isPasswordValid(@Nullable String password) {
-        // i think firebase has min 6 chars
         return password != null && password.trim().length() >= 6;
     }
 }

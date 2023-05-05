@@ -3,12 +3,16 @@ package com.styleshow.di;
 import javax.inject.Singleton;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.styleshow.data.remote.LoginDataSource;
+import com.styleshow.data.remote.PostDataSource;
+import com.styleshow.data.remote.UserProfileDataSource;
 import com.styleshow.data.repository.LoginRepositoryImpl;
+import com.styleshow.data.repository.PostRepositoryImpl;
+import com.styleshow.data.repository.UserProfileRepositoryImpl;
 import com.styleshow.domain.repository.LoginRepository;
-import dagger.Binds;
+import com.styleshow.domain.repository.PostRepository;
+import com.styleshow.domain.repository.UserProfileRepository;
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
@@ -24,12 +28,11 @@ public class AppModule {
         return FirebaseAuth.getInstance();
     }
 
-    // TODO?: provide Firebase DatabaseReference
-    //@Provides
-    //@Singleton
-    //DatabaseReference provideDatabaseReference() {
-    //    return FirebaseDatabase.getInstance().getReference();
-    //}
+    @Provides
+    @Singleton
+    FirebaseFirestore provideFirebaseFirestore() {
+        return FirebaseFirestore.getInstance();
+    }
 
     @Provides
     @Singleton
@@ -41,5 +44,33 @@ public class AppModule {
     @Singleton
     LoginRepository provideLoginRepository(LoginDataSource dataSource) {
         return new LoginRepositoryImpl(dataSource);
+    }
+
+    @Provides
+    @Singleton
+    PostDataSource providePostDataSource(
+            FirebaseFirestore firestore,
+            LoginDataSource loginDataSource,
+            UserProfileDataSource userProfileDataSource
+    ) {
+        return new PostDataSource(firestore, loginDataSource, userProfileDataSource);
+    }
+
+    @Provides
+    @Singleton
+    PostRepository providePostRepository(PostDataSource dataSource) {
+        return new PostRepositoryImpl(dataSource);
+    }
+
+    @Provides
+    @Singleton
+    UserProfileDataSource provideUserProfileDataSource(FirebaseFirestore firestore) {
+        return new UserProfileDataSource(firestore);
+    }
+
+    @Provides
+    @Singleton
+    UserProfileRepository provideUserProfileRepository(UserProfileDataSource dataSource) {
+        return new UserProfileRepositoryImpl(dataSource);
     }
 }
