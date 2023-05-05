@@ -62,7 +62,7 @@
 
     <!-- Profile fragment -->
     <string name="action_sign_out">Sign Out</string>
-    <string name="signed_out">Profile</string>
+    <string name="signed_out">You have been signed out</string>
 
     <!-- Search Fragment -->
     <string name="query_hint">Username</string>
