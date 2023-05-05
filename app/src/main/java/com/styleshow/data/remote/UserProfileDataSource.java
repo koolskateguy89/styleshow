@@ -33,10 +33,15 @@ public class UserProfileDataSource {
                     }
 
                     userProfileDto.uid = documentSnapshot.getId();
-
-                    var userProfile = userProfileDto.toUserProfile();
-                    Timber.d("userProfile for %s: %s", uid, userProfile);
-                    return userProfile;
+                    return userProfileDto.toUserProfile();
+                })
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        var userProfile = task.getResult();
+                        Timber.d("userProfile for %s: %s", uid, userProfile);
+                    } else {
+                        Timber.w(task.getException(), "failed to get userProfile for %s", uid);
+                    }
                 })
                 ;
     }

@@ -43,7 +43,7 @@ public class PostDataSource {
 
                     var documents = task.getResult().getDocuments();
 
-                    var posts = documents.stream()
+                    return documents.stream()
                             .map(document -> {
                                 var postDto = document.toObject(PostDto.class);
 
@@ -56,9 +56,14 @@ public class PostDataSource {
                             .filter(Objects::nonNull)
                             .map(postDto -> postDto.toPost(author, currentUserId))
                             .collect(Collectors.toList());
-
-                    Timber.d("posts: %s", posts);
-                    return posts;
+                })
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        var posts = task.getResult();
+                        Timber.d("posts: %s", posts);
+                    } else {
+                        Timber.w(task.getException(), "failed to get posts for %s", author.getUid());
+                    }
                 })
                 ;
     }
