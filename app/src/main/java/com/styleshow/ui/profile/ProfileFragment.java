@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import com.styleshow.R;
+import com.styleshow.common.Constants;
 import com.styleshow.databinding.FragmentProfileBinding;
 import com.styleshow.ui.adapter.PostPreviewAdapter;
 import com.styleshow.ui.login.LoginActivity;
@@ -38,9 +39,6 @@ public class ProfileFragment extends Fragment {
         var lifecycleOwner = getViewLifecycleOwner();
         var activity = getActivity();
 
-        // test text
-        viewModel.getText().observe(lifecycleOwner, binding.textProfile::setText);
-
         binding.signOut.setOnClickListener(v -> {
             if (activity == null)
                 return;
@@ -56,6 +54,7 @@ public class ProfileFragment extends Fragment {
             activity.finish();
         });
 
+        // Manage loading bar visibility
         viewModel.getLoadingState().observe(lifecycleOwner, state -> {
             Timber.d("Loading state: %s", state);
             switch (state) {
@@ -94,17 +93,16 @@ public class ProfileFragment extends Fragment {
         });
 
         // Post preview recycler view setup
-        var postPreviewAdapter = new PostPreviewAdapter();
-        binding.rvPosts.setAdapter(postPreviewAdapter);
+        binding.rvPosts.setLayoutManager(new GridLayoutManager(activity, Constants.NUMBER_OF_POST_PREVIEW_COLUMNS));
 
-        binding.rvPosts.setLayoutManager(new GridLayoutManager(activity, 3));
-
-        // Update the adapter when the posts change
         viewModel.getPosts().observe(lifecycleOwner, posts -> {
             if (posts == null)
                 return;
 
-            postPreviewAdapter.setPosts(posts);
+            // Provide the adapter with the posts
+            var postPreviewAdapter = new PostPreviewAdapter(posts);
+            // Attach the adapter to the recycler view
+            binding.rvPosts.setAdapter(postPreviewAdapter);
         });
 
         return root;

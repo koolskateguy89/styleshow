@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import com.google.android.gms.tasks.Tasks;
 import com.styleshow.data.LoadingState;
 import com.styleshow.domain.model.Post;
 import com.styleshow.domain.model.UserProfile;
@@ -23,12 +24,9 @@ public class ProfileViewModel extends ViewModel {
     private final UserProfileRepository userProfileRepository;
     private final PostRepository postRepository;
 
-    private final MutableLiveData<String> mText;
-
-    private final MutableLiveData<UserProfile> mUserProfile;
-    private final MutableLiveData<LoadingState> mLoadingState;
-
-    private final MutableLiveData<List<Post>> mPosts;
+    private final MutableLiveData<UserProfile> mUserProfile = new MutableLiveData<>();
+    private final MutableLiveData<List<Post>> mPosts = new MutableLiveData<>();
+    private final MutableLiveData<LoadingState> mLoadingState = new MutableLiveData<>(LoadingState.IDLE);
 
     @Inject
     public ProfileViewModel(
@@ -39,26 +37,6 @@ public class ProfileViewModel extends ViewModel {
         this.loginRepository = loginRepository;
         this.userProfileRepository = userProfileRepository;
         this.postRepository = postRepository;
-
-        var user = loginRepository.getCurrentUser();
-
-        mText = new MutableLiveData<>();
-        // mText.setValue("This is profile fragment");
-        mText.setValue(String.format("""
-                This is profile fragment.
-                My name is %s.
-                My email is %s.
-                My UID is %s.
-                """, user.getDisplayName(), user.getEmail(), user.getUid()));
-
-        mUserProfile = new MutableLiveData<>();
-        mLoadingState = new MutableLiveData<>(LoadingState.IDLE);
-        mPosts = new MutableLiveData<>();
-    }
-
-    // TODO: remove
-    public LiveData<String> getText() {
-        return mText;
     }
 
     public LiveData<UserProfile> getUserProfile() {
@@ -75,12 +53,6 @@ public class ProfileViewModel extends ViewModel {
 
     public void logout() {
         loginRepository.logout();
-
-        var user = loginRepository.getCurrentUser();
-        mText.setValue(String.format("""
-                This is profile fragment.
-                User = {%s}.
-                """, user));
     }
 
     public void loadProfile() {
@@ -89,18 +61,22 @@ public class ProfileViewModel extends ViewModel {
         String uid = loginRepository.getCurrentUser().getUid();
         mLoadingState.setValue(LoadingState.LOADING);
 
-        userProfileRepository.getProfileForUid(uid)
-                .addOnSuccessListener(userProfile -> {
-                    mUserProfile.setValue(userProfile);
-                    mLoadingState.setValue(LoadingState.SUCCESS_IDLE);
-                })
+        var profileTask = userProfileRepository.getProfileForUid(uid)
+                .addOnSuccessListener(mUserProfile::setValue)
                 .addOnFailureListener(e -> {
                     Timber.e(e, "error loading userProfile for uid '%s'", uid);
-                    mLoadingState.setValue(LoadingState.ERROR);
-                })
-        ;
+                });
 
         // Get the posts by the logged in user
-        postRepository.getPostsByUser(uid).addOnSuccessListener(mPosts::setValue);
+        var postTask = postRepository.getPostsByUser(uid)
+                .addOnSuccessListener(mPosts::setValue)
+                .addOnFailureListener(e -> {
+                    Timber.e(e, "error loading posts for uid '%s'", uid);
+                });
+
+        Tasks.whenAll(profileTask, postTask)
+                .addOnSuccessListener(__ -> mLoadingState.setValue(LoadingState.SUCCESS_IDLE))
+                .addOnFailureListener(e -> mLoadingState.setValue(LoadingState.ERROR))
+        ;
     }
 }
