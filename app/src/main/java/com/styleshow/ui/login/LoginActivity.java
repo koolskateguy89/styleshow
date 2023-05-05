@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.firebase.auth.FirebaseUser;
 import com.styleshow.R;
 import com.styleshow.databinding.ActivityLoginBinding;
+import com.styleshow.domain.model.UserProfile;
 import com.styleshow.ui.MainNavigationActivity;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
@@ -64,10 +65,9 @@ public class LoginActivity extends AppCompatActivity {
                 // re-enable button if login failed
                 loginButton.setEnabled(true);
             }
-            if (loginResult.getSuccess()) {
-                var user = loginViewModel.getCurrentUser();
-                Timber.d("login success, user: %s", user);
-                updateUiWithUser(user);
+            if (loginResult.getSuccess() != null) {
+                var userProfile = loginResult.getSuccess();
+                updateUiWithUser(userProfile);
             }
         });
 
@@ -112,8 +112,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     // TODO?: rename
-    private void updateUiWithUser(FirebaseUser user) {
-        String welcome = getString(R.string.welcome) + " " + user.getDisplayName();
+    private void updateUiWithUser(UserProfile user) {
+        Timber.d("login success, user: %s", user.getUsername());
+
+        String welcome = getString(R.string.welcome) + " " + user.getUsername();
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
 
         Intent intent = new Intent(this, MainNavigationActivity.class);

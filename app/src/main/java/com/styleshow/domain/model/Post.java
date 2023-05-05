@@ -52,6 +52,10 @@ public class Post {
         this.liked = liked;
     }
 
+    public @NonNull String getId() {
+        return id;
+    }
+
     public @NonNull UserProfile getAuthor() {
         return author;
     }
