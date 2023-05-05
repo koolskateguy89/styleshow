@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,12 +16,10 @@ import com.styleshow.R;
 import com.styleshow.databinding.ActivityLoginBinding;
 import com.styleshow.ui.MainNavigationActivity;
 import dagger.hilt.android.AndroidEntryPoint;
+import timber.log.Timber;
 
-// TODO: /data - loginrepository & logindatasource
 @AndroidEntryPoint
 public class LoginActivity extends AppCompatActivity {
-
-    private static final String TAG = "LoginActivity";
 
     LoginViewModel loginViewModel;
     ActivityLoginBinding binding;
@@ -56,12 +53,12 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         loginViewModel.getLoginResult().observe(this, loginResult -> {
-            Log.d(TAG, "login result: " + loginResult);
+            Timber.d("login result: %s", loginResult);
             if (loginResult == null)
                 return;
 
             if (loginResult.getError() != null) {
-                Log.d(TAG, "login failed: " + loginResult.getError());
+                Timber.d("login failed: %s", loginResult.getError());
                 showLoginFailed(loginResult.getError());
 
                 // re-enable button if login failed
@@ -69,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
             }
             if (loginResult.getSuccess()) {
                 var user = loginViewModel.getCurrentUser();
-                Log.d(TAG, "login success, user: " + user);
+                Timber.d("login success, user: %s", user);
                 updateUiWithUser(user);
             }
         });
@@ -95,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
         passwordEditText.addTextChangedListener(afterTextChangedListener);
 
         Runnable login = () -> {
-            Log.d(TAG, "logging in...");
+            Timber.d("logging in...");
 
             // disable button while logging in
             loginButton.setEnabled(false);

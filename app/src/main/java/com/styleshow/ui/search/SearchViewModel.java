@@ -1,13 +1,11 @@
 package com.styleshow.ui.search;
 
-import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import timber.log.Timber;
 
 public class SearchViewModel extends ViewModel {
-
-    private static final String TAG = "SearchViewModel";
 
     private final MutableLiveData<String> mText;
     private final MutableLiveData<String> mQuery;
@@ -30,6 +28,6 @@ public class SearchViewModel extends ViewModel {
     }
 
     public void search() {
-        Log.i(TAG, "Searched with query: " + mQuery.getValue());
+        Timber.i("Searched with query: %s", mQuery.getValue());
     }
 }

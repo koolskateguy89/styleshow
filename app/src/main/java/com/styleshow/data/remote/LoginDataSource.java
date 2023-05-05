@@ -1,16 +1,14 @@
 package com.styleshow.data.remote;
 
-import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import timber.log.Timber;
 
 public class LoginDataSource {
-
-    private static final String TAG = "LoginDataSource";
 
     private final @NonNull FirebaseAuth mAuth;
 
@@ -23,20 +21,20 @@ public class LoginDataSource {
     }
 
     public Task<AuthResult> login(String email, String password) {
-        Log.d("LoginDataSource",
-                String.format("Logging in as %s, with password %s", email, password)
-        );
+        Timber.d("Logging in as %s, with password %s", email, password);
 
         return mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Log.d(TAG, "signInWithEmail:success");
+                        // Sign in success
+                        var uid = task.getResult().getUser().getUid();
+                        Timber.d("signInWithEmail:success, uid: %s", uid);
                     } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w(TAG, "signInWithEmail:failure", task.getException());
+                        // Sign in failed
+                        Timber.w(task.getException(), "signInWithEmail:failure");
                     }
-                });
+                })
+                ;
     }
 
     public void logout() {

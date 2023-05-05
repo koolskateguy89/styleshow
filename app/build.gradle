@@ -23,6 +23,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField("boolean", "DEBUG", "false")
+        }
+        debug {
+            buildConfigField("boolean", "DEBUG", "true")
         }
     }
     compileOptions {
@@ -33,6 +37,7 @@ android {
     }
     buildFeatures {
         viewBinding true
+        buildConfig true
     }
 }
 
@@ -70,6 +75,10 @@ dependencies {
     // Picasso: https://github.com/square/picasso
     // image downloading & caching
     implementation 'com.squareup.picasso:picasso:2.8'
+
+    // Timber: https://github.com/JakeWharton/timber
+    // Logging
+    implementation 'com.jakewharton.timber:timber:5.0.1'
 
     // Resolving dependency conflict: https://stackoverflow.com/a/75298544
     constraints {

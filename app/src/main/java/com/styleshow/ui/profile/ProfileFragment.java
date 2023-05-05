@@ -1,11 +1,7 @@
 package com.styleshow.ui.profile;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,14 +14,13 @@ import com.styleshow.R;
 import com.styleshow.databinding.FragmentProfileBinding;
 import com.styleshow.ui.login.LoginActivity;
 import dagger.hilt.android.AndroidEntryPoint;
+import timber.log.Timber;
 
 // TODO: edit profile/settings activity
 // TODO: show profile picture
 
 @AndroidEntryPoint
 public class ProfileFragment extends Fragment {
-
-    private static final String TAG = "ProfileFragment";
 
     private FragmentProfileBinding binding;
 
@@ -49,7 +44,7 @@ public class ProfileFragment extends Fragment {
             if (activity == null)
                 return;
 
-            Log.d(TAG, "Signing out");
+            Timber.d("Signing out");
             viewModel.logout();
 
             Toast.makeText(activity, R.string.signed_out, Toast.LENGTH_LONG).show();
@@ -61,7 +56,7 @@ public class ProfileFragment extends Fragment {
         });
 
         viewModel.getLoadingState().observe(lifecycleOwner, state -> {
-            Log.d(TAG, "Loading state: " + state);
+            Timber.d("Loading state: %s", state);
             switch (state) {
                 case IDLE -> {
                     binding.progressBar.setVisibility(View.GONE);

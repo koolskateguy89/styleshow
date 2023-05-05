@@ -17,10 +17,6 @@ public class PostDto {
      * Has to be separately set, cannot be inferred by Firestore serialization.
      */
     public String id;
-    /**
-     * Has to be separately set, cannot be inferred by Firestore serialization.
-     */
-    public UserProfile author;
 
     public String uid;
     public String imageUrl;
@@ -32,7 +28,7 @@ public class PostDto {
     public PostDto() {
     }
 
-    public Post toPost(String currentUserId) {
+    public Post toPost(UserProfile author, String currentUserId) {
         boolean liked = likes.contains(currentUserId);
 
         return new Post(
@@ -49,7 +45,6 @@ public class PostDto {
     public @NonNull String toString() {
         return "PostDto{" +
                 "id='" + id + '\'' +
-                ", author=" + author +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", caption='" + caption + '\'' +
                 ", postedAt=" + postedAt +

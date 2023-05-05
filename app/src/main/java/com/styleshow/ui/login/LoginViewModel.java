@@ -2,7 +2,6 @@ package com.styleshow.ui.login;
 
 import javax.inject.Inject;
 
-import android.util.Log;
 import android.util.Patterns;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -37,9 +36,6 @@ public class LoginViewModel extends ViewModel {
         // can be launched in a separate asynchronous job
         loginRepository.login(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                var user = task.getResult().getUser();
-                Log.d("LoginViewModel", "user = " + user);
-
                 loginResult.setValue(new LoginResult(true));
             } else {
                 loginResult.setValue(new LoginResult(R.string.login_failed));

@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -15,11 +14,10 @@ import com.styleshow.domain.repository.LoginRepository;
 import com.styleshow.domain.repository.PostRepository;
 import com.styleshow.domain.repository.UserProfileRepository;
 import dagger.hilt.android.lifecycle.HiltViewModel;
+import timber.log.Timber;
 
 @HiltViewModel
 public class ProfileViewModel extends ViewModel {
-
-    private static final String TAG = "ProfileViewModel";
 
     private final LoginRepository loginRepository;
     private final UserProfileRepository userProfileRepository;
@@ -86,27 +84,23 @@ public class ProfileViewModel extends ViewModel {
     }
 
     public void loadProfile() {
-        Log.d(TAG, "loading profile");
+        Timber.d("loading profile");
 
         String uid = loginRepository.getCurrentUser().getUid();
         mLoadingState.setValue(LoadingState.LOADING);
 
         userProfileRepository.getProfileForUid(uid)
                 .addOnSuccessListener(userProfile -> {
-                    Log.i(TAG, "userProfile = " + userProfile);
-
                     mUserProfile.setValue(userProfile);
                     mLoadingState.setValue(LoadingState.SUCCESS_IDLE);
                 })
                 .addOnFailureListener(e -> {
-                    Log.e(TAG, "error loading userProfile", e);
+                    Timber.e(e, "error loading userProfile for uid '%s'", uid);
                     mLoadingState.setValue(LoadingState.ERROR);
                 })
         ;
 
         // Get the posts by the logged in user
-        postRepository.getPostsByUser(uid)
-                .addOnSuccessListener(mPosts::setValue)
-        ;
+        postRepository.getPostsByUser(uid).addOnSuccessListener(mPosts::setValue);
     }
 }

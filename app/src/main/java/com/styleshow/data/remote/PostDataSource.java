@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import android.util.Log;
 import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -12,10 +11,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.styleshow.data.remote.dto.PostDto;
 import com.styleshow.domain.model.Post;
 import com.styleshow.domain.model.UserProfile;
+import timber.log.Timber;
 
 public class PostDataSource {
-
-    private static final String TAG = "PostDataSource";
 
     private final CollectionReference mPosts;
     private final LoginDataSource mLoginDataSource;
@@ -51,18 +49,15 @@ public class PostDataSource {
 
                                 if (postDto != null) {
                                     postDto.id = document.getId();
-                                    postDto.author = author;
                                 }
 
                                 return postDto;
                             })
-                            .peek(postDto -> Log.d(TAG, "postDto: " + postDto))
                             .filter(Objects::nonNull)
-                            .map(postDto -> postDto.toPost(currentUserId))
+                            .map(postDto -> postDto.toPost(author, currentUserId))
                             .collect(Collectors.toList());
 
-                    Log.i(TAG, "posts: " + posts);
-
+                    Timber.d("posts: %s", posts);
                     return posts;
                 })
                 ;
