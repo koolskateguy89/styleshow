@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import com.styleshow.R;
 import com.styleshow.databinding.FragmentProfileBinding;
+import com.styleshow.ui.adapter.PostPreviewAdapter;
 import com.styleshow.ui.login.LoginActivity;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
