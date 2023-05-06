@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 import androidx.annotation.NonNull;
-import com.google.firebase.Timestamp;
 
 public class Post implements Serializable {
 

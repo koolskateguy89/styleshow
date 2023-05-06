@@ -3,13 +3,16 @@ package com.styleshow.adapters;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
+import com.styleshow.common.Constants;
 import com.styleshow.databinding.ItemPostPreviewBinding;
 import com.styleshow.domain.model.Post;
+import com.styleshow.ui.post.PostActivity;
 
 public class PostPreviewAdapter extends RecyclerView.Adapter<PostPreviewAdapter.PostPreviewHolder> {
 
@@ -58,8 +61,9 @@ public class PostPreviewAdapter extends RecyclerView.Adapter<PostPreviewAdapter.
                     .into(binding.ivImage);
 
             binding.ivImage.setOnClickListener(v -> {
-                // TODO: open PostActivity
-                //Toast.makeText(v.getContext(), "Clicked on post " + post.getCaption(), Toast.LENGTH_SHORT).show();
+                var intent = new Intent(v.getContext(), PostActivity.class);
+                intent.putExtra(Constants.POST_NAME, post);
+                v.getContext().startActivity(intent);
             });
         }
     }

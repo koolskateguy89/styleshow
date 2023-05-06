@@ -15,6 +15,11 @@
             android:supportsRtl="true"
             android:theme="@style/Theme.StyleShow"
             tools:targetApi="31">
+        <!-- Post Activity -->
+        <activity
+                android:name=".ui.post.PostActivity"
+                android:exported="false" />
+
         <!-- User profile Activity -->
         <activity
                 android:name=".ui.user_profile.UserProfileActivity"
