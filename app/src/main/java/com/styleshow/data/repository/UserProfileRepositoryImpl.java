@@ -23,12 +23,16 @@ public class UserProfileRepositoryImpl implements UserProfileRepository {
     }
 
     @Override
-    public Task<UserProfile> getProfileForUid(String uid) {
+    public Task<UserProfile> getProfileForUid(@NonNull String uid) {
         return dataSource.getProfileForUid(uid);
     }
 
     @Override
-    public List<UserProfile> filterProfiles(List<UserProfile> profiles, String query) {
+    public List<UserProfile> filterProfiles(@NonNull List<UserProfile> profiles, @NonNull String query) {
+        if (query.isEmpty()) {
+            return profiles;
+        }
+
         return profiles.stream()
                 .filter(profile -> profile.getUsername().toLowerCase().contains(query.toLowerCase()))
                 .collect(Collectors.toList())

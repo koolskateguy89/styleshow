@@ -19,7 +19,7 @@ public class PostRepositoryImpl implements PostRepository {
     // TODO: getAllPosts (maybe paginated)
 
     @Override
-    public Task<List<Post>> getPostsByUser(String uid) {
+    public Task<List<Post>> getPostsByUser(@NonNull String uid) {
         return postDataSource.getPostsByUser(uid);
     }
 }
