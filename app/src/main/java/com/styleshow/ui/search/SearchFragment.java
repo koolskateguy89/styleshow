@@ -10,11 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import com.styleshow.databinding.FragmentSearchBinding;
 import com.styleshow.adapters.ProfilePreviewAdapter;
+import com.styleshow.databinding.FragmentSearchBinding;
 import dagger.hilt.android.AndroidEntryPoint;
 
 // TODO: handle loading state
+
+// TODO: have a look at SearchView
 
 @AndroidEntryPoint
 public class SearchFragment extends Fragment {

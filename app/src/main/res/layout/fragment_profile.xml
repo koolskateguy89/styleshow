@@ -4,6 +4,8 @@
         xmlns:tools="http://schemas.android.com/tools"
         >
     <data>
+        <import type="android.view.View" />
+        <import type="com.styleshow.data.LoadingState" />
         <variable
                 name="viewModel"
                 type="com.styleshow.ui.profile.ProfileViewModel" />
@@ -26,7 +28,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
-                android:visibility="@{viewModel.loadingState == com.styleshow.data.LoadingState.LOADING ? android.view.View.VISIBLE : android.view.View.GONE}"
+                android:visibility="@{viewModel.loadingState == LoadingState.LOADING ? View.VISIBLE : View.GONE}"
                 />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -38,7 +40,7 @@
                 app:layout_constraintVertical_bias="0.001"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:visibility="@{viewModel.loadingState == com.styleshow.data.LoadingState.SUCCESS_IDLE ? android.view.View.VISIBLE : android.view.View.GONE}"
+                android:visibility="@{viewModel.loadingState == LoadingState.SUCCESS_IDLE ? View.VISIBLE : View.GONE}"
                 >
 
             <TextView

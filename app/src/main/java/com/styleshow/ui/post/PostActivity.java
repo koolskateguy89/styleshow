@@ -13,7 +13,7 @@ import timber.log.Timber;
 // TODO: back button
 
 /*
-- [ ] author ribbon (try and make it's own view/component idrk how it works)
+- [x] author display (PostAuthor.java)
 - [ ] like button (heart - filled if liked)
  */
 
@@ -35,9 +35,5 @@ public class PostActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         binding.setLifecycleOwner(this);
         binding.setPost(post);
-
-        Picasso.get()
-                .load(post.getImageUrl())
-                .into(binding.ivImage);
     }
 }

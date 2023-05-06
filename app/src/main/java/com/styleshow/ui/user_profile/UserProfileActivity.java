@@ -35,16 +35,9 @@ public class UserProfileActivity extends AppCompatActivity {
 
         binding = ActivityUserProfileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         binding.setLifecycleOwner(this);
         binding.setProfile(userProfile);
         binding.setViewModel(viewModel);
-
-        viewModel.getPosts().observe(this, posts -> {
-            if (posts == null)
-                return;
-
-            // Update the grid with the new posts
-            binding.postPreviewGrid.setPosts(posts);
-        });
     }
 }
