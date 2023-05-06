@@ -2,6 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.profile.ProfileFragment"
         >
     <data>
         <import type="android.view.View" />
@@ -14,7 +15,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".ui.profile.ProfileFragment">
+            >
 
         <ProgressBar
                 style="?android:attr/progressBarStyleHorizontal"
@@ -82,8 +83,8 @@
                     android:layout_marginTop="8dp"
                     />
 
-            <com.styleshow.components.PostPreviewGrid
-                    android:id="@+id/post_preview_grid"
+            <com.styleshow.components.DynamicPostsView
+                    android:id="@+id/view_dynamic_posts"
                     app:posts="@{viewModel.posts}"
                     android:layout_width="0dp"
                     android:layout_height="0dp"

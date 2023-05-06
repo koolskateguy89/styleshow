@@ -2,6 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:context=".ui.user_profile.UserProfileActivity"
         >
     <data>
         <import type="android.view.View" />
@@ -72,8 +73,8 @@
                     android:visibility="@{viewModel.loadingState == LoadingState.LOADING ? View.VISIBLE : View.GONE}"
                     />
 
-            <com.styleshow.components.PostPreviewGrid
-                    android:id="@+id/post_preview_grid"
+            <com.styleshow.components.DynamicPostsView
+                    android:id="@+id/view_dynamic_posts"
                     app:posts="@{viewModel.posts}"
                     android:layout_width="0dp"
                     android:layout_height="0dp"

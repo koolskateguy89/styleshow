@@ -15,7 +15,24 @@ import com.styleshow.ui.post.PostActivity;
 
 public class PostPreviewAdapter extends RecyclerView.Adapter<PostPreviewAdapter.PostPreviewHolder> {
 
-    private final List<Post> posts = new ArrayList<>();
+    private final List<Post> posts;
+
+    /**
+     * Using this constructor means this will manage the list of posts.
+     */
+    public PostPreviewAdapter() {
+        this(new ArrayList<>());
+    }
+
+    /**
+     * Using this constructor means the caller will have to manage the list of posts.
+     * The caller can make modifications to the list and call {@link #notifyDataSetChanged()}.
+     *
+     * @note Do not call {@link #setPosts(List)} if using this constructor with an immutable list.
+     */
+    public PostPreviewAdapter(List<Post> posts) {
+        this.posts = posts;
+    }
 
     public void setPosts(List<Post> posts) {
         this.posts.clear();
