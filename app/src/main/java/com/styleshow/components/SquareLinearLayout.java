@@ -1,4 +1,4 @@
-package com.styleshow.ui.view;
+package com.styleshow.components;
 
 import android.content.Context;
 import android.util.AttributeSet;

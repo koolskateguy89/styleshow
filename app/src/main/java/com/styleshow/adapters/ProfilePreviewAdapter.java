@@ -1,4 +1,4 @@
-package com.styleshow.ui.adapter;
+package com.styleshow.adapters;
 
 // TODO: onclick open user profile activity
 

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.styleshow.ui.view.SquareLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.styleshow.components.SquareLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="0dp" >
 
     <ImageView
-            android:id="@+id/ivImage"
+            android:id="@+id/iv_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             android:contentDescription="Picture of shoes" />
 
-</com.styleshow.ui.view.SquareLinearLayout>
+</com.styleshow.components.SquareLinearLayout>

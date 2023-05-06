@@ -1,18 +1,18 @@
-package com.styleshow.ui.view;
+package com.styleshow.components;
 
 import java.util.List;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
-import com.styleshow.R;
 import com.styleshow.common.Constants;
 import com.styleshow.databinding.ViewPostPreviewGridBinding;
 import com.styleshow.domain.model.Post;
-import com.styleshow.ui.adapter.PostPreviewAdapter;
+import com.styleshow.adapters.PostPreviewAdapter;
 
 public class PostPreviewGrid extends ConstraintLayout {
 
@@ -45,8 +45,10 @@ public class PostPreviewGrid extends ConstraintLayout {
      * @see https://stackoverflow.com/a/17413018
      */
     private void initView() {
-        binding = ViewPostPreviewGridBinding.bind(
-                inflate(getContext(), R.layout.view_post_preview_grid, this)
+        binding = ViewPostPreviewGridBinding.inflate(
+                LayoutInflater.from(getContext()),
+                this,
+                true
         );
 
         // Setup recycler view

@@ -7,7 +7,7 @@
         android:padding="20dp"
         >
 
-    <com.styleshow.ui.view.SquareLinearLayout
+    <com.styleshow.components.SquareLinearLayout
             android:layout_width="100dp"
             android:layout_height="300dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -22,7 +22,7 @@
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/profile_picture_description"
                 />
-    </com.styleshow.ui.view.SquareLinearLayout>
+    </com.styleshow.components.SquareLinearLayout>
 
     <TextView
             android:id="@+id/tv_username"

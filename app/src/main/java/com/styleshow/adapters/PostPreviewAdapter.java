@@ -1,4 +1,4 @@
-package com.styleshow.ui.adapter;
+package com.styleshow.adapters;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,9 +55,12 @@ public class PostPreviewAdapter extends RecyclerView.Adapter<PostPreviewAdapter.
         public void bind(Post post) {
             Picasso.get()
                     .load(post.getImageUrl())
-                    .resize(200, 200)
-                    .centerCrop()
                     .into(binding.ivImage);
+
+            binding.ivImage.setOnClickListener(v -> {
+                // TODO: open PostActivity
+                //Toast.makeText(v.getContext(), "Clicked on post " + post.getCaption(), Toast.LENGTH_SHORT).show();
+            });
         }
     }
 }

@@ -63,7 +63,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/bio"
                 android:layout_marginTop="8dp" />
 
-        <com.styleshow.ui.view.PostPreviewGrid
+        <com.styleshow.components.PostPreviewGrid
                 android:id="@+id/post_preview_grid"
                 android:layout_width="0dp"
                 android:layout_height="0dp"

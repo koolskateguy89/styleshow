@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.styleshow.databinding.FragmentSearchBinding;
-import com.styleshow.ui.adapter.ProfilePreviewAdapter;
+import com.styleshow.adapters.ProfilePreviewAdapter;
 import dagger.hilt.android.AndroidEntryPoint;
 
 // TODO: handle loading state
