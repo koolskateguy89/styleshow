@@ -1,12 +1,11 @@
 package com.styleshow.ui.search;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,36 +15,30 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 // TODO: handle loading state
 
-// TODO: have a look at SearchView
-
 @AndroidEntryPoint
 public class SearchFragment extends Fragment {
 
     private FragmentSearchBinding binding;
+    private SearchViewModel viewModel;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        SearchViewModel viewModel =
-                new ViewModelProvider(this).get(SearchViewModel.class);
+        viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
         viewModel.loadProfiles();
 
         binding = FragmentSearchBinding.inflate(inflater, container, false);
 
-        binding.etQuery.addTextChangedListener(new TextWatcher() {
+        binding.sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // ignore
+            public boolean onQueryTextSubmit(String query) {
+                return false;
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // ignore
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                viewModel.setQuery(s.toString());
+            public boolean onQueryTextChange(String newText) {
+                viewModel.setQuery(newText);
+                return false;
             }
         });
 
@@ -64,5 +57,7 @@ public class SearchFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+        viewModel.dispose();
+        viewModel = null;
     }
 }

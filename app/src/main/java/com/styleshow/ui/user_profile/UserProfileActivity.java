@@ -13,6 +13,8 @@ import timber.log.Timber;
 
 // TODO: back button
 
+// TODO: if not me, message button
+
 /**
  * To be honest this is basically the same as {@link com.styleshow.ui.profile.ProfileFragment}.
  * But I couldn't figure out the best way to extract the common code into a base/shared class so
