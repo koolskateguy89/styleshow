@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PicassoImageView">
+        <attr name="transform" format="enum">
+            <enum name="none" value="0" />
+            <enum name="cropCircle" value="1" />
+            <enum name="cropSquare" value="2" />
+            <enum name="grayscale" value="3" />
+        </attr>
+    </declare-styleable>
+</resources>

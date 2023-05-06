@@ -76,6 +76,8 @@ dependencies {
     // Picasso: https://github.com/square/picasso
     // image downloading & caching
     implementation 'com.squareup.picasso:picasso:2.8'
+    // Picasso transformations: https://github.com/wasabeef/picasso-transformations
+    implementation 'jp.wasabeef:picasso-transformations:2.4.0'
 
     // Timber: https://github.com/JakeWharton/timber
     // Logging
