@@ -3,13 +3,15 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="0dp" >
+        android:layout_height="0dp"
+        >
 
     <ImageView
             android:id="@+id/iv_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:contentDescription="Picture of shoes" />
+            android:contentDescription="Picture of shoes"
+            />
 
 </com.styleshow.components.SquareLinearLayout>

@@ -5,13 +5,16 @@ package com.styleshow.adapters;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
+import com.styleshow.common.Constants;
 import com.styleshow.databinding.ItemProfilePreviewBinding;
 import com.styleshow.domain.model.UserProfile;
+import com.styleshow.ui.user_profile.UserProfileActivity;
 
 public class ProfilePreviewAdapter extends RecyclerView.Adapter<ProfilePreviewAdapter.ProfilePreviewHolder> {
 
@@ -61,8 +64,11 @@ public class ProfilePreviewAdapter extends RecyclerView.Adapter<ProfilePreviewAd
                     .load(profile.getProfilePictureUrl())
                     .into(binding.ivImage);
 
+            // On click open user profile activity, display the clicked user's profile
             binding.ivImage.setOnClickListener(v -> {
-                // TODO
+                Intent intent = new Intent(v.getContext(), UserProfileActivity.class);
+                intent.putExtra(Constants.PROFILE_NAME, profile);
+                v.getContext().startActivity(intent);
             });
         }
     }

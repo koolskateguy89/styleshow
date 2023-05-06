@@ -15,7 +15,7 @@ import com.styleshow.ui.login.LoginActivity;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
-// TODO: edit profile/settings activity
+// TODO: edit profile/settings activity (use a fab?)
 // TODO: show profile picture
 
 @AndroidEntryPoint
