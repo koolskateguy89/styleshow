@@ -2,7 +2,6 @@ package com.styleshow.data.remote.dto;
 
 import java.util.List;
 
-import android.net.Uri;
 import androidx.annotation.NonNull;
 import com.google.firebase.Timestamp;
 import com.styleshow.domain.model.Post;
@@ -34,7 +33,7 @@ public class PostDto {
         return new Post(
                 id,
                 author,
-                Uri.parse(imageUrl),
+                imageUrl,
                 caption,
                 postedAt,
                 liked

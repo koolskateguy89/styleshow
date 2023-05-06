@@ -1,9 +1,10 @@
 package com.styleshow.domain.model;
 
-import android.net.Uri;
+import java.io.Serializable;
+
 import androidx.annotation.NonNull;
 
-public class UserProfile {
+public class UserProfile implements Serializable {
 
     /**
      * The user's ID.
@@ -23,13 +24,13 @@ public class UserProfile {
     /**
      * The user's profile picture URL.
      */
-    private final @NonNull Uri profilePictureUrl;
+    private final @NonNull String profilePictureUrl;
 
     public UserProfile(
             @NonNull String uid,
             @NonNull String username,
             @NonNull String bio,
-            @NonNull Uri profilePictureUrl
+            @NonNull String profilePictureUrl
     ) {
         this.uid = uid;
         this.username = username;
@@ -49,7 +50,7 @@ public class UserProfile {
         return bio;
     }
 
-    public @NonNull Uri getProfilePictureUrl() {
+    public @NonNull String getProfilePictureUrl() {
         return profilePictureUrl;
     }
 

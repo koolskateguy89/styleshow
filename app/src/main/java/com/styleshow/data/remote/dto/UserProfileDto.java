@@ -1,6 +1,5 @@
 package com.styleshow.data.remote.dto;
 
-import android.net.Uri;
 import androidx.annotation.NonNull;
 import com.styleshow.domain.model.UserProfile;
 
@@ -27,7 +26,7 @@ public class UserProfileDto {
                 uid,
                 username,
                 bio,
-                Uri.parse(imageUrl)
+                imageUrl
         );
     }
 

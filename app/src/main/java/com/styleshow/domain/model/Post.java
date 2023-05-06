@@ -1,10 +1,11 @@
 package com.styleshow.domain.model;
 
-import android.net.Uri;
+import java.io.Serializable;
+
 import androidx.annotation.NonNull;
 import com.google.firebase.Timestamp;
 
-public class Post {
+public class Post implements Serializable {
 
     /**
      * The ID of the post.
@@ -19,7 +20,7 @@ public class Post {
     /**
      * The URL of the post's image.
      */
-    private final @NonNull Uri imageUrl;
+    private final @NonNull String imageUrl;
 
     /**
      * The caption of the post.
@@ -39,7 +40,7 @@ public class Post {
     public Post(
             @NonNull String id,
             @NonNull UserProfile author,
-            @NonNull Uri imageUrl,
+            @NonNull String imageUrl,
             @NonNull String caption,
             @NonNull Timestamp postedAt,
             boolean liked
@@ -60,7 +61,7 @@ public class Post {
         return author;
     }
 
-    public @NonNull Uri getImageUrl() {
+    public @NonNull String getImageUrl() {
         return imageUrl;
     }
 
