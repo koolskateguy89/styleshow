@@ -10,9 +10,9 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 import com.styleshow.R;
 import com.styleshow.common.NoOpTransformation;
-import jp.wasabeef.picasso.transformations.CropCircleTransformation;
-import jp.wasabeef.picasso.transformations.CropSquareTransformation;
-import jp.wasabeef.picasso.transformations.GrayscaleTransformation;
+import jp.wasabeef.transformers.picasso.CropCircleTransformation;
+import jp.wasabeef.transformers.picasso.CropSquareTransformation;
+import jp.wasabeef.transformers.picasso.GrayscaleTransformation;
 import timber.log.Timber;
 
 /**
@@ -20,6 +20,8 @@ import timber.log.Timber;
  * <p>
  * It also supports applying pre-defined transformations to the image,
  * see {@link TransformationEnum}.
+ *
+ * @see <a href="https://github.com/square/picasso">Picasso</a>
  */
 public class PicassoImageView extends androidx.appcompat.widget.AppCompatImageView {
 
@@ -40,6 +42,9 @@ public class PicassoImageView extends androidx.appcompat.widget.AppCompatImageVi
         init(context, attrs);
     }
 
+    /**
+     * Initialize the view using the attributes provided in the XML.
+     */
     private void init(@NonNull Context context, @Nullable AttributeSet attrs) {
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs,
@@ -68,10 +73,12 @@ public class PicassoImageView extends androidx.appcompat.widget.AppCompatImageVi
     }
 
     /**
-     * Transformation enum for transformations provided by the Picasso Transformations
-     * library.
+     * Transformation enum for transformations provided by the Transformers library
+     * (and a no-op transformation).
      * <p>
-     * Only the transformation that take no parameters are supported.
+     * Only the transformations that take no parameters are supported.
+     *
+     * @see <a href="https://github.com/wasabeef/transformers">Transformers</a>
      */
     public enum TransformationEnum {
         NONE(new NoOpTransformation()),
