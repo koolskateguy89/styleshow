@@ -29,9 +29,6 @@ public class SearchFragment extends Fragment {
         viewModel.loadProfiles();
 
         binding = FragmentSearchBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
-
-        var lifecycleOwner = getViewLifecycleOwner();
 
         binding.etQuery.addTextChangedListener(new TextWatcher() {
             @Override
@@ -55,9 +52,10 @@ public class SearchFragment extends Fragment {
         var previewAdapter = new ProfilePreviewAdapter();
         binding.rvProfiles.setAdapter(previewAdapter);
 
-        viewModel.getFilteredProfiles().observe(lifecycleOwner, previewAdapter::setProfiles);
+        viewModel.getFilteredProfiles()
+                .observe(getViewLifecycleOwner(), previewAdapter::setProfiles);
 
-        return root;
+        return binding.getRoot();
     }
 
     @Override

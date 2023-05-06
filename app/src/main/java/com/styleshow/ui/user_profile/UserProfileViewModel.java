@@ -40,28 +40,11 @@ public class UserProfileViewModel extends ViewModel {
 
         mLoadingState.setValue(LoadingState.LOADING);
 
-        var executor = Executors.newSingleThreadExecutor();
-
-        mLoadingState.observeForever(state -> {
-            Timber.d("Loading state: %s", state);
-        });
-
         // Get the posts by user with the provided uid
         postRepository.getPostsByUser(uid)
-                .addOnSuccessListener(executor, posts -> {
-                    Timber.d("Start");
-                    try {
-                        Thread.sleep(3000);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    Timber.d("End");
-
-                    mPosts.postValue(posts);
-                    mLoadingState.postValue(LoadingState.SUCCESS_IDLE);
-                })
-                .addOnCompleteListener(__ -> {
-                    executor.shutdown();
+                .addOnSuccessListener(posts -> {
+                    mPosts.setValue(posts);
+                    mLoadingState.setValue(LoadingState.SUCCESS_IDLE);
                 })
                 .addOnFailureListener(e -> {
                     Timber.e(e, "error loading posts for uid '%s'", uid);

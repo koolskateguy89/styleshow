@@ -31,65 +31,23 @@ public class ProfileFragment extends Fragment {
         viewModel.loadProfile();
 
         binding = FragmentProfileBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
-
-        var lifecycleOwner = getViewLifecycleOwner();
-        var activity = getActivity();
+        binding.setLifecycleOwner(getViewLifecycleOwner());
+        binding.setViewModel(viewModel);
 
         binding.signOut.setOnClickListener(v -> {
-            if (activity == null)
-                return;
-
             Timber.d("Signing out");
             viewModel.logout();
 
-            Toast.makeText(activity, R.string.signed_out, Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), R.string.signed_out, Toast.LENGTH_LONG).show();
 
-            Intent intent = new Intent(activity, LoginActivity.class);
+            Intent intent = new Intent(getContext(), LoginActivity.class);
             startActivity(intent);
 
-            activity.finish();
+            if (getActivity() != null)
+                getActivity().finish();
         });
 
-        // Manage loading bar visibility
-        viewModel.getLoadingState().observe(lifecycleOwner, state -> {
-            Timber.d("Loading state: %s", state);
-            switch (state) {
-                case IDLE -> {
-                    binding.progressBar.setVisibility(View.GONE);
-                    binding.wrapper.setVisibility(View.GONE);
-                }
-                case LOADING -> {
-                    binding.progressBar.setVisibility(View.VISIBLE);
-                    binding.wrapper.setVisibility(View.GONE);
-                }
-                case ERROR -> {
-                    binding.progressBar.setVisibility(View.GONE);
-                    binding.wrapper.setVisibility(View.GONE);
-                    //binding.error.setVisibility(View.VISIBLE);
-                    // TODO: there "should ONLY" be an error if the user doesn't have access
-                    // to internet
-                    // i dont see why else there would be
-                    // but that should be handled "globally" in the app
-                    Toast.makeText(activity, "Could not load profile", Toast.LENGTH_LONG).show();
-                }
-                case SUCCESS_IDLE -> {
-                    binding.progressBar.setVisibility(View.GONE);
-                    binding.wrapper.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
-        viewModel.getUserProfile().observe(lifecycleOwner, profile -> {
-            if (profile == null)
-                return;
-
-            // Display the user's profile
-            binding.username.setText(profile.getUsername());
-            binding.bio.setText(profile.getBio());
-        });
-
-        viewModel.getPosts().observe(lifecycleOwner, posts -> {
+        viewModel.getPosts().observe(getViewLifecycleOwner(), posts -> {
             if (posts == null)
                 return;
 
@@ -97,7 +55,7 @@ public class ProfileFragment extends Fragment {
             binding.postPreviewGrid.setPosts(posts);
         });
 
-        return root;
+        return binding.getRoot();
     }
 
     @Override

@@ -34,33 +34,9 @@ public class UserProfileActivity extends AppCompatActivity {
 
         binding = ActivityUserProfileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        binding.setLifecycleOwner(this);
         binding.setProfile(userProfile);
         binding.setViewModel(viewModel);
-
-        // Manage loading bar visibility
-        viewModel.getLoadingState().observe(this, state -> {
-            Timber.d("Loading state: %s", state);
-            switch (state) {
-                case IDLE -> {
-                    binding.pb.setVisibility(View.GONE);
-                    binding.postPreviewGrid.setVisibility(View.GONE);
-                }
-                case LOADING -> {
-                    binding.pb.setVisibility(View.VISIBLE);
-                    binding.postPreviewGrid.setVisibility(View.GONE);
-                }
-                case ERROR -> {
-                    binding.pb.setVisibility(View.GONE);
-                    binding.postPreviewGrid.setVisibility(View.GONE);
-                    // TODO: globally handle errors
-                    Toast.makeText(this, "Could not load posts", Toast.LENGTH_LONG).show();
-                }
-                case SUCCESS_IDLE -> {
-                    binding.pb.setVisibility(View.GONE);
-                    binding.postPreviewGrid.setVisibility(View.VISIBLE);
-                }
-            }
-        });
 
         viewModel.getPosts().observe(this, posts -> {
             if (posts == null)

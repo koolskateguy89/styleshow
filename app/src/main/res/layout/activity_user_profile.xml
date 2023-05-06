@@ -67,6 +67,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_marginStart="32dp"
                     android:layout_marginEnd="32dp"
+                    android:visibility="@{viewModel.loadingState == com.styleshow.data.LoadingState.LOADING ? android.view.View.VISIBLE : android.view.View.GONE}"
                     />
 
             <com.styleshow.components.PostPreviewGrid
@@ -78,8 +79,8 @@
                     app:layout_constraintVertical_bias="0.001"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    android:visibility="@{viewModel.loadingState == com.styleshow.data.LoadingState.SUCCESS_IDLE ? android.view.View.VISIBLE : android.view.View.GONE}"
                     />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
