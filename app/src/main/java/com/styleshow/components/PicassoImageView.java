@@ -25,6 +25,9 @@ import timber.log.Timber;
  */
 public class PicassoImageView extends androidx.appcompat.widget.AppCompatImageView {
 
+    /**
+     * The transformation to apply to the image.
+     */
     private @NonNull Transformation transformation = new NoOpTransformation();
 
     public PicassoImageView(@NonNull Context context) {
@@ -81,9 +84,29 @@ public class PicassoImageView extends androidx.appcompat.widget.AppCompatImageVi
      * @see <a href="https://github.com/wasabeef/transformers">Transformers</a>
      */
     public enum TransformationEnum {
+        /**
+         * No-op transformation.
+         *
+         * @see NoOpTransformation
+         */
         NONE(new NoOpTransformation()),
+        /**
+         * Crop the image to a circle.
+         *
+         * @see CropCircleTransformation
+         */
         CROP_CIRCLE(new CropCircleTransformation()),
+        /**
+         * Crop the image to a square.
+         *
+         * @see CropSquareTransformation
+         */
         CROP_SQUARE(new CropSquareTransformation()),
+        /**
+         * Convert the image to grayscale.
+         *
+         * @see GrayscaleTransformation
+         */
         GRAYSCALE(new GrayscaleTransformation()),
         ;
 
