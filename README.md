@@ -16,7 +16,7 @@ p = perhaps, not really sure what it is/how to do/where to do
 - [ ] (4%) Create and use a local database.
 - [m] (4%) Use firebase for storing and retrieving data.
 - [ ] (2%) Receive Broadcast events and make use of them in meaningful ways.
-- [p] (2%) Extend and use an existing View class.
+- [m] (2%) Extend and use an existing View class.
 - [p] (2%) Implement and use a ShareActionProvider.
 - [n] (6%) Implement and use your own service.
 - [ ] (2%) Use the AlarmManager.
@@ -26,3 +26,15 @@ p = perhaps, not really sure what it is/how to do/where to do
 Max 40
 
 nvm gonna use firebase instead of making server
+
+## Useful links
+
+### Data binding
+
+- [Data binding](https://developer.android.com/topic/libraries/data-binding)
+- [Providing bound data to custom views in layout](https://stackoverflow.com/a/34817565)
+
+### Architecture
+
+- [App architecture](https://developer.android.com/topic/architecture/intro)
+  - [Phillip Lackner MVVM app example](https://youtu.be/EF33KmyprEQ)
