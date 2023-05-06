@@ -11,9 +11,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".ui.post.PostActivity"
-            >
+            android:layout_height="wrap_content"
+            tools:context=".components.PostView">
 
         <com.styleshow.components.PostAuthor
                 android:id="@+id/view_post_author"
@@ -22,8 +21,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
+                app:layout_constraintEnd_toEndOf="parent" />
 
         <com.styleshow.components.SquareLinearLayout
                 android:id="@+id/image_wrapper"
@@ -31,16 +29,15 @@
                 android:layout_height="0dp"
                 app:layout_constraintTop_toBottomOf="@+id/view_post_author"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                >
+                app:layout_constraintEnd_toEndOf="parent">
+
             <com.styleshow.components.PicassoImageView
                     android:id="@+id/iv_image"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
                     android:contentDescription="@string/post_picture_description"
-                    android:src="@{post.imageUrl}"
-                    />
+                    android:src="@{post.imageUrl}" />
         </com.styleshow.components.SquareLinearLayout>
 
         <LinearLayout
@@ -51,8 +48,7 @@
                 android:layout_marginTop="4dp"
                 app:layout_constraintTop_toBottomOf="@+id/image_wrapper"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                >
+                app:layout_constraintEnd_toEndOf="parent">
 
             <TextView
                     android:layout_width="0dp"
@@ -60,8 +56,7 @@
                     android:text="actions: Like, comment, share"
                     android:ems="10"
                     android:layout_weight="1"
-                    android:textSize="24sp"
-                    />
+                    android:textSize="24sp" />
 
         </LinearLayout>
 
@@ -76,8 +71,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/ll_actions"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginTop="8dp"
-                android:textSize="20sp"
-                />
+                android:textSize="20sp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

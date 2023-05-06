@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import com.styleshow.adapters.PostAdapter;
 import com.styleshow.databinding.FragmentHomeBinding;
 import com.styleshow.ui.messages.MessagesActivity;
+import dagger.hilt.android.AndroidEntryPoint;
 
 /*
 TODO:
@@ -21,6 +23,7 @@ TODO:
 - [ ] floating action button to create new post
  */
 
+@AndroidEntryPoint
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
@@ -30,17 +33,25 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        viewModel.loadPosts();
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textHome;
-        viewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        binding.setLifecycleOwner(getViewLifecycleOwner());
+        binding.setViewModel(viewModel);
 
         binding.btnMessages.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), MessagesActivity.class);
             startActivity(intent);
         });
+
+        // Setup recycler view
+        binding.rvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
+        var postAdapter = new PostAdapter();
+        binding.rvPosts.setAdapter(postAdapter);
+
+        viewModel.getPosts().observe(getViewLifecycleOwner(), postAdapter::setPosts);
 
         return root;
     }

@@ -15,8 +15,16 @@ import com.styleshow.ui.login.LoginActivity;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
-// TODO: edit profile/settings activity (use a fab?)
+// TODO: edit profile/settings activity (use a FAB?)
 // TODO: show profile picture
+
+// TODO: switcher between posts as grid and posts as list
+// but this is a bit more complicated because we need to change the layout
+// between PostPreview and PostItem (imagine they exist), we cant just
+// change the layout manager because postpreview doesnt show all we want
+// to show when in a vertical list
+// surely we could just change the adapter (and the layout manager) then right ?
+// i think so...
 
 @AndroidEntryPoint
 public class ProfileFragment extends Fragment {

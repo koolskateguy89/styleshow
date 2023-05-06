@@ -1,12 +1,18 @@
 package com.styleshow.data.remote;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.styleshow.data.remote.dto.PostDto;
 import com.styleshow.domain.model.Post;
@@ -29,7 +35,73 @@ public class PostDataSource {
         mUserProfileDataSource = userProfileDataSource;
     }
 
-    // TODO: getAllPosts (maybe paginated)
+    private static @Nullable PostDto getPostDtoFromDocument(DocumentSnapshot document) {
+        var postDto = document.toObject(PostDto.class);
+
+        if (postDto != null) {
+            postDto.id = document.getId();
+        }
+
+        return postDto;
+    }
+
+    // TODO: impl. pagination
+    @SuppressWarnings("unchecked")
+    public Task<List<Post>> getAllPosts() {
+        // This can only be called when the user is logged in so we can safely get the uid
+        @SuppressWarnings("ConstantConditions")
+        String currentUserId = mLoginDataSource.getCurrentUser().getUid();
+
+        var profilesTask = mUserProfileDataSource.getAllProfiles()
+                .continueWith(task -> {
+                    if (!task.isSuccessful())
+                        return null;
+
+                    var profiles = task.getResult();
+
+                    Map<String, UserProfile> authors = new HashMap<>();
+
+                    for (var profile : profiles) {
+                        authors.put(profile.getUid(), profile);
+                    }
+
+                    return authors;
+                });
+
+        var postDtosTask = mPosts.get()
+                .continueWith(task -> {
+                    if (!task.isSuccessful())
+                        return null;
+
+                    var documents = task.getResult().getDocuments();
+
+                    return documents.stream()
+                            .map(PostDataSource::getPostDtoFromDocument)
+                            .filter(Objects::nonNull)
+                            ;
+                });
+
+        return Tasks.whenAllComplete(profilesTask, postDtosTask)
+                .continueWith(task -> {
+                    if (!task.isSuccessful())
+                        return null;
+
+                    var tasks = task.getResult();
+
+                    var profiles = (Map<String, UserProfile>) tasks.get(0).getResult();
+                    var postDtos = (Stream<PostDto>) tasks.get(1).getResult();
+
+                    return postDtos
+                            .map(postDto -> postDto.toPost(profiles.get(postDto.uid), currentUserId))
+                            .collect(Collectors.toList());
+                })
+                .addOnSuccessListener(posts -> {
+                    Timber.d("all posts: %s", posts);
+                })
+                .addOnFailureListener(e -> {
+                    Timber.w(e, "failed to get all posts");
+                });
+    }
 
     public Task<List<Post>> getPostsByUser(@NonNull UserProfile author) {
         // This can only be called when the user is logged in so we can safely get the uid
@@ -44,15 +116,7 @@ public class PostDataSource {
                     var documents = task.getResult().getDocuments();
 
                     return documents.stream()
-                            .map(document -> {
-                                var postDto = document.toObject(PostDto.class);
-
-                                if (postDto != null) {
-                                    postDto.id = document.getId();
-                                }
-
-                                return postDto;
-                            })
+                            .map(PostDataSource::getPostDtoFromDocument)
                             .filter(Objects::nonNull)
                             .map(postDto -> postDto.toPost(author, currentUserId))
                             .collect(Collectors.toList());

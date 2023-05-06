@@ -17,7 +17,11 @@ public class PostRepositoryImpl implements PostRepository {
         this.postDataSource = postDataSource;
     }
 
-    // TODO: getAllPosts (maybe paginated)
+    // TODO: impl. pagination
+    @Override
+    public Task<List<Post>> getAllPosts() {
+        return postDataSource.getAllPosts();
+    }
 
     @Override
     public Task<List<Post>> getPostsByUser(@NonNull String uid) {

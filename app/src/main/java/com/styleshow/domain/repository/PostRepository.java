@@ -9,7 +9,8 @@ import com.styleshow.domain.model.UserProfile;
 
 public interface PostRepository {
 
-    // TODO: getAllPosts (maybe paginated)
+    // TODO: impl. pagination
+    Task<List<Post>> getAllPosts();
 
     Task<List<Post>> getPostsByUser(@NonNull String uid);
 
