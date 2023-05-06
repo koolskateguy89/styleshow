@@ -47,14 +47,6 @@ public class ProfileFragment extends Fragment {
                 getActivity().finish();
         });
 
-        viewModel.getPosts().observe(getViewLifecycleOwner(), posts -> {
-            if (posts == null)
-                return;
-
-            // Update the grid with the new posts
-            binding.postPreviewGrid.setPosts(posts);
-        });
-
         return binding.getRoot();
     }
 
