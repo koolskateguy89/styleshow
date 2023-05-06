@@ -9,10 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
+import com.styleshow.adapters.PostPreviewAdapter;
 import com.styleshow.common.Constants;
 import com.styleshow.databinding.ViewPostPreviewGridBinding;
 import com.styleshow.domain.model.Post;
-import com.styleshow.adapters.PostPreviewAdapter;
 
 public class PostPreviewGrid extends ConstraintLayout {
 

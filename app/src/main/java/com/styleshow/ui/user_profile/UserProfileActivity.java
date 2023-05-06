@@ -1,13 +1,11 @@
 package com.styleshow.ui.user_profile;
 
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
 import androidx.lifecycle.ViewModelProvider;
-import com.styleshow.R;
 import com.styleshow.common.Constants;
-import com.styleshow.databinding.ActivityMainNavigationBinding;
 import com.styleshow.databinding.ActivityUserProfileBinding;
 import com.styleshow.domain.model.UserProfile;
 import dagger.hilt.android.AndroidEntryPoint;
@@ -29,17 +27,15 @@ public class UserProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityUserProfileBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
         var userProfile = (UserProfile) getIntent().getSerializableExtra(Constants.PROFILE_NAME);
 
         var viewModel = new ViewModelProvider(this).get(UserProfileViewModel.class);
         viewModel.loadPosts(userProfile.getUid());
 
-        // Display the user's profile
-        binding.username.setText(userProfile.getUsername());
-        binding.bio.setText(userProfile.getBio());
+        binding = ActivityUserProfileBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        binding.setProfile(userProfile);
+        binding.setViewModel(viewModel);
 
         // Manage loading bar visibility
         viewModel.getLoadingState().observe(this, state -> {
@@ -47,25 +43,21 @@ public class UserProfileActivity extends AppCompatActivity {
             switch (state) {
                 case IDLE -> {
                     binding.pb.setVisibility(View.GONE);
-                    binding.postsWrapper.setVisibility(View.GONE);
+                    binding.postPreviewGrid.setVisibility(View.GONE);
                 }
                 case LOADING -> {
                     binding.pb.setVisibility(View.VISIBLE);
-                    binding.postsWrapper.setVisibility(View.GONE);
+                    binding.postPreviewGrid.setVisibility(View.GONE);
                 }
                 case ERROR -> {
                     binding.pb.setVisibility(View.GONE);
-                    binding.postsWrapper.setVisibility(View.GONE);
-                    //binding.error.setVisibility(View.VISIBLE);
-                    // TODO: there "should ONLY" be an error if the user doesn't have access
-                    // to internet
-                    // i dont see why else there would be
-                    // but that should be handled "globally" in the app
+                    binding.postPreviewGrid.setVisibility(View.GONE);
+                    // TODO: globally handle errors
                     Toast.makeText(this, "Could not load posts", Toast.LENGTH_LONG).show();
                 }
                 case SUCCESS_IDLE -> {
                     binding.pb.setVisibility(View.GONE);
-                    binding.postsWrapper.setVisibility(View.VISIBLE);
+                    binding.postPreviewGrid.setVisibility(View.VISIBLE);
                 }
             }
         });
