@@ -64,6 +64,9 @@
     <string name="action_sign_out">Sign Out</string>
     <string name="signed_out">You have been signed out</string>
 
-    <!-- Search Fragment -->
+    <!-- Search fragment -->
     <string name="query_hint">Username</string>
+
+    <!-- Profile preview item -->
+    <string name="profile_picture_description">Profile picture</string>
 </resources>

@@ -6,13 +6,17 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import com.styleshow.databinding.FragmentSearchBinding;
+import com.styleshow.ui.adapter.ProfilePreviewAdapter;
+import dagger.hilt.android.AndroidEntryPoint;
 
+// TODO: handle loading state
+
+@AndroidEntryPoint
 public class SearchFragment extends Fragment {
 
     private FragmentSearchBinding binding;
@@ -22,14 +26,12 @@ public class SearchFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         SearchViewModel viewModel =
                 new ViewModelProvider(this).get(SearchViewModel.class);
+        viewModel.loadProfiles();
 
         binding = FragmentSearchBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         var lifecycleOwner = getViewLifecycleOwner();
-
-        final TextView textView = binding.textDashboard;
-        viewModel.getText().observe(lifecycleOwner, textView::setText);
 
         binding.etQuery.addTextChangedListener(new TextWatcher() {
             @Override
@@ -48,14 +50,12 @@ public class SearchFragment extends Fragment {
             }
         });
 
-        binding.etQuery.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                viewModel.search();
-            }
-            return false;
-        });
+        // Setup RecyclerView
+        binding.rvProfiles.setLayoutManager(new LinearLayoutManager(getContext()));
+        var previewAdapter = new ProfilePreviewAdapter();
+        binding.rvProfiles.setAdapter(previewAdapter);
 
-        binding.btnSearch.setOnClickListener(v -> viewModel.search());
+        viewModel.getFilteredProfiles().observe(lifecycleOwner, previewAdapter::setProfiles);
 
         return root;
     }
