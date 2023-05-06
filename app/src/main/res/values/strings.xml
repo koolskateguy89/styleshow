@@ -72,4 +72,8 @@
 
     <!-- Post -->
     <string name="post_picture_description">Post picture</string>
+
+    <!-- Dynamic posts view -->
+    <string name="grid_picture_description">Grid</string>
+    <string name="list_picture_description">List</string>
 </resources>

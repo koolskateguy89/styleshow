@@ -4,7 +4,8 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.login.LoginActivity">
+        tools:context=".ui.login.LoginActivity"
+        >
 
     <EditText
             android:id="@+id/email"
@@ -19,7 +20,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp" />
+            android:layout_marginEnd="32dp"
+            />
 
     <EditText
             android:id="@+id/password"
@@ -36,10 +38,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/email"
             android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp" />
+            android:layout_marginEnd="32dp"
+            />
 
     <Button
-            android:id="@+id/btnLogin"
+            android:id="@+id/btn_login"
             android:enabled="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,6 +55,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/password"
             app:layout_constraintVertical_bias="0.142"
-            app:layout_constraintHorizontal_bias="0.497" />
+            app:layout_constraintHorizontal_bias="0.497"
+            />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

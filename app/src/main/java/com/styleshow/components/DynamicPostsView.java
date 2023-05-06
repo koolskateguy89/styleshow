@@ -23,8 +23,6 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.subjects.BehaviorSubject;
 import timber.log.Timber;
 
-// TODO: use icons for buttons
-
 // TODO!: use sharedpreferences to store layout type
 
 /**
@@ -66,8 +64,8 @@ public class DynamicPostsView extends ConstraintLayout {
                 true
         );
 
-        binding.btnGrid.setOnClickListener(v -> setLayout(LayoutType.GRID));
-        binding.btnList.setOnClickListener(v -> setLayout(LayoutType.LIST));
+        binding.ibGrid.setOnClickListener(v -> setLayout(LayoutType.GRID));
+        binding.ibList.setOnClickListener(v -> setLayout(LayoutType.LIST));
 
         TypedArray a = getContext().getTheme().obtainStyledAttributes(
                 attrs,
