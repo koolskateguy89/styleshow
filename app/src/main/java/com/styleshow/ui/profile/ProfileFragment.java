@@ -9,11 +9,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
 import com.styleshow.R;
-import com.styleshow.common.Constants;
 import com.styleshow.databinding.FragmentProfileBinding;
-import com.styleshow.ui.adapter.PostPreviewAdapter;
 import com.styleshow.ui.login.LoginActivity;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
@@ -92,17 +89,12 @@ public class ProfileFragment extends Fragment {
             binding.bio.setText(profile.getBio());
         });
 
-        // Post preview recycler view setup
-        binding.rvPosts.setLayoutManager(new GridLayoutManager(activity, Constants.NUMBER_OF_POST_PREVIEW_COLUMNS));
-
         viewModel.getPosts().observe(lifecycleOwner, posts -> {
             if (posts == null)
                 return;
 
-            // Provide the adapter with the posts
-            var postPreviewAdapter = new PostPreviewAdapter(posts);
-            // Attach the adapter to the recycler view
-            binding.rvPosts.setAdapter(postPreviewAdapter);
+            // Update the grid with the new posts
+            binding.postPreviewGrid.setPosts(posts);
         });
 
         return root;

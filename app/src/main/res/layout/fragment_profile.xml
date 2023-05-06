@@ -30,10 +30,10 @@
             app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
-                android:text="usernameeeeeeeeeeee"
+                android:id="@+id/username"
+                tools:text="usernameeeeeeeeeeee"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/username"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -42,10 +42,10 @@
                 android:layout_marginTop="4dp" />
 
         <TextView
-                android:text="biooooooooooooooo"
+                android:id="@+id/bio"
+                tools:text="biooooooooooooooo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/bio"
                 app:layout_constraintTop_toBottomOf="@+id/username"
                 android:layout_marginTop="24dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -63,9 +63,9 @@
                 app:layout_constraintTop_toBottomOf="@+id/bio"
                 android:layout_marginTop="8dp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvPosts"
-                android:layout_width="match_parent"
+        <com.styleshow.ui.view.PostPreviewGrid
+                android:id="@+id/post_preview_grid"
+                android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintVertical_bias="0.5"
