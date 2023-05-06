@@ -69,4 +69,7 @@
 
     <!-- Profile preview item -->
     <string name="profile_picture_description">Profile picture</string>
+
+    <!-- Post -->
+    <string name="post_picture_description">Post picture</string>
 </resources>

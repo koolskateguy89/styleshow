@@ -9,7 +9,7 @@
                 type="com.styleshow.domain.model.UserProfile" />
         <variable
                 name="viewModel"
-                type="com.styleshow.ui.user_profile.UserProfileViewModel"/>
+                type="com.styleshow.ui.user_profile.UserProfileViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

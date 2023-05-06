@@ -28,6 +28,7 @@ public class UserProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         var userProfile = (UserProfile) getIntent().getSerializableExtra(Constants.PROFILE_NAME);
+        Timber.d("opened profile: %s", userProfile);
 
         var viewModel = new ViewModelProvider(this).get(UserProfileViewModel.class);
         viewModel.loadPosts(userProfile.getUid());

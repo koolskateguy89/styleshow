@@ -7,7 +7,6 @@ import javax.inject.Inject;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.google.android.gms.tasks.Tasks;
 import com.styleshow.data.LoadingState;
 import com.styleshow.domain.model.Post;
 import com.styleshow.domain.model.UserProfile;
@@ -61,22 +60,28 @@ public class ProfileViewModel extends ViewModel {
         String uid = loginRepository.getCurrentUser().getUid();
         mLoadingState.setValue(LoadingState.LOADING);
 
+        // Get the profile of the logged in user
         var profileTask = userProfileRepository.getProfileForUid(uid)
                 .addOnSuccessListener(mUserProfile::setValue)
                 .addOnFailureListener(e -> {
                     Timber.e(e, "error loading userProfile for uid '%s'", uid);
                 });
 
-        // Get the posts by the logged in user
-        var postTask = postRepository.getPostsByUser(uid)
-                .addOnSuccessListener(mPosts::setValue)
-                .addOnFailureListener(e -> {
-                    Timber.e(e, "error loading posts for uid '%s'", uid);
-                });
+        var finalTask = profileTask.continueWithTask(profTask -> {
+            if (!profTask.isSuccessful())
+                return null;
 
-        Tasks.whenAll(profileTask, postTask)
-                .addOnSuccessListener(__ -> mLoadingState.setValue(LoadingState.SUCCESS_IDLE))
-                .addOnFailureListener(e -> mLoadingState.setValue(LoadingState.ERROR))
-        ;
+            var profile = profTask.getResult();
+
+            // Get the posts by the logged in user
+            return postRepository.getPostsByUser(profile)
+                    .addOnSuccessListener(mPosts::setValue)
+                    .addOnFailureListener(e -> {
+                        Timber.e(e, "error loading posts for uid '%s'", uid);
+                    });
+        });
+
+        finalTask.addOnSuccessListener(task -> mLoadingState.setValue(LoadingState.SUCCESS_IDLE))
+                .addOnFailureListener(e -> mLoadingState.setValue(LoadingState.ERROR));
     }
 }
