@@ -24,7 +24,7 @@ public class ProfileViewModel extends ViewModel {
     private final PostRepository postRepository;
 
     private final MutableLiveData<UserProfile> mUserProfile = new MutableLiveData<>();
-    private final MutableLiveData<List<Post>> mPosts = new MutableLiveData<>();
+    private final MutableLiveData<List<Post>> mPosts = new MutableLiveData<>(List.of());
     private final MutableLiveData<LoadingState> mLoadingState = new MutableLiveData<>(LoadingState.IDLE);
 
     @Inject

@@ -1,40 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        >
+<layout>
+    <data>
+        <variable
+                name="profile"
+                type="com.styleshow.domain.model.UserProfile" />
+    </data>
 
-    <com.styleshow.components.SquareLinearLayout
-            android:layout_width="100dp"
-            android:layout_height="300dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.5"
-            android:id="@+id/squareLinearLayout">
-        <ImageView
-                android:id="@+id/iv_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:contentDescription="@string/profile_picture_description"
-                />
-    </com.styleshow.components.SquareLinearLayout>
-
-    <TextView
-            android:id="@+id/tv_username"
-            android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="Username"
-            android:textSize="18sp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/squareLinearLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="8dp"
-            />
+            android:padding="20dp"
+            >
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.styleshow.components.SquareLinearLayout
+                android:layout_width="100dp"
+                android:layout_height="300dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintVertical_bias="0.5"
+                android:id="@+id/squareLinearLayout">
+            <com.styleshow.components.PicassoImageView
+                    android:id="@+id/iv_image"
+                    android:src="@{profile.profilePictureUrl}"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/profile_picture_description"
+                    />
+        </com.styleshow.components.SquareLinearLayout>
+
+        <TextView
+                android:text="@{profile.username}"
+                tools:text="Username"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/squareLinearLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="8dp"
+                />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

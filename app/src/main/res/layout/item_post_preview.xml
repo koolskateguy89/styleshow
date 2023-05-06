@@ -1,17 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.styleshow.components.SquareLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
         >
+    <data>
+        <variable
+                name="post"
+                type="com.styleshow.domain.model.Post" />
+    </data>
 
-    <ImageView
-            android:id="@+id/iv_image"
+    <com.styleshow.components.SquareLinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:contentDescription="Picture of shoes"
-            />
+            android:layout_height="0dp"
+            >
 
-</com.styleshow.components.SquareLinearLayout>
+        <com.styleshow.components.PicassoImageView
+                android:id="@+id/iv_image"
+                android:src="@{post.imageUrl}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/post_picture_description"
+                />
+
+    </com.styleshow.components.SquareLinearLayout>
+
+</layout>

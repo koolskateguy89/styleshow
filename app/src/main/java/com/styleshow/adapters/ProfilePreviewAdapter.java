@@ -58,14 +58,10 @@ public class ProfilePreviewAdapter extends RecyclerView.Adapter<ProfilePreviewAd
         }
 
         public void bind(UserProfile profile) {
-            binding.tvUsername.setText(profile.getUsername());
-
-            Picasso.get()
-                    .load(profile.getProfilePictureUrl())
-                    .into(binding.ivImage);
+            binding.setProfile(profile);
 
             // On click open user profile activity, display the clicked user's profile
-            binding.ivImage.setOnClickListener(v -> {
+            binding.getRoot().setOnClickListener(v -> {
                 Intent intent = new Intent(v.getContext(), UserProfileActivity.class);
                 intent.putExtra(Constants.PROFILE_NAME, profile);
                 v.getContext().startActivity(intent);

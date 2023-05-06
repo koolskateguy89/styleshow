@@ -67,7 +67,7 @@
     <!-- Search fragment -->
     <string name="query_hint">Username</string>
 
-    <!-- Profile preview item -->
+    <!-- UserProfile -->
     <string name="profile_picture_description">Profile picture</string>
 
     <!-- Post -->

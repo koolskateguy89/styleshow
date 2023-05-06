@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.squareup.picasso.Picasso;
 import com.styleshow.common.Constants;
 import com.styleshow.databinding.ItemPostPreviewBinding;
 import com.styleshow.domain.model.Post;
@@ -56,9 +55,7 @@ public class PostPreviewAdapter extends RecyclerView.Adapter<PostPreviewAdapter.
         }
 
         public void bind(Post post) {
-            Picasso.get()
-                    .load(post.getImageUrl())
-                    .into(binding.ivImage);
+            binding.setPost(post);
 
             binding.ivImage.setOnClickListener(v -> {
                 var intent = new Intent(v.getContext(), PostActivity.class);
