@@ -35,7 +35,7 @@ public class PostDto {
                 author,
                 imageUrl,
                 caption,
-                postedAt,
+                postedAt.toDate(),
                 liked
         );
     }

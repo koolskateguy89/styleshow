@@ -31,7 +31,7 @@ public class PostDataSource {
 
     // TODO: getAllPosts (maybe paginated)
 
-    private Task<List<Post>> getPostsByAuthor(@NonNull UserProfile author) {
+    public Task<List<Post>> getPostsByUser(@NonNull UserProfile author) {
         // This can only be called when the user is logged in so we can safely get the uid
         String currentUserId = mLoginDataSource.getCurrentUser().getUid();
 
@@ -76,8 +76,7 @@ public class PostDataSource {
 
                     var authorProfile = profileTask.getResult();
 
-                    return getPostsByAuthor(authorProfile);
+                    return getPostsByUser(authorProfile);
                 });
     }
-
 }

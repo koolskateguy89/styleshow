@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.Task;
 import com.styleshow.data.remote.PostDataSource;
 import com.styleshow.domain.model.Post;
+import com.styleshow.domain.model.UserProfile;
 import com.styleshow.domain.repository.PostRepository;
 
 public class PostRepositoryImpl implements PostRepository {
@@ -21,5 +22,10 @@ public class PostRepositoryImpl implements PostRepository {
     @Override
     public Task<List<Post>> getPostsByUser(@NonNull String uid) {
         return postDataSource.getPostsByUser(uid);
+    }
+
+    @Override
+    public Task<List<Post>> getPostsByUser(@NonNull UserProfile author) {
+        return postDataSource.getPostsByUser(author);
     }
 }

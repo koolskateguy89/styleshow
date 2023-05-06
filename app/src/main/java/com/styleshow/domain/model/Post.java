@@ -1,6 +1,7 @@
 package com.styleshow.domain.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import androidx.annotation.NonNull;
 import com.google.firebase.Timestamp;
@@ -30,7 +31,7 @@ public class Post implements Serializable {
     /**
      * The timestamp when the post was created.
      */
-    private final @NonNull Timestamp postedAt;
+    private final @NonNull Date postedAt;
 
     /**
      * Whether the current user has liked the post or not.
@@ -42,7 +43,7 @@ public class Post implements Serializable {
             @NonNull UserProfile author,
             @NonNull String imageUrl,
             @NonNull String caption,
-            @NonNull Timestamp postedAt,
+            @NonNull Date postedAt,
             boolean liked
     ) {
         this.id = id;
@@ -69,7 +70,7 @@ public class Post implements Serializable {
         return caption;
     }
 
-    public @NonNull Timestamp getPostedAt() {
+    public @NonNull Date getPostedAt() {
         return postedAt;
     }
 
