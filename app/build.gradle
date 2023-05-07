@@ -45,9 +45,9 @@ android {
 dependencies {
     // Idk
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    // Material Design?
+    // Material Components: https://github.com/material-components/material-components-android
     implementation 'com.google.android.material:material:1.8.0'
-    // Components?
+    // AndroidX Components
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.navigation:navigation-fragment:2.5.3'
     implementation 'androidx.navigation:navigation-ui:2.5.3'
