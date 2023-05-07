@@ -1,56 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         tools:context=".components.DynamicPostsView"
         >
+    <data>
+        <import type="com.styleshow.components.DynamicPostsView.LayoutType" />
+        <variable
+                name="layout"
+                type="LayoutType" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_switcher"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
 
-        <ImageButton
-                android:id="@+id/ib_grid"
-                android:src="@drawable/ic_grid_black_24dp"
-                android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_switcher"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginStart="24dp"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintEnd_toStartOf="@+id/ib_list"
-                android:contentDescription="@string/grid_picture_description" />
-
-        <ImageButton
-                android:id="@+id/ib_list"
-                android:src="@drawable/ic_list_black_24dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/ib_grid"
-                app:layout_constraintHorizontal_bias="0.5"
-                android:contentDescription="@string/list_picture_description"
-                android:layout_marginEnd="24dp" />
+                >
 
+            <!-- TODO: default bg when not selected, primary/accent when selected -->
+            <ImageButton
+                    android:id="@+id/ib_grid"
+                    android:src="@drawable/ic_grid_black_24dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:contentDescription="@string/grid_picture_description"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/ib_list"
+                    android:backgroundTint="@{layout == LayoutType.GRID ? @color/primary : @color/accent}"
+                    />
+
+            <!-- TODO: default bg (grey) when not selected, primary/accent when selected -->
+            <ImageButton
+                    android:id="@+id/ib_list"
+                    android:src="@drawable/ic_list_black_24dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/ib_grid"
+                    android:contentDescription="@string/list_picture_description"
+                    android:backgroundTint="@{layout == LayoutType.LIST ? @color/primary : @color/accent}"
+                    />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_posts"
+                tools:listitem="@layout/item_post"
+                tools:itemCount="10"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cl_switcher"
+                />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_posts"
-            tools:listitem="@layout/item_post"
-            tools:itemCount="10"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cl_switcher" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

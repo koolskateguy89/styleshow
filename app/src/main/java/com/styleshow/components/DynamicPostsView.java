@@ -82,6 +82,7 @@ public class DynamicPostsView extends ConstraintLayout {
 
     private void onLayoutChanged(@NonNull LayoutType layout) {
         Timber.d("layout changed to %s", layout);
+        binding.setLayout(layout);
 
         switch (layout) {
             case GRID -> showGridLayout();
@@ -135,6 +136,10 @@ public class DynamicPostsView extends ConstraintLayout {
         this.posts.clear();
         this.posts.addAll(posts);
         adapter.notifyDataSetChanged();
+    }
+
+    public LayoutType getLayout() {
+        return layoutSubject.getValue();
     }
 
     public void setLayout(@NonNull LayoutType layout) {
