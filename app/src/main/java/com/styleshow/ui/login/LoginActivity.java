@@ -6,18 +6,18 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
-import com.google.firebase.auth.FirebaseUser;
 import com.styleshow.R;
 import com.styleshow.databinding.ActivityLoginBinding;
 import com.styleshow.domain.model.UserProfile;
 import com.styleshow.ui.MainNavigationActivity;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
+
+// TODO: only show error on email & password after "touched"
 
 @AndroidEntryPoint
 public class LoginActivity extends AppCompatActivity {
@@ -34,9 +34,11 @@ public class LoginActivity extends AppCompatActivity {
 
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
-        EditText emailEditText = binding.email;
-        EditText passwordEditText = binding.password;
-        Button loginButton = binding.btnLogin;
+        var emailLayout = binding.layoutEmail;
+        var emailEditText = binding.etEmail;
+        var passwordLayout = binding.layoutPassword;
+        var passwordEditText = binding.etPassword;
+        var loginButton = binding.btnLogin;
         //final ProgressBar loadingProgressBar = binding.loading;
 
         loginViewModel.getLoginFormState().observe(this, loginFormState -> {
@@ -45,12 +47,17 @@ public class LoginActivity extends AppCompatActivity {
 
             loginButton.setEnabled(loginFormState.isDataValid());
 
-            if (loginFormState.getEmailError() != null) {
-                emailEditText.setError(getString(loginFormState.getEmailError()));
-            }
-            if (loginFormState.getPasswordError() != null) {
-                passwordEditText.setError(getString(loginFormState.getPasswordError()));
-            }
+            emailLayout.setError(
+                    loginFormState.getEmailError() != null ?
+                            getString(loginFormState.getEmailError())
+                            : null
+            );
+
+            passwordLayout.setError(
+                    loginFormState.getPasswordError() != null ?
+                            getString(loginFormState.getPasswordError())
+                            : null
+            );
         });
 
         loginViewModel.getLoginResult().observe(this, loginResult -> {
