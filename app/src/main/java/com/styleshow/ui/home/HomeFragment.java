@@ -13,6 +13,7 @@ import com.styleshow.adapters.PostAdapter;
 import com.styleshow.databinding.FragmentHomeBinding;
 import com.styleshow.ui.messages.MessagesActivity;
 import dagger.hilt.android.AndroidEntryPoint;
+import timber.log.Timber;
 
 /*
 TODO:
@@ -44,6 +45,10 @@ public class HomeFragment extends Fragment {
         binding.btnMessages.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), MessagesActivity.class);
             startActivity(intent);
+        });
+
+        binding.fabNewPost.setOnClickListener(v -> {
+            Timber.i("TODO: create new post action");
         });
 
         // Setup recycler view

@@ -26,13 +26,12 @@
                 android:layout_marginTop="9dp"
                 />
 
-        <!--todo: plus icon-->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_new_post"
+                app:srcCompat="@drawable/ic_add_black_24dp"
+                android:contentDescription="@string/new_post_btn_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="bruh"
-                tools:text="Add"
                 android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

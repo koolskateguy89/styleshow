@@ -60,6 +60,9 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
+    <!-- Home fragment -->
+    <string name="new_post_btn_description">Make new post</string>
+
     <!-- Profile fragment -->
     <string name="action_sign_out">Sign Out</string>
     <string name="signed_out">You have been signed out</string>
