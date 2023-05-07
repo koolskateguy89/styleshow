@@ -2,29 +2,29 @@ package com.styleshow.components;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.LinearLayout;
+import android.widget.FrameLayout;
 import androidx.annotation.Nullable;
 
 /**
  * A custom LinearLayout that is always square, based on its width.
  *
- * @see https://stackoverflow.com/a/24416992/17381629
+ * @see <a href="https://stackoverflow.com/a/24416992">https://stackoverflow.com/a/24416992</a>
  */
-public class SquareLinearLayout extends LinearLayout {
+public class SquareFrameLayout extends FrameLayout {
 
-    public SquareLinearLayout(Context context) {
+    public SquareFrameLayout(Context context) {
         super(context);
     }
 
-    public SquareLinearLayout(Context context, @Nullable AttributeSet attrs) {
+    public SquareFrameLayout(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public SquareLinearLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public SquareFrameLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
-    public SquareLinearLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public SquareFrameLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 

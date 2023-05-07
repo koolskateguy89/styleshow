@@ -15,7 +15,7 @@
             android:padding="2dp"
             >
 
-        <com.styleshow.components.SquareLinearLayout
+        <com.styleshow.components.SquareFrameLayout
                 android:id="@+id/view_image_wrapper"
                 android:layout_width="90dp"
                 android:layout_height="60dp"
@@ -34,7 +34,7 @@
                     android:scaleType="centerCrop"
                     android:contentDescription="@string/profile_picture_description"
                     />
-        </com.styleshow.components.SquareLinearLayout>
+        </com.styleshow.components.SquareFrameLayout>
 
         <TextView
                 android:id="@+id/tv_username"

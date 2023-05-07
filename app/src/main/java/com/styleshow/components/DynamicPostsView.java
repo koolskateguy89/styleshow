@@ -123,7 +123,7 @@ public class DynamicPostsView extends ConstraintLayout {
     /**
      * Dispose of subscriptions.
      *
-     * @see {@link #onAttachedToWindow()}
+     * @see #onAttachedToWindow()
      * @see <a href="https://stackoverflow.com/a/66789559">https://stackoverflow.com/a/66789559</a>
      */
     @Override

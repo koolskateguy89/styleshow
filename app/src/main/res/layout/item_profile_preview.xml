@@ -14,7 +14,7 @@
             android:padding="20dp"
             >
 
-        <com.styleshow.components.SquareLinearLayout
+        <com.styleshow.components.SquareFrameLayout
                 android:id="@+id/view_image_wrapper"
                 android:layout_width="100dp"
                 android:layout_height="300dp"
@@ -33,7 +33,7 @@
                     android:scaleType="centerCrop"
                     android:contentDescription="@string/profile_picture_description"
                     />
-        </com.styleshow.components.SquareLinearLayout>
+        </com.styleshow.components.SquareFrameLayout>
 
         <TextView
                 android:text="@{profile.username}"
