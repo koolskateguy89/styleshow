@@ -2,15 +2,14 @@ package com.styleshow.ui.login;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.Toast;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.styleshow.R;
+import com.styleshow.common.AfterTextChangedTextWatcher;
 import com.styleshow.databinding.ActivityLoginBinding;
 import com.styleshow.domain.model.UserProfile;
 import com.styleshow.ui.MainNavigationActivity;
@@ -78,23 +77,10 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        TextWatcher afterTextChangedListener = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // ignore
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // ignore
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                loginViewModel.loginDataChanged(emailEditText.getText().toString(),
-                        passwordEditText.getText().toString());
-            }
-        };
+        TextWatcher afterTextChangedListener = new AfterTextChangedTextWatcher(s -> {
+            loginViewModel.loginDataChanged(emailEditText.getText().toString(),
+                    passwordEditText.getText().toString());
+        });
         emailEditText.addTextChangedListener(afterTextChangedListener);
         passwordEditText.addTextChangedListener(afterTextChangedListener);
 
