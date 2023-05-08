@@ -55,7 +55,7 @@ public class SearchFragment extends Fragment {
                     binding.viewSwitcher.setDisplayedChild(1);
                 }
                 case SUCCESS_IDLE -> {
-                    // Display posts
+                    // Display users
                     binding.viewSwitcher.setDisplayedChild(0);
                 }
             }

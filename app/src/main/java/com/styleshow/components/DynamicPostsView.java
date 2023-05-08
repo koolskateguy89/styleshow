@@ -11,10 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.carousel.CarouselLayoutManager;
 import com.styleshow.R;
-import com.styleshow.adapters.PostAdapter;
+import com.styleshow.adapters.PostCarouselAdapter;
 import com.styleshow.adapters.PostPreviewAdapter;
 import com.styleshow.common.Constants;
 import com.styleshow.databinding.ViewDynamicPostsBinding;
@@ -26,7 +26,7 @@ import timber.log.Timber;
 // TODO!: use sharedpreferences to store layout type for persistence
 
 /**
- * Custom view to display either a grid or list of posts.
+ * Custom view to display either a grid or carousel of posts.
  * It contains controls to switch between the two layouts.
  */
 public class DynamicPostsView extends ConstraintLayout {
@@ -65,7 +65,7 @@ public class DynamicPostsView extends ConstraintLayout {
         );
 
         binding.ibGrid.setOnClickListener(v -> setLayout(LayoutType.GRID));
-        binding.ibList.setOnClickListener(v -> setLayout(LayoutType.LIST));
+        binding.ibCarousel.setOnClickListener(v -> setLayout(LayoutType.CAROUSEL));
 
         TypedArray a = getContext().getTheme().obtainStyledAttributes(
                 attrs,
@@ -86,7 +86,7 @@ public class DynamicPostsView extends ConstraintLayout {
 
         switch (layout) {
             case GRID -> showGridLayout();
-            case LIST -> showListLayout();
+            case CAROUSEL -> showCarouselLayout();
         }
     }
 
@@ -98,11 +98,11 @@ public class DynamicPostsView extends ConstraintLayout {
                 new GridLayoutManager(getContext(), Constants.NUMBER_OF_POST_PREVIEW_COLUMNS));
     }
 
-    private void showListLayout() {
-        adapter = new PostAdapter(posts);
+    private void showCarouselLayout() {
+        adapter = new PostCarouselAdapter(posts);
         binding.rvPosts.setAdapter(adapter);
 
-        binding.rvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.rvPosts.setLayoutManager(new CarouselLayoutManager());
     }
 
     /**
@@ -159,11 +159,13 @@ public class DynamicPostsView extends ConstraintLayout {
          */
         GRID,
         /**
-         * A vertical list layout.
+         * A carousel layout.
          *
-         * @see PostAdapter
+         * @see PostCarouselAdapter
+         * @see <a href="https://m3.material.io/components/carousel/overview">Material Carousel</a>
+         * @see https://github.com/material-components/material-components-android/blob/master/docs/components/Carousel.md
          */
-        LIST,
+        CAROUSEL,
         ;
     }
 }

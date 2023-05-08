@@ -1,8 +1,6 @@
 package com.styleshow.ui.user_profile;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.styleshow.common.Constants;
@@ -24,6 +22,7 @@ import timber.log.Timber;
 public class UserProfileActivity extends AppCompatActivity {
 
     private ActivityUserProfileBinding binding;
+    private UserProfileViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +31,7 @@ public class UserProfileActivity extends AppCompatActivity {
         var userProfile = (UserProfile) getIntent().getSerializableExtra(Constants.PROFILE_NAME);
         Timber.d("opened profile: %s", userProfile);
 
-        var viewModel = new ViewModelProvider(this).get(UserProfileViewModel.class);
+        viewModel = new ViewModelProvider(this).get(UserProfileViewModel.class);
         viewModel.loadPosts(userProfile.getUid());
 
         binding = ActivityUserProfileBinding.inflate(getLayoutInflater());
@@ -41,5 +40,21 @@ public class UserProfileActivity extends AppCompatActivity {
         binding.setLifecycleOwner(this);
         binding.setProfile(userProfile);
         binding.setViewModel(viewModel);
+
+        viewModel.getLoadingState().observe(this, loadingState -> {
+            if (loadingState == null)
+                return;
+
+            switch (loadingState) {
+                case LOADING -> {
+                    // Display progress indicator
+                    binding.viewSwitcher.setDisplayedChild(0);
+                }
+                case SUCCESS_IDLE -> {
+                    // Display posts
+                    binding.viewSwitcher.setDisplayedChild(1);
+                }
+            }
+        });
     }
 }

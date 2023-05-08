@@ -13,7 +13,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             >
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -35,22 +35,22 @@
                     app:layout_constraintTop_toTopOf="parent"
                     android:contentDescription="@string/grid_picture_description"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/ib_list"
+                    app:layout_constraintEnd_toStartOf="@+id/ib_carousel"
                     android:backgroundTint="@{layout == LayoutType.GRID ? @color/primary : @color/accent}"
                     />
 
             <!-- TODO: default bg (grey) when not selected, primary/accent when selected -->
             <ImageButton
-                    android:id="@+id/ib_list"
-                    android:src="@drawable/ic_list_black_24dp"
+                    android:id="@+id/ib_carousel"
+                    android:src="@drawable/ic_carousel_black_24dp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/ib_grid"
-                    android:contentDescription="@string/list_picture_description"
-                    android:backgroundTint="@{layout == LayoutType.LIST ? @color/primary : @color/accent}"
+                    android:contentDescription="@string/carousel_picture_description"
+                    android:backgroundTint="@{layout == LayoutType.CAROUSEL ? @color/primary : @color/accent}"
                     />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -60,7 +60,7 @@
                 tools:listitem="@layout/item_post"
                 tools:itemCount="10"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="300dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

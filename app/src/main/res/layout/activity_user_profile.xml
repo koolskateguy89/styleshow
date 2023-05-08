@@ -5,8 +5,6 @@
         tools:context=".ui.user_profile.UserProfileActivity"
         >
     <data>
-        <import type="android.view.View" />
-        <import type="com.styleshow.data.LoadingState" />
         <variable
                 name="profile"
                 type="com.styleshow.domain.model.UserProfile" />
@@ -29,7 +27,6 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="4dp"
                 />
@@ -43,48 +40,28 @@
                 app:layout_constraintTop_toBottomOf="@+id/username"
                 android:layout_marginTop="24dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintEnd_toEndOf="parent"
                 />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ViewSwitcher
+                android:id="@+id/view_switcher"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="350dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintVertical_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bio"
-                android:layout_marginTop="64dp">
+                >
 
-            <ProgressBar
-                    android:id="@+id/pb"
-                    style="?android:attr/progressBarStyleHorizontal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:indeterminate="true"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginEnd="32dp"
-                    android:visibility="@{viewModel.loadingState == LoadingState.LOADING ? View.VISIBLE : View.GONE}"
-                    />
+            <include layout="@layout/view_progress" />
 
             <com.styleshow.components.DynamicPostsView
                     android:id="@+id/view_dynamic_posts"
                     app:posts="@{viewModel.posts}"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintVertical_bias="0.001"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:visibility="@{viewModel.loadingState == LoadingState.SUCCESS_IDLE ? View.VISIBLE : View.GONE}"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ViewSwitcher>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
