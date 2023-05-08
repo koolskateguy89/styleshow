@@ -15,21 +15,11 @@
             android:layout_height="match_parent"
             >
 
-        <com.styleshow.components.PostAuthor
-                android:id="@+id/view_post_author"
-                app:author="@{post.author}"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
-
         <com.styleshow.components.SquareFrameLayout
                 android:id="@+id/image_wrapper"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                app:layout_constraintTop_toBottomOf="@+id/view_post_author"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 >
@@ -66,18 +56,14 @@
 
         </LinearLayout>
 
-        <TextView
-                android:id="@+id/tv_caption"
-                tools:text="Caption"
-                android:text="@{post.caption}"
+        <com.styleshow.components.PostCaptionView
+                app:caption="@{post.caption}"
+                app:author="@{post.author}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ll_actions"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="8dp"
-                android:textSize="20sp"
                 />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

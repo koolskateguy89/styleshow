@@ -15,4 +15,8 @@
             <enum name="list" value="1" />
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="PostCaptionView">
+        <attr name="caption" format="string" />
+    </declare-styleable>
 </resources>

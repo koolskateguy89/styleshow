@@ -23,7 +23,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.subjects.BehaviorSubject;
 import timber.log.Timber;
 
-// TODO!: use sharedpreferences to store layout type
+// TODO!: use sharedpreferences to store layout type for persistence
 
 /**
  * Custom view to display either a grid or list of posts.
@@ -135,7 +135,8 @@ public class DynamicPostsView extends ConstraintLayout {
     public void setPosts(@NonNull List<Post> posts) {
         this.posts.clear();
         this.posts.addAll(posts);
-        adapter.notifyDataSetChanged();
+        if (adapter != null)
+            adapter.notifyDataSetChanged();
     }
 
     public LayoutType getLayout() {
