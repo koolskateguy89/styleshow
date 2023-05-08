@@ -15,6 +15,11 @@
             android:supportsRtl="true"
             android:theme="@style/Theme.StyleShow"
             tools:targetApi="31">
+        <!-- New Post Activity -->
+        <activity
+                android:name=".ui.new_post.NewPostActivity"
+                android:exported="false" />
+
         <!-- Post Activity -->
         <activity
                 android:name=".ui.post.PostActivity"
@@ -33,8 +38,7 @@
         <!-- Main navigation Activity -->
         <activity
                 android:name=".ui.MainNavigationActivity"
-                android:exported="false"
-                android:label="@string/title_activity_main_navigation" />
+                android:exported="false" />
 
         <!-- Login Activity -->
         <activity

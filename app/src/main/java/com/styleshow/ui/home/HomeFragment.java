@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.styleshow.adapters.PostAdapter;
 import com.styleshow.databinding.FragmentHomeBinding;
 import com.styleshow.ui.messages.MessagesActivity;
+import com.styleshow.ui.new_post.NewPostActivity;
 import dagger.hilt.android.AndroidEntryPoint;
-import timber.log.Timber;
 
 /*
 TODO:
@@ -48,7 +48,8 @@ public class HomeFragment extends Fragment {
         });
 
         binding.fabNewPost.setOnClickListener(v -> {
-            Timber.i("TODO: create new post action");
+            Intent intent = new Intent(getActivity(), NewPostActivity.class);
+            startActivity(intent);
         });
 
         // Setup recycler view

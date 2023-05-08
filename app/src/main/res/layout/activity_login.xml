@@ -9,7 +9,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layout_email"
-            android:hint="@string/prompt_email"
+            android:hint="@string/hint_email"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="260dp"
@@ -31,7 +31,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layout_password"
-            android:hint="@string/prompt_password"
+            android:hint="@string/hint_password"
             app:endIconMode="password_toggle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
