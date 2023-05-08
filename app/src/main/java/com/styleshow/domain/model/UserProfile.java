@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 import androidx.annotation.NonNull;
 
+/**
+ * A model class representing a user's profile.
+ */
 public class UserProfile implements Serializable {
 
     /**

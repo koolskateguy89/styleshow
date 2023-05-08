@@ -15,4 +15,6 @@ public interface PostRepository {
     Task<List<Post>> getPostsByUser(@NonNull String uid);
 
     Task<List<Post>> getPostsByUser(@NonNull UserProfile author);
+
+    // TODO: create new post
 }

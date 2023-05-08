@@ -5,6 +5,9 @@ import java.util.Date;
 
 import androidx.annotation.NonNull;
 
+/**
+ * A model class representing a post.
+ */
 public class Post implements Serializable {
 
     /**
@@ -87,5 +90,9 @@ public class Post implements Serializable {
                 ", postedAt=" + postedAt +
                 ", liked=" + liked +
                 '}';
+    }
+
+    public Post withLiked(boolean liked) {
+        return new Post(id, author, imageUrl, caption, postedAt, liked);
     }
 }

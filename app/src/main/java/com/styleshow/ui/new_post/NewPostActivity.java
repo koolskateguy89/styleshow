@@ -6,6 +6,11 @@ import com.styleshow.common.AfterTextChangedTextWatcher;
 import com.styleshow.databinding.ActivityNewPostBinding;
 import dagger.hilt.android.AndroidEntryPoint;
 
+/*
+TODO
+- [ ] add image picker
+ */
+
 @AndroidEntryPoint
 public class NewPostActivity extends AppCompatActivity {
 
