@@ -46,7 +46,7 @@ dependencies {
     // Idk
     implementation 'androidx.appcompat:appcompat:1.6.1'
     // Material Components: https://github.com/material-components/material-components-android
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.google.android.material:material:1.9.0'
     // AndroidX Components
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.navigation:navigation-fragment:2.5.3'
@@ -60,7 +60,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     // Firebase
-    implementation platform('com.google.firebase:firebase-bom:31.5.0')
+    implementation platform('com.google.firebase:firebase-bom:32.0.0')
     implementation 'com.google.firebase:firebase-analytics'
     // https://firebase.google.com/docs/android/setup#available-libraries
     // Auth
@@ -69,9 +69,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore'
 
     // Dagger Hilt
-    implementation 'com.google.dagger:hilt-android:2.45'
+    implementation 'com.google.dagger:hilt-android:2.46'
     // Hilt compiler: https://stackoverflow.com/a/72105049
-    annotationProcessor 'com.google.dagger:hilt-compiler:2.45'
+    annotationProcessor 'com.google.dagger:hilt-compiler:2.46'
 
     // Picasso: https://github.com/square/picasso
     // image downloading & caching
