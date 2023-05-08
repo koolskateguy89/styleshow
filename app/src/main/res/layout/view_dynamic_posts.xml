@@ -29,7 +29,7 @@
             <!-- Grid -->
             <ImageButton
                     android:id="@+id/ib_grid"
-                    android:src="@drawable/ic_grid_black_24dp"
+                    app:srcCompat="@drawable/ic_grid_black_24dp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -42,7 +42,7 @@
             <!-- Carousel -->
             <ImageButton
                     android:id="@+id/ib_carousel"
-                    android:src="@drawable/ic_carousel_black_24dp"
+                    app:srcCompat="@drawable/ic_carousel_black_24dp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"

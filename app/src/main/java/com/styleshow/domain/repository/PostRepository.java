@@ -17,4 +17,5 @@ public interface PostRepository {
     Task<List<Post>> getPostsByUser(@NonNull UserProfile author);
 
     // TODO: create new post
+    // TODO: delete post with ID
 }
