@@ -12,7 +12,7 @@
     <declare-styleable name="DynamicPostsView">
         <attr name="layoutType" format="enum">
             <enum name="grid" value="0" />
-            <enum name="list" value="1" />
+            <enum name="carousel" value="1" />
         </attr>
     </declare-styleable>
 

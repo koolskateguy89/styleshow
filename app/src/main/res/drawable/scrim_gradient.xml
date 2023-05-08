@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+See https://m1.material.io/style/imagery.html#imagery-ui-integration (Text protection) for idea
+See https://stackoverflow.com/a/35115234 for implementation
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <gradient
+            android:angle="90"
+            android:centerY="0.3"
+            android:startColor="@color/scrim_gradient_start"
+            android:centerColor="@color/scrim_gradient_center"
+            android:endColor="@color/scrim_gradient_end"
+            android:type="linear" />
+
+</shape>

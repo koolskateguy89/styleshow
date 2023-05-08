@@ -17,6 +17,7 @@ import com.styleshow.R;
 import com.styleshow.adapters.PostCarouselAdapter;
 import com.styleshow.adapters.PostPreviewAdapter;
 import com.styleshow.common.Constants;
+import com.styleshow.common.Utils;
 import com.styleshow.databinding.ViewDynamicPostsBinding;
 import com.styleshow.domain.model.Post;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -96,6 +97,9 @@ public class DynamicPostsView extends ConstraintLayout {
 
         binding.rvPosts.setLayoutManager(
                 new GridLayoutManager(getContext(), Constants.NUMBER_OF_POST_PREVIEW_COLUMNS));
+
+        binding.ibGrid.getBackground().setTint(Utils.getPrimaryColor(getContext()));
+        binding.ibCarousel.getBackground().setTint(Utils.getSecondaryColor(getContext()));
     }
 
     private void showCarouselLayout() {
@@ -103,6 +107,9 @@ public class DynamicPostsView extends ConstraintLayout {
         binding.rvPosts.setAdapter(adapter);
 
         binding.rvPosts.setLayoutManager(new CarouselLayoutManager());
+
+        binding.ibCarousel.getBackground().setTint(Utils.getPrimaryColor(getContext()));
+        binding.ibGrid.getBackground().setTint(Utils.getSecondaryColor(getContext()));
     }
 
     /**

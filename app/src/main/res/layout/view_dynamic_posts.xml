@@ -16,6 +16,7 @@
             android:layout_height="wrap_content"
             >
 
+        <!-- Switcher -->
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_switcher"
                 android:layout_width="0dp"
@@ -25,7 +26,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 >
 
-            <!-- TODO: default bg when not selected, primary/accent when selected -->
+            <!-- Grid -->
             <ImageButton
                     android:id="@+id/ib_grid"
                     android:src="@drawable/ic_grid_black_24dp"
@@ -36,10 +37,9 @@
                     android:contentDescription="@string/grid_picture_description"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/ib_carousel"
-                    android:backgroundTint="@{layout == LayoutType.GRID ? @color/primary : @color/accent}"
                     />
 
-            <!-- TODO: default bg (grey) when not selected, primary/accent when selected -->
+            <!-- Carousel -->
             <ImageButton
                     android:id="@+id/ib_carousel"
                     android:src="@drawable/ic_carousel_black_24dp"
@@ -50,7 +50,6 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/ib_grid"
                     android:contentDescription="@string/carousel_picture_description"
-                    android:backgroundTint="@{layout == LayoutType.CAROUSEL ? @color/primary : @color/accent}"
                     />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

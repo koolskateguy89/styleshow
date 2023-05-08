@@ -10,7 +10,7 @@
     </data>
 
     <com.google.android.material.carousel.MaskableFrameLayout
-            android:id="@+id/carousel_item_container"
+            android:id="@+id/container"
             android:layout_width="300dp"
             android:layout_height="match_parent"
             android:layout_marginStart="4dp"
@@ -18,6 +18,7 @@
             android:foreground="?attr/selectableItemBackground"
             app:shapeAppearance="?attr/shapeAppearanceCornerExtraLarge"
             >
+
         <com.styleshow.components.PicassoImageView
                 android:id="@+id/iv_image"
                 android:src="@{post.imageUrl}"
@@ -26,6 +27,19 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 />
+
+        <TextView
+                android:id="@+id/tv_caption"
+                android:text="@{post.caption}"
+                tools:text="Caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:padding="20dp"
+                android:textColor="@android:color/white"
+                android:background="@drawable/scrim_gradient"
+                />
+
     </com.google.android.material.carousel.MaskableFrameLayout>
 
 </layout>
