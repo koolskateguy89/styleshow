@@ -9,6 +9,8 @@
                 type="com.styleshow.domain.model.Post" />
     </data>
 
+    <!-- TODO: wrap in material CardView -->
+
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
