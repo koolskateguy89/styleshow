@@ -34,7 +34,7 @@ public class ProfileFragment extends Fragment {
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(viewModel);
 
-        binding.signOut.setOnClickListener(v -> {
+        binding.btnSignOut.setOnClickListener(v -> {
             Timber.d("Signing out");
             viewModel.logout();
 
@@ -45,6 +45,22 @@ public class ProfileFragment extends Fragment {
 
             if (getActivity() != null)
                 getActivity().finish();
+        });
+
+        viewModel.getLoadingState().observe(getViewLifecycleOwner(), loadingState -> {
+            if (loadingState == null)
+                return;
+
+            switch (loadingState) {
+                case LOADING -> {
+                    // Display progress indicator
+                    binding.viewSwitcher.setDisplayedChild(1);
+                }
+                case SUCCESS_IDLE -> {
+                    // Display profile & posts
+                    binding.viewSwitcher.setDisplayedChild(0);
+                }
+            }
         });
 
         return binding.getRoot();

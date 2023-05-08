@@ -31,6 +31,10 @@ public class HomeViewModel extends ViewModel {
         return mPosts;
     }
 
+    public LiveData<LoadingState> getLoadingState() {
+        return mLoadingState;
+    }
+
     public void loadPosts() {
         Timber.i("Loading posts");
 

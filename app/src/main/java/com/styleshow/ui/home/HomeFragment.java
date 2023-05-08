@@ -59,6 +59,22 @@ public class HomeFragment extends Fragment {
 
         viewModel.getPosts().observe(getViewLifecycleOwner(), postAdapter::setPosts);
 
+        viewModel.getLoadingState().observe(getViewLifecycleOwner(), loadingState -> {
+            if (loadingState == null)
+                return;
+
+            switch (loadingState) {
+                case LOADING -> {
+                    // Display progress indicator
+                    binding.viewSwitcher.setDisplayedChild(1);
+                }
+                case SUCCESS_IDLE -> {
+                    // Display posts
+                    binding.viewSwitcher.setDisplayedChild(0);
+                }
+            }
+        });
+
         return root;
     }
 

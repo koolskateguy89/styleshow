@@ -5,98 +5,72 @@
         tools:context=".ui.profile.ProfileFragment"
         >
     <data>
-        <import type="android.view.View" />
-        <import type="com.styleshow.data.LoadingState" />
         <variable
                 name="viewModel"
                 type="com.styleshow.ui.profile.ProfileViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ViewSwitcher
+            android:id="@+id/view_switcher"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             >
 
-        <ProgressBar
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/progressBar"
-                android:indeterminate="true"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:visibility="@{viewModel.loadingState == LoadingState.LOADING ? View.VISIBLE : View.GONE}"
-                />
-
         <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/wrapper"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintVertical_bias="0.001"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:visibility="@{viewModel.loadingState == LoadingState.SUCCESS_IDLE ? View.VISIBLE : View.GONE}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 >
 
             <TextView
-                    android:id="@+id/username"
-                    tools:text="usernameeeeeeeeeeee"
+                    android:id="@+id/tv_username"
                     android:text="@{viewModel.userProfile.username}"
+                    tools:text="usernameeeeeeeeeeee"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginTop="4dp"
                     />
 
             <TextView
-                    android:id="@+id/bio"
-                    tools:text="biooooooooooooooo"
+                    android:id="@+id/tv_bio"
                     android:text="@{viewModel.userProfile.bio}"
+                    tools:text="biooooooooooooooo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/username"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_username"
                     android:layout_marginTop="24dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintEnd_toEndOf="parent"
                     />
 
             <Button
+                    android:id="@+id/btn_sign_out"
                     android:text="@string/action_sign_out"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/sign_out"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintHorizontal_bias="0.498"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/bio"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_bio"
                     android:layout_marginTop="8dp"
                     />
 
             <com.styleshow.components.DynamicPostsView
-                    android:id="@+id/view_dynamic_posts"
                     app:posts="@{viewModel.posts}"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintVertical_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/bio"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_bio"
                     android:layout_marginTop="64dp"
                     />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <include layout="@layout/view_progress" />
+
+    </ViewSwitcher>
 </layout>

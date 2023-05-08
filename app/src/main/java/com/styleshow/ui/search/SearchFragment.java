@@ -53,19 +53,6 @@ public class SearchFragment extends Fragment {
             }
         });
 
-        //binding.sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-        //    @Override
-        //    public boolean onQueryTextSubmit(String query) {
-        //        return false;
-        //    }
-        //
-        //    @Override
-        //    public boolean onQueryTextChange(String newText) {
-        //        viewModel.setQuery(newText);
-        //        return false;
-        //    }
-        //});
-
         // Setup RecyclerView
         binding.rvProfiles.setLayoutManager(new LinearLayoutManager(getContext()));
         var previewAdapter = new ProfilePreviewAdapter();
@@ -73,6 +60,22 @@ public class SearchFragment extends Fragment {
 
         viewModel.getFilteredProfiles()
                 .observe(getViewLifecycleOwner(), previewAdapter::setProfiles);
+
+        viewModel.getLoadingState().observe(getViewLifecycleOwner(), loadingState -> {
+            if (loadingState == null)
+                return;
+
+            switch (loadingState) {
+                case LOADING -> {
+                    // Display progress indicator
+                    binding.viewSwitcher.setDisplayedChild(1);
+                }
+                case SUCCESS_IDLE -> {
+                    // Display posts
+                    binding.viewSwitcher.setDisplayedChild(0);
+                }
+            }
+        });
 
         return binding.getRoot();
     }
