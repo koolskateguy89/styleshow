@@ -20,6 +20,7 @@ public class PostDto {
     public String uid;
     public String imageUrl;
     public String caption;
+    public String shoeUrl;
     public Timestamp postedAt;
     public List<String> likes;
 
@@ -35,6 +36,7 @@ public class PostDto {
                 author,
                 imageUrl,
                 caption,
+                shoeUrl,
                 postedAt.toDate(),
                 liked
         );
@@ -46,6 +48,7 @@ public class PostDto {
                 "id='" + id + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", caption='" + caption + '\'' +
+                ", shoeUrl='" + shoeUrl + '\'' +
                 ", postedAt=" + postedAt +
                 ", likes=" + likes +
                 '}';

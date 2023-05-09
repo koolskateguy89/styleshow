@@ -31,6 +31,11 @@ public class Post implements Serializable {
     private final @NonNull String caption;
 
     /**
+     * The URL of the shoe. To open in the browser.
+     */
+    private final @NonNull String shoeUrl;
+
+    /**
      * The timestamp when the post was created.
      */
     private final @NonNull Date postedAt;
@@ -45,6 +50,7 @@ public class Post implements Serializable {
             @NonNull UserProfile author,
             @NonNull String imageUrl,
             @NonNull String caption,
+            @NonNull String shoeUrl,
             @NonNull Date postedAt,
             boolean liked
     ) {
@@ -52,6 +58,7 @@ public class Post implements Serializable {
         this.author = author;
         this.imageUrl = imageUrl;
         this.caption = caption;
+        this.shoeUrl = shoeUrl;
         this.postedAt = postedAt;
         this.liked = liked;
     }
@@ -66,6 +73,10 @@ public class Post implements Serializable {
 
     public @NonNull String getImageUrl() {
         return imageUrl;
+    }
+
+    public @NonNull String getShoeUrl() {
+        return shoeUrl;
     }
 
     public @NonNull String getCaption() {
@@ -87,12 +98,13 @@ public class Post implements Serializable {
                 ", author=" + author +
                 ", imageUrl=" + imageUrl +
                 ", caption='" + caption + '\'' +
+                ", shoeUrl='" + shoeUrl + '\'' +
                 ", postedAt=" + postedAt +
                 ", liked=" + liked +
                 '}';
     }
 
     public Post withLiked(boolean liked) {
-        return new Post(id, author, imageUrl, caption, postedAt, liked);
+        return new Post(id, author, imageUrl, caption, shoeUrl, postedAt, liked);
     }
 }
