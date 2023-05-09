@@ -7,9 +7,13 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.widget.ImageButton;
+import androidx.annotation.AttrRes;
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.carousel.CarouselLayoutManager;
@@ -17,7 +21,7 @@ import com.styleshow.R;
 import com.styleshow.adapters.PostCarouselAdapter;
 import com.styleshow.adapters.PostPreviewAdapter;
 import com.styleshow.common.Constants;
-import com.styleshow.common.Utils;
+import com.styleshow.common.ThemeColor;
 import com.styleshow.databinding.ViewDynamicPostsBinding;
 import com.styleshow.domain.model.Post;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -56,6 +60,16 @@ public class DynamicPostsView extends ConstraintLayout {
     public DynamicPostsView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(attrs);
+    }
+
+    /**
+     * Adapter for the bg colour of the button.
+     */
+    @BindingAdapter("tint")
+    public static void tintAdaptor(@NonNull ImageButton view, @AttrRes int themeColorRes) {
+        Timber.d("tintAdaptor: %s, %s", view, themeColorRes);
+        @ColorInt int tint = ThemeColor.getThemeColor(view.getContext(), themeColorRes);
+        view.getDrawable().setTint(tint);
     }
 
     private void init(@Nullable AttributeSet attrs) {
@@ -97,9 +111,6 @@ public class DynamicPostsView extends ConstraintLayout {
 
         binding.rvPosts.setLayoutManager(
                 new GridLayoutManager(getContext(), Constants.NUMBER_OF_POST_PREVIEW_COLUMNS));
-
-        binding.ibGrid.getBackground().setTint(Utils.getPrimaryColor(getContext()));
-        binding.ibCarousel.getBackground().setTint(Utils.getSecondaryColor(getContext()));
     }
 
     private void showCarouselLayout() {
@@ -107,9 +118,6 @@ public class DynamicPostsView extends ConstraintLayout {
         binding.rvPosts.setAdapter(adapter);
 
         binding.rvPosts.setLayoutManager(new CarouselLayoutManager());
-
-        binding.ibCarousel.getBackground().setTint(Utils.getPrimaryColor(getContext()));
-        binding.ibGrid.getBackground().setTint(Utils.getSecondaryColor(getContext()));
     }
 
     /**
@@ -170,7 +178,7 @@ public class DynamicPostsView extends ConstraintLayout {
          *
          * @see PostCarouselAdapter
          * @see <a href="https://m3.material.io/components/carousel/overview">Material Carousel</a>
-         * @see https://github.com/material-components/material-components-android/blob/master/docs/components/Carousel.md
+         * @see <a href="https://github.com/material-components/material-components-android/blob/master/docs/components/Carousel.md">Carousel Documentation</a>
          */
         CAROUSEL,
         ;
