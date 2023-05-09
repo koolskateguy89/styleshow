@@ -39,50 +39,34 @@
                     />
         </com.styleshow.components.SquareFrameLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.constraintlayout.helper.widget.Flow
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/view_image_wrapper"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="8dp">
+                android:layout_marginStart="8dp"
+                app:constraint_referenced_ids="tv_username,tv_caption"
+                android:orientation="vertical"
+                app:flow_horizontalAlign="start"
+                />
 
-            <TextView
-                    android:id="@+id/tv_username"
-                    android:text="@{author.username}"
-                    tools:text="Username"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:textAppearance="?attr/textAppearanceTitleMedium"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintBottom_toTopOf="@+id/tv_caption"
-                    app:layout_constraintVertical_chainStyle="packed"
-                    />
-            <!--
-            android:textStyle="bold"
-            android:textSize="18sp"
+        <TextView
+                android:id="@+id/tv_username"
+                android:text="@{author.username}"
+                tools:text="Username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                />
 
-            android:textAppearance="?attr/textAppearanceBody1"
-            -->
-
-            <TextView
-                    android:id="@+id/tv_caption"
-                    android:text="@{caption}"
-                    tools:text="Caption"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_username"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+                android:id="@+id/tv_caption"
+                android:text="@{caption}"
+                tools:text="Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
