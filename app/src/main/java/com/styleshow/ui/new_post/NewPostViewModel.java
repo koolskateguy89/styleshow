@@ -14,7 +14,7 @@ public class NewPostViewModel extends ViewModel {
     private final PostRepository postRepository;
 
     private final MutableLiveData<NewPostFormState> formState = new MutableLiveData<>(
-            new NewPostFormState("caption", "")
+            new NewPostFormState("caption", "", "")
     );
 
     @Inject
@@ -22,7 +22,7 @@ public class NewPostViewModel extends ViewModel {
         this.postRepository = postRepository;
     }
 
-    // TODO?: rename to formDataChanged & accept imageUrl
+    // TODO?: rename to formDataChanged & accept imageUrl & shoeUrl
     public void captionChanged(String caption) {
         formState.setValue(formState.getValue().withCaption(caption));
     }

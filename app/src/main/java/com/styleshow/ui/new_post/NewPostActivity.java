@@ -10,6 +10,9 @@ import dagger.hilt.android.AndroidEntryPoint;
 /*
 TODO
 - [ ] add image picker
+
+shoeUrl "provider" - can we use like a web view intent? - get the url they wer eon
+could just do a tf tbf
  */
 
 @AndroidEntryPoint
@@ -32,5 +35,6 @@ public class NewPostActivity extends AppCompatActivity {
         }));
 
         // TODO: image picker
+        // TODO: etShoeUrl or something
     }
 }
