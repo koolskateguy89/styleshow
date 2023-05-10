@@ -38,6 +38,7 @@ public class PostDto {
                 caption,
                 shoeUrl,
                 postedAt.toDate(),
+                likes.size(),
                 liked
         );
     }

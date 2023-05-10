@@ -17,6 +17,8 @@ import timber.log.Timber;
 - comment button
  */
 
+// TODO: display number of likes
+
 @AndroidEntryPoint
 public class PostActivity extends AppCompatActivity {
 

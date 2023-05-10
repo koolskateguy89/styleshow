@@ -41,6 +41,11 @@ public class Post implements Serializable {
     private final @NonNull Date postedAt;
 
     /**
+     * The number of likes of the post.
+     */
+    private final int numLikes;
+
+    /**
      * Whether the current user has liked the post or not.
      */
     private final boolean liked;
@@ -52,6 +57,7 @@ public class Post implements Serializable {
             @NonNull String caption,
             @NonNull String shoeUrl,
             @NonNull Date postedAt,
+            int numLikes,
             boolean liked
     ) {
         this.id = id;
@@ -60,6 +66,7 @@ public class Post implements Serializable {
         this.caption = caption;
         this.shoeUrl = shoeUrl;
         this.postedAt = postedAt;
+        this.numLikes = numLikes;
         this.liked = liked;
     }
 
@@ -87,6 +94,10 @@ public class Post implements Serializable {
         return postedAt;
     }
 
+    public int getNumLikes() {
+        return numLikes;
+    }
+
     public boolean isLiked() {
         return liked;
     }
@@ -100,11 +111,12 @@ public class Post implements Serializable {
                 ", caption='" + caption + '\'' +
                 ", shoeUrl='" + shoeUrl + '\'' +
                 ", postedAt=" + postedAt +
+                ", numLikes=" + numLikes +
                 ", liked=" + liked +
                 '}';
     }
 
     public Post withLiked(boolean liked) {
-        return new Post(id, author, imageUrl, caption, shoeUrl, postedAt, liked);
+        return new Post(id, author, imageUrl, caption, shoeUrl, postedAt, numLikes, liked);
     }
 }

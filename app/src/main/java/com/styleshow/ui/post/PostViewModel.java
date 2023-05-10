@@ -16,7 +16,7 @@ public class PostViewModel extends ViewModel {
 
     private final PostRepository postRepository;
 
-    private MutableLiveData<Post> post = new MutableLiveData<>();
+    private final MutableLiveData<Post> post = new MutableLiveData<>();
 
     @Inject
     public PostViewModel(PostRepository postRepository) {
@@ -55,5 +55,6 @@ public class PostViewModel extends ViewModel {
 
     public void commentButtonClicked() {
         Timber.i("comment button clicked");
+        // TODO?: im not too sure what to do here
     }
 }
