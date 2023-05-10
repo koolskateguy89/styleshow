@@ -13,14 +13,14 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
-
         <com.styleshow.components.PicassoImageView
                 android:id="@+id/iv_image"
-                tools:src="@drawable/ic_launcher_background"
+                android:src="@drawable/img_placeholder"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:contentDescription="@string/post_picture_description" />
+                android:contentDescription="@string/post_picture_description"
+                />
     </com.styleshow.components.SquareFrameLayout>
 
     <com.google.android.material.textfield.TextInputLayout
