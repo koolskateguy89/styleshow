@@ -35,7 +35,9 @@ public class SearchViewModel extends ViewModel {
     @Inject
     public SearchViewModel(UserProfileRepository userProfileRepository) {
         this.userProfileRepository = userProfileRepository;
+    }
 
+    public void setup() {
         // Debounce the query subject
         var debouncedQueryObservable = querySubject
                 .debounce(Constants.SEARCH_QUERY_DEBOUNCE_MILLIS, TimeUnit.MILLISECONDS)

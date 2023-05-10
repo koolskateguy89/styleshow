@@ -29,6 +29,7 @@ public class SearchFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         viewModel = new ViewModelProvider(this).get(SearchViewModel.class);
+        viewModel.setup();
         viewModel.loadProfiles();
 
         binding = FragmentSearchBinding.inflate(inflater, container, false);
