@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.BindingAdapter;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.carousel.CarouselLayoutManager;
@@ -28,8 +30,6 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.subjects.BehaviorSubject;
 import timber.log.Timber;
 
-// TODO!: use sharedpreferences to store layout type for persistence
-
 /**
  * Custom view to display either a grid or carousel of posts.
  * It contains controls to switch between the two layouts.
@@ -39,7 +39,8 @@ public class DynamicPostsView extends ConstraintLayout {
     private final List<Post> posts = new ArrayList<>();
     private final BehaviorSubject<LayoutType> layoutSubject = BehaviorSubject.create();
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private ViewDynamicPostsBinding binding;
+    private ViewDynamicPostsBinding binding; // final
+    private SharedPreferences sharedPrefs; // final
     private RecyclerView.Adapter<?> adapter;
 
     public DynamicPostsView(@NonNull Context context) {
@@ -67,14 +68,15 @@ public class DynamicPostsView extends ConstraintLayout {
      */
     @BindingAdapter("tint")
     public static void tintAdaptor(@NonNull ImageButton view, @AttrRes int themeColorRes) {
-        Timber.d("tintAdaptor: %s, %s", view, themeColorRes);
         @ColorInt int tint = ThemeColor.getThemeColor(view.getContext(), themeColorRes);
         view.getDrawable().setTint(tint);
     }
 
     private void init(@Nullable AttributeSet attrs) {
+        var context = getContext();
+
         binding = ViewDynamicPostsBinding.inflate(
-                LayoutInflater.from(getContext()),
+                LayoutInflater.from(context),
                 this,
                 true
         );
@@ -82,22 +84,51 @@ public class DynamicPostsView extends ConstraintLayout {
         binding.ibGrid.setOnClickListener(v -> setLayout(LayoutType.GRID));
         binding.ibCarousel.setOnClickListener(v -> setLayout(LayoutType.CAROUSEL));
 
-        TypedArray a = getContext().getTheme().obtainStyledAttributes(
+        sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+        TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs,
                 R.styleable.DynamicPostsView,
                 0, 0);
 
+        LayoutType layout = null;
+
         try {
-            int layoutIndex = a.getInteger(R.styleable.DynamicPostsView_layoutType, 0);
-            layoutSubject.onNext(LayoutType.values()[layoutIndex]);
+            int layoutIndex = a.getInteger(R.styleable.DynamicPostsView_layoutType, -1);
+            boolean useLayoutFromSharedPrefs = layoutIndex == -1;
+
+            if (!useLayoutFromSharedPrefs)
+                layout = LayoutType.values()[layoutIndex];
         } finally {
             a.recycle();
         }
+
+        if (layout == null)
+            layout = getLayoutFromSharedPrefs();
+
+        layoutSubject.onNext(layout);
+    }
+
+    private @NonNull LayoutType getLayoutFromSharedPrefs() {
+        int index = sharedPrefs.getInt(
+                getContext().getString(R.string.dynamic_posts_view_sp_layout_key),
+                LayoutType.getDefault().ordinal()
+        );
+        return LayoutType.values()[index];
+    }
+
+    private void saveLayoutToSharedPrefs(LayoutType layout) {
+        String key = getContext().getString(R.string.dynamic_posts_view_sp_layout_key);
+
+        var editor = sharedPrefs.edit();
+        editor.putInt(key, layout.ordinal());
+        editor.apply();
     }
 
     private void onLayoutChanged(@NonNull LayoutType layout) {
         Timber.d("layout changed to %s", layout);
         binding.setLayout(layout);
+        saveLayoutToSharedPrefs(layout);
 
         switch (layout) {
             case GRID -> showGridLayout();
@@ -109,8 +140,9 @@ public class DynamicPostsView extends ConstraintLayout {
         adapter = new PostPreviewAdapter(posts);
         binding.rvPosts.setAdapter(adapter);
 
-        binding.rvPosts.setLayoutManager(
-                new GridLayoutManager(getContext(), Constants.NUMBER_OF_POST_PREVIEW_COLUMNS));
+        int numColumns = getContext().getResources().getInteger(R.integer.dynamic_posts_view_grid_columns);
+
+        binding.rvPosts.setLayoutManager(new GridLayoutManager(getContext(), numColumns));
     }
 
     private void showCarouselLayout() {
@@ -182,5 +214,9 @@ public class DynamicPostsView extends ConstraintLayout {
          */
         CAROUSEL,
         ;
+
+        public static LayoutType getDefault() {
+            return GRID;
+        }
     }
 }

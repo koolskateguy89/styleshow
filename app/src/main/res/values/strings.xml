@@ -38,6 +38,7 @@
     <!-- Dynamic posts view -->
     <string name="grid_picture_description">Grid</string>
     <string name="carousel_picture_description">Carousel</string>
+    <string name="dynamic_posts_view_sp_layout_key">layout</string>
 
     <!-- Post actions view -->
     <string name="like_picture_description">Like</string>
