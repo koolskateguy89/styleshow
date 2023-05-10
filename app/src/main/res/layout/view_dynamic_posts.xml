@@ -17,53 +17,44 @@
             android:layout_height="wrap_content"
             >
 
-        <!-- Switcher -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_switcher"
+        <!--
+        For some reason the bg colors get reversed in the ternary expression,
+        despite the layout variable being updated correctly.
+        Spent countless hours trying to figure out why, but couldn't.
+        Just negating the condition works, no point in wasting more time on this.
+        -->
+
+        <!-- Grid -->
+        <ImageButton
+                android:id="@+id/ib_grid"
+                app:srcCompat="@drawable/ic_grid_24dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/grid_picture_description"
+                android:backgroundTint="@{layout != LayoutType.GRID ? R.attr.colorPrimary : R.attr.colorButtonNormal}"
+                app:tint="@{layout == LayoutType.GRID ? R.attr.colorOnPrimary : R.attr.colorOnSurface}"
+                />
+
+        <!-- Carousel -->
+        <ImageButton
+                android:id="@+id/ib_carousel"
+                app:srcCompat="@drawable/ic_carousel_24dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/carousel_picture_description"
+                android:backgroundTint="@{layout != LayoutType.CAROUSEL ? R.attr.colorPrimary : R.attr.colorButtonNormal}"
+                app:tint="@{layout == LayoutType.CAROUSEL ? R.attr.colorOnPrimary : R.attr.colorOnSurface}" />
+
+        <!-- Switcher flow -->
+        <androidx.constraintlayout.helper.widget.Flow
+                android:id="@+id/flow_switcher"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
-
-            <!--
-            For some reason the bg colors get reversed in the ternary expression,
-            despite the layout variable being updated correctly.
-            Spent countless hours trying to figure out why, but couldn't.
-            Just negating the condition works, no point in wasting more time on this.
-            -->
-
-            <!-- Grid -->
-            <ImageButton
-                    android:id="@+id/ib_grid"
-                    app:srcCompat="@drawable/ic_grid_24dp"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/grid_picture_description"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/ib_carousel"
-                    android:backgroundTint="@{layout != LayoutType.GRID ? R.attr.colorPrimary : R.attr.colorButtonNormal}"
-                    app:tint="@{layout == LayoutType.GRID ? R.attr.colorOnPrimary : R.attr.colorOnSurface}"
-                    />
-
-            <!-- Carousel -->
-            <ImageButton
-                    android:id="@+id/ib_carousel"
-                    app:srcCompat="@drawable/ic_carousel_24dp"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/carousel_picture_description"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/ib_grid"
-                    android:backgroundTint="@{layout != LayoutType.CAROUSEL ? R.attr.colorPrimary : R.attr.colorButtonNormal}"
-                    app:tint="@{layout == LayoutType.CAROUSEL ? R.attr.colorOnPrimary : R.attr.colorOnSurface}"
-                    />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:constraint_referenced_ids="ib_grid,ib_carousel"
+                />
 
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_posts"
@@ -71,11 +62,18 @@
                 tools:itemCount="10"
                 android:layout_width="0dp"
                 android:layout_height="300dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cl_switcher"
                 />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <!-- Overall flow -->
+        <androidx.constraintlayout.helper.widget.Flow
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:constraint_referenced_ids="flow_switcher,rv_posts"
+                android:orientation="vertical"
+                />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
