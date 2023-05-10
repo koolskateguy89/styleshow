@@ -32,4 +32,14 @@ public class PostRepositoryImpl implements PostRepository {
     public Task<List<Post>> getPostsByUser(@NonNull UserProfile author) {
         return postDataSource.getPostsByUser(author);
     }
+
+    @Override
+    public Task<Void> likePost(@NonNull String postId) {
+        return postDataSource.likePost(postId);
+    }
+
+    @Override
+    public Task<Void> unlikePost(@NonNull String postId) {
+        return postDataSource.unlikePost(postId);
+    }
 }

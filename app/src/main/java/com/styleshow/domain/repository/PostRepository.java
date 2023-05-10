@@ -16,6 +16,10 @@ public interface PostRepository {
 
     Task<List<Post>> getPostsByUser(@NonNull UserProfile author);
 
+    Task<Void> likePost(@NonNull String postId);
+
+    Task<Void> unlikePost(@NonNull String postId);
+
     // TODO: create new post
     // TODO: delete post with ID
 }

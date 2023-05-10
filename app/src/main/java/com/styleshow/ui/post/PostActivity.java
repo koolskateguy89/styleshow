@@ -31,10 +31,11 @@ public class PostActivity extends AppCompatActivity {
         Timber.d("opened post: %s", post);
 
         viewModel = new ViewModelProvider(this).get(PostViewModel.class);
+        viewModel.setPost(post);
 
         binding = ActivityPostBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         binding.setLifecycleOwner(this);
-        binding.setPost(post);
+        binding.setViewModel(viewModel);
     }
 }
