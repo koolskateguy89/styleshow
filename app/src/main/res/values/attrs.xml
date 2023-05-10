@@ -19,4 +19,8 @@
     <declare-styleable name="PostCaptionView">
         <attr name="caption" format="string" />
     </declare-styleable>
+
+    <declare-styleable name="PostActionsView">
+        <attr name="liked" format="boolean" />
+    </declare-styleable>
 </resources>

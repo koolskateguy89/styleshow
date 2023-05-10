@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".components.PostActionsView"
+        >
+    <data>
+        <variable
+                name="liked"
+                type="boolean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+        <androidx.constraintlayout.helper.widget.Flow
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:constraint_referenced_ids="btn_like,btn_comment,btn_share"
+                />
+
+        <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_like"
+                style="?attr/materialIconButtonOutlinedStyle"
+                app:icon="@{liked ? @drawable/ic_heart_filled_24dp : @drawable/ic_heart_outlined_24dp}"
+                tools:icon="@drawable/ic_heart_outlined_24dp"
+                app:iconTint="@{liked ? @color/heart_red : @color/black, default=@color/black}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@{liked ? @string/unlike_picture_description : @string/like_picture_description}"
+                />
+
+        <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_comment"
+                style="?attr/materialIconButtonOutlinedStyle"
+                app:icon="@drawable/ic_comment_outlined_24dp"
+                app:iconTint="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/comment_picture_description"
+                />
+
+        <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_share"
+                style="?attr/materialIconButtonOutlinedStyle"
+                app:icon="@drawable/ic_ios_share_24dp"
+                app:iconTint="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/share_picture_description"
+                />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -19,6 +19,7 @@
             android:layout_margin="8dp"
             >
 
+        <!-- TODO: change to constraint layout with flow -->
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -42,27 +43,12 @@
                         />
             </com.styleshow.components.SquareFrameLayout>
 
-            <!-- Actions -->
-            <!-- TODO -->
-            <LinearLayout
+            <com.styleshow.components.PostActionsView
+                    app:liked="@{post.liked}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:orientation="horizontal">
-                <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:text="action_1"
-                        style="?attr/borderlessButtonStyle"
-                        />
-                <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="action_2"
-                        style="?attr/borderlessButtonStyle"
-                        />
-            </LinearLayout>
+                    />
 
             <com.google.android.material.divider.MaterialDivider
                     android:layout_width="match_parent"

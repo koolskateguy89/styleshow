@@ -6,4 +6,6 @@
     <color name="scrim_gradient_start">#CC000000</color>
     <color name="scrim_gradient_center">#66000000</color>
     <color name="scrim_gradient_end">#00000000</color>
+
+    <color name="heart_red">#F44336</color>
 </resources>
