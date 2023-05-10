@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="dynamic_posts_view_grid_columns">1000</integer>
+    <!-- TODO: more on larger screens -->
+    <integer name="dynamic_posts_view_grid_columns">3</integer>
 </resources>

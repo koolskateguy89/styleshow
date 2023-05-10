@@ -201,7 +201,6 @@ public class DynamicPostsView extends ConstraintLayout {
         /**
          * A grid layout.
          *
-         * @see Constants#NUMBER_OF_POST_PREVIEW_COLUMNS
          * @see PostPreviewAdapter
          */
         GRID,
