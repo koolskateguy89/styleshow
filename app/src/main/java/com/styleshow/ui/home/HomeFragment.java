@@ -21,7 +21,7 @@ import timber.log.Timber;
 TODO:
 - [x] show posts
 - [x] floating action button to create new post
-  - [ ] make it movable, see https://stackoverflow.com/a/46373935/
+  - [x] make it movable, see https://stackoverflow.com/a/46373935/
 - [ ] on long swipe up at the top, refresh posts
  */
 
