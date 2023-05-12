@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -15,7 +14,6 @@ import com.styleshow.common.AfterTextChangedTextWatcher;
 import com.styleshow.databinding.FragmentHomeBinding;
 import com.styleshow.ui.new_post.NewPostActivity;
 import dagger.hilt.android.AndroidEntryPoint;
-import timber.log.Timber;
 
 /*
 TODO:
@@ -78,20 +76,16 @@ public class HomeFragment extends Fragment {
         viewModel.getFilteredProfiles()
                 .observe(getViewLifecycleOwner(), profilePreviewAdapter::setProfiles);
 
-        // TODO: handle search loading state
+        // Handle profile loading state
         viewModel.getSearchLoadingState().observe(getViewLifecycleOwner(), loadingState -> {
             switch (loadingState) {
                 case LOADING -> {
                     // Display progress indicator
-                    //binding.viewSwitcher.setDisplayedChild(1);
-                    Toast.makeText(requireContext(), "Loading!", Toast.LENGTH_SHORT).show();
-                    Timber.i("Loading!");
+                    binding.viewSwitcherSearch.setDisplayedChild(1);
                 }
                 case SUCCESS_IDLE -> {
-                    // Display posts
-                    //binding.viewSwitcher.setDisplayedChild(0);
-                    Toast.makeText(requireContext(), "Done!", Toast.LENGTH_SHORT).show();
-                    Timber.i("Done!");
+                    // Display profiles
+                    binding.viewSwitcherSearch.setDisplayedChild(0);
                 }
             }
         });

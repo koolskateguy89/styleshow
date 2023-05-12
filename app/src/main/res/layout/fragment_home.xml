@@ -62,15 +62,24 @@
                     app:layout_anchor="@id/search_bar">
 
                 <!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
-                <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_profiles"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                <ViewSwitcher
+                        android:id="@+id/view_switcher_search"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginEnd="4dp"
-                        />
+                        android:layout_height="match_parent">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_profiles"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginEnd="4dp"
+                            />
+
+                    <include layout="@layout/view_progress" />
+
+                </ViewSwitcher>
 
             </com.google.android.material.search.SearchView>
 
