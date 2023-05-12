@@ -23,6 +23,8 @@
     <string name="hint_caption">Caption</string>
     <string name="action_post">Post</string>
     <string name="no_image_selected">You need to select an image!</string>
+    <string name="post_successful">Post published!</string>
+    <string name="post_failed">Error publishing post...</string>
 
     <!-- Profile fragment -->
     <string name="action_sign_out">Sign Out</string>

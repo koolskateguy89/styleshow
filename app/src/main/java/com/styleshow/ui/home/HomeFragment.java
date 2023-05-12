@@ -1,6 +1,5 @@
 package com.styleshow.ui.home;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +13,7 @@ import com.styleshow.common.AfterTextChangedTextWatcher;
 import com.styleshow.databinding.FragmentHomeBinding;
 import com.styleshow.ui.new_post.NewPostActivity;
 import dagger.hilt.android.AndroidEntryPoint;
+import timber.log.Timber;
 
 /*
 TODO:
@@ -23,10 +23,17 @@ TODO:
 - [ ] swipe-to-refresh, see https://developer.android.com/develop/ui/views/touch-and-input/swipe
  */
 
-// TODO: add loading skeleton, see https://medium.com/android-dev-nation/android-skeleton-loaders-1ae979a9d8c9
+// TODO: add loading skeleton, at least for search, possibly for posts too
+// maybe not cos the 3 top-level screens using the same loading is nice
+// see https://medium.com/android-dev-nation/android-skeleton-loaders-1ae979a9d8c9
 
 // TODO: pin search bar at top, not yet sure how to tho
 
+// TODO: only get like 10 images initially, then on reached bottom and swipe down, get more
+
+/**
+ * The home screen, showing posts and a search bar to find profiles.
+ */
 @AndroidEntryPoint
 public class HomeFragment extends Fragment {
 
@@ -44,10 +51,22 @@ public class HomeFragment extends Fragment {
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(viewModel);
 
-        // Create new post
+        var makeNewPost = registerForActivityResult(new NewPostActivity.NewPostContract(),
+                resultCode -> {
+                    switch (resultCode) {
+                        case NewPostActivity.RESULT_POST_CREATED -> {
+                            // reload posts
+                            viewModel.loadPosts();
+                        }
+                        case NewPostActivity.RESULT_POST_NOT_CREATED -> {
+                            // do nothing
+                            Timber.d("Post not created");
+                        }
+                    }
+                });
+
         binding.fabNewPost.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), NewPostActivity.class);
-            startActivity(intent);
+            makeNewPost.launch(null);
         });
 
         // Setup post recycler view

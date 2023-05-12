@@ -3,6 +3,7 @@ package com.styleshow.data.remote.dto;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.google.firebase.Timestamp;
 import com.styleshow.domain.model.Post;
 import com.styleshow.domain.model.UserProfile;
@@ -19,6 +20,7 @@ public class PostDto {
 
     public String uid;
     public String imageUrl;
+    public @Nullable String imageId;
     public String caption;
     public String shoeUrl;
     public Timestamp postedAt;
@@ -35,6 +37,7 @@ public class PostDto {
                 id,
                 author,
                 imageUrl,
+                imageId,
                 caption,
                 shoeUrl,
                 postedAt.toDate(),
@@ -47,7 +50,9 @@ public class PostDto {
     public @NonNull String toString() {
         return "PostDto{" +
                 "id='" + id + '\'' +
+                ", uid='" + uid + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
+                ", imageId='" + imageId + '\'' +
                 ", caption='" + caption + '\'' +
                 ", shoeUrl='" + shoeUrl + '\'' +
                 ", postedAt=" + postedAt +

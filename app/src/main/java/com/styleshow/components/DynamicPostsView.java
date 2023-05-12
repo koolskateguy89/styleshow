@@ -30,6 +30,12 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.subjects.BehaviorSubject;
 import timber.log.Timber;
 
+// TODO: change switcher to use Toggle Button:
+// https://github.com/material-components/material-components-android/blob/master/docs/components/Button.md#toggle-button
+
+// FIXME: for some reason the top row of the grid isn't sized correctly
+// i have no idea why
+
 /**
  * Custom view to display either a grid or carousel of posts.
  * It contains controls to switch between the two layouts.

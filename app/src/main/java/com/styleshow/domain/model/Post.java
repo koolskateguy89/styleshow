@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * A model class representing a post.
@@ -24,6 +25,12 @@ public class Post implements Serializable {
      * The URL of the post's image.
      */
     private final @NonNull String imageUrl;
+
+    /**
+     * The ID of the post's image. Is null if image is not stored in
+     * Cloud Storage. Is not null if image is stored in Cloud Storage.
+     */
+    private final @Nullable String imageId;
 
     /**
      * The caption of the post.
@@ -54,6 +61,7 @@ public class Post implements Serializable {
             @NonNull String id,
             @NonNull UserProfile author,
             @NonNull String imageUrl,
+            @Nullable String imageId,
             @NonNull String caption,
             @NonNull String shoeUrl,
             @NonNull Date postedAt,
@@ -63,6 +71,7 @@ public class Post implements Serializable {
         this.id = id;
         this.author = author;
         this.imageUrl = imageUrl;
+        this.imageId = imageId;
         this.caption = caption;
         this.shoeUrl = shoeUrl;
         this.postedAt = postedAt;
@@ -80,6 +89,10 @@ public class Post implements Serializable {
 
     public @NonNull String getImageUrl() {
         return imageUrl;
+    }
+
+    public @Nullable String getImageId() {
+        return imageId;
     }
 
     public @NonNull String getShoeUrl() {
@@ -108,6 +121,7 @@ public class Post implements Serializable {
                 "id='" + id + '\'' +
                 ", author=" + author +
                 ", imageUrl=" + imageUrl +
+                ", imageId=" + imageId +
                 ", caption='" + caption + '\'' +
                 ", shoeUrl='" + shoeUrl + '\'' +
                 ", postedAt=" + postedAt +
@@ -117,6 +131,6 @@ public class Post implements Serializable {
     }
 
     public Post withLiked(boolean liked) {
-        return new Post(id, author, imageUrl, caption, shoeUrl, postedAt, numLikes, liked);
+        return new Post(id, author, imageUrl, imageId, caption, shoeUrl, postedAt, numLikes, liked);
     }
 }

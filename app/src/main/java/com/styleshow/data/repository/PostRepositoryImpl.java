@@ -2,6 +2,7 @@ package com.styleshow.data.repository;
 
 import java.util.List;
 
+import android.net.Uri;
 import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -45,13 +46,15 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
-    public Task<Void> publishPost(
-            @NonNull String authorId,
-            @NonNull String imageUrl, // might have to change this to a URI or smthn, need to upload to storage
+    public Task<String> publishPost(
+            @NonNull Uri imageUri,
             @NonNull String caption,
-            @NonNull String shoeUrl
+            @NonNull String shoeUrl // might have to change this to a URI or smthn, need to upload to storage
     ) {
-        // TODO: postDataSource publishPost
-        return Tasks.whenAll();
+        return postDataSource.publishPost(
+                imageUri,
+                caption,
+                shoeUrl
+        );
     }
 }

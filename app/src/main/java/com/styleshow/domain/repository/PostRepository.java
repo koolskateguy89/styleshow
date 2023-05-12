@@ -2,6 +2,7 @@ package com.styleshow.domain.repository;
 
 import java.util.List;
 
+import android.net.Uri;
 import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.Task;
 import com.styleshow.domain.model.Post;
@@ -20,13 +21,11 @@ public interface PostRepository {
 
     Task<Void> unlikePost(@NonNull String postId);
 
-    // TODO: create new post
     // TODO: delete post with ID
 
-    Task<Void> publishPost(
-            @NonNull String authorId,
-            @NonNull String imageUrl, // might have to change this to a URI or smthn, need to upload to storage
+    Task<String> publishPost(
+            @NonNull Uri imageUri,
             @NonNull String caption,
-            @NonNull String shoeUrl
+            @NonNull String shoeUrl // might have to change this to a URI or smthn, need to upload to storage
     );
 }

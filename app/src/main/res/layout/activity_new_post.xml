@@ -24,7 +24,7 @@
                 app:layout_constraintEnd_toEndOf="parent">
             <com.styleshow.components.PicassoImageView
                     android:id="@+id/iv_image"
-                    android:src="@{viewModel.formState.imageUri}"
+                    android:src="@{viewModel.imageUri}"
                     app:placeholder="@drawable/img_placeholder"
                     tools:src="@drawable/img_placeholder"
                     android:layout_width="match_parent"
@@ -46,6 +46,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_caption"
+                    android:inputType="text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     />
@@ -53,8 +54,9 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
+                android:id="@+id/btn_post"
                 android:text="@string/action_post"
-                android:enabled="@{viewModel.formState.dataValid}"
+                android:enabled="@{viewModel.isDataValid}"
                 android:onClick="@{() -> viewModel.publishPost()}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

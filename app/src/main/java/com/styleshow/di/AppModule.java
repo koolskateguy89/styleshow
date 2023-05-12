@@ -4,6 +4,8 @@ import javax.inject.Singleton;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.styleshow.data.remote.LoginDataSource;
 import com.styleshow.data.remote.PostDataSource;
 import com.styleshow.data.remote.UserProfileDataSource;
@@ -36,6 +38,12 @@ public class AppModule {
 
     @Provides
     @Singleton
+    FirebaseStorage provideStorageReference() {
+        return FirebaseStorage.getInstance();
+    }
+
+    @Provides
+    @Singleton
     LoginDataSource provideLoginDataSource(FirebaseAuth auth) {
         return new LoginDataSource(auth);
     }
@@ -50,10 +58,11 @@ public class AppModule {
     @Singleton
     PostDataSource providePostDataSource(
             FirebaseFirestore firestore,
+            FirebaseStorage storage,
             LoginDataSource loginDataSource,
             UserProfileDataSource userProfileDataSource
     ) {
-        return new PostDataSource(firestore, loginDataSource, userProfileDataSource);
+        return new PostDataSource(firestore, storage, loginDataSource, userProfileDataSource);
     }
 
     @Provides

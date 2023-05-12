@@ -10,6 +10,19 @@
     <!-- Internet permission -->
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- Required only if your app needs to access images or photos
+    that other apps created. -->
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+            android:maxSdkVersion="32" />
+
+    <!--
+    TODO: have a look at handling intent CREATE_SOCIAL_MEDIA_POSTING, see
+    https://developer.android.com/reference/app-actions/built-in-intents/social/create-social-media-posting#shortcutsxml
+    it's really complicated tho tbh and idt it geta any marks in spec
+    -->
+
     <application
             android:name=".StyleShowApp"
             android:allowBackup="true"
@@ -34,11 +47,6 @@
         <!-- User profile Activity -->
         <activity
                 android:name=".ui.user_profile.UserProfileActivity"
-                android:exported="false" />
-
-        <!-- Messages Activity -->
-        <activity
-                android:name=".ui.messages.MessagesActivity"
                 android:exported="false" />
 
         <!-- Main navigation Activity -->

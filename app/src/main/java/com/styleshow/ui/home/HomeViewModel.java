@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -89,6 +90,7 @@ public class HomeViewModel extends ViewModel {
         return mSearchLoadingState;
     }
 
+    @MainThread
     public void loadPosts() {
         Timber.i("Loading posts");
 
@@ -98,7 +100,6 @@ public class HomeViewModel extends ViewModel {
                 .addOnSuccessListener(posts -> {
                     mPosts.setValue(posts);
                     mPostLoadingState.setValue(LoadingState.SUCCESS_IDLE);
-                    Timber.d("Loaded %d posts", posts.size());
                 })
                 .addOnFailureListener(e -> {
                     mPostLoadingState.setValue(LoadingState.ERROR);
