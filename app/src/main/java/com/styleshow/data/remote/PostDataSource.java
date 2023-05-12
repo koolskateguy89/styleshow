@@ -1,9 +1,9 @@
 package com.styleshow.data.remote;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -13,7 +13,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.styleshow.data.remote.dto.PostDto;
 import com.styleshow.domain.model.Post;
 import com.styleshow.domain.model.UserProfile;
@@ -59,16 +61,13 @@ public class PostDataSource {
 
                     var profiles = task.getResult();
 
-                    Map<String, UserProfile> authors = new HashMap<>();
-
-                    for (var profile : profiles) {
-                        authors.put(profile.getUid(), profile);
-                    }
-
-                    return authors;
+                    return profiles.stream()
+                            .collect(Collectors.toMap(UserProfile::getUid, Function.identity()));
                 });
 
-        var postDtosTask = mPosts.get()
+        var postDtosTask = mPosts
+                .orderBy("postedAt", Query.Direction.DESCENDING) // oldest first
+                .get()
                 .continueWith(task -> {
                     if (!task.isSuccessful())
                         return null;
@@ -108,6 +107,7 @@ public class PostDataSource {
         String currentUserId = mLoginDataSource.getCurrentUser().getUid();
 
         return mPosts.whereEqualTo("uid", author.getUid())
+                .orderBy("postedAt", Query.Direction.DESCENDING) // oldest first
                 .get()
                 .continueWith(task -> {
                     if (!task.isSuccessful())
@@ -141,6 +141,32 @@ public class PostDataSource {
                     var authorProfile = profileTask.getResult();
 
                     return getPostsByUser(authorProfile);
+                });
+    }
+
+    public Task<Void> likePost(@NonNull String postId) {
+        String currentUserId = mLoginDataSource.getCurrentUser().getUid();
+
+        return mPosts.document(postId)
+                .update("likes", FieldValue.arrayUnion(currentUserId))
+                .addOnSuccessListener(aVoid -> {
+                    Timber.d("liked post %s", postId);
+                })
+                .addOnFailureListener(e -> {
+                    Timber.w(e, "failed to like post %s", postId);
+                });
+    }
+
+    public Task<Void> unlikePost(@NonNull String postId) {
+        String currentUserId = mLoginDataSource.getCurrentUser().getUid();
+
+        return mPosts.document(postId)
+                .update("likes", FieldValue.arrayRemove(currentUserId))
+                .addOnSuccessListener(aVoid -> {
+                    Timber.d("unliked post %s", postId);
+                })
+                .addOnFailureListener(e -> {
+                    Timber.w(e, "failed to unlike post %s", postId);
                 });
     }
 }

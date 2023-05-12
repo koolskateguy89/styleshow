@@ -22,4 +22,11 @@ public interface PostRepository {
 
     // TODO: create new post
     // TODO: delete post with ID
+
+    Task<Void> publishPost(
+            @NonNull String authorId,
+            @NonNull String imageUrl, // might have to change this to a URI or smthn, need to upload to storage
+            @NonNull String caption,
+            @NonNull String shoeUrl
+    );
 }

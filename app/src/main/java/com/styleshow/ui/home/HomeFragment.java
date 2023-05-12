@@ -20,8 +20,12 @@ TODO:
 - [x] show posts
 - [x] floating action button to create new post
   - [x] make it movable, see https://stackoverflow.com/a/46373935/
-- [ ] on long swipe up at the top, refresh posts
+- [ ] swipe-to-refresh, see https://developer.android.com/develop/ui/views/touch-and-input/swipe
  */
+
+// TODO: add loading skeleton, see https://medium.com/android-dev-nation/android-skeleton-loaders-1ae979a9d8c9
+
+// TODO: pin search bar at top, not yet sure how to tho
 
 @AndroidEntryPoint
 public class HomeFragment extends Fragment {

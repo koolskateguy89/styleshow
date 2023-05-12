@@ -4,6 +4,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.styleshow.data.remote.PostDataSource;
 import com.styleshow.domain.model.Post;
 import com.styleshow.domain.model.UserProfile;
@@ -41,5 +42,16 @@ public class PostRepositoryImpl implements PostRepository {
     @Override
     public Task<Void> unlikePost(@NonNull String postId) {
         return postDataSource.unlikePost(postId);
+    }
+
+    @Override
+    public Task<Void> publishPost(
+            @NonNull String authorId,
+            @NonNull String imageUrl, // might have to change this to a URI or smthn, need to upload to storage
+            @NonNull String caption,
+            @NonNull String shoeUrl
+    ) {
+        // TODO: postDataSource publishPost
+        return Tasks.whenAll();
     }
 }
