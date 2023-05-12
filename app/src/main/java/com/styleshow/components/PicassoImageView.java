@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.net.Uri;
 import android.util.AttributeSet;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.squareup.picasso.Picasso;
@@ -13,7 +14,6 @@ import com.styleshow.common.NoOpTransformation;
 import jp.wasabeef.transformers.picasso.CropCircleTransformation;
 import jp.wasabeef.transformers.picasso.CropSquareTransformation;
 import jp.wasabeef.transformers.picasso.GrayscaleTransformation;
-import timber.log.Timber;
 
 /**
  * A custom ImageView that uses Picasso to load images.
@@ -21,14 +21,32 @@ import timber.log.Timber;
  * It also supports applying pre-defined transformations to the image,
  * see {@link TransformationEnum}.
  *
+ * @apiNote Do NOT instantiate this in code, use it in XML only.
  * @see <a href="https://github.com/square/picasso">Picasso</a>
  */
 public class PicassoImageView extends androidx.appcompat.widget.AppCompatImageView {
 
     /**
-     * The transformation to apply to the image.
+     * Whether to display a placeholder image while the image is loading.
+     *
+     * @see com.squareup.picasso.RequestCreator#noPlaceholder()
      */
-    private @NonNull Transformation transformation = new NoOpTransformation();
+    private boolean noPlaceholder;
+
+    /**
+     * The placeholder image to display while the image is loading.
+     *
+     * @see com.squareup.picasso.RequestCreator#placeholder(int)
+     */
+    @DrawableRes
+    private int placeholderResId;
+
+    /**
+     * The transformation to apply to the image.
+     *
+     * @see com.squareup.picasso.RequestCreator#transform(Transformation)
+     */
+    private @NonNull Transformation transformation;
 
     public PicassoImageView(@NonNull Context context) {
         super(context);
@@ -55,13 +73,11 @@ public class PicassoImageView extends androidx.appcompat.widget.AppCompatImageVi
                 0, 0);
 
         try {
-            int transformationEnumIndex = a.getInteger(R.styleable.PicassoImageView_transform, 0);
-            Timber.d("transformationEnumIndex: %s", transformationEnumIndex);
+            this.noPlaceholder = a.getBoolean(R.styleable.PicassoImageView_noPlaceholder, false);
+            this.placeholderResId = a.getResourceId(R.styleable.PicassoImageView_placeholder, R.drawable.img_placeholder);
 
-            var transformationEnum = TransformationEnum.values()[transformationEnumIndex];
-            Timber.d("transformationEnum: %s", transformationEnum);
-
-            this.transformation = transformationEnum.transformation;
+            int transformationIndex = a.getInteger(R.styleable.PicassoImageView_transform, TransformationEnum.getDefault().ordinal());
+            this.transformation = TransformationEnum.values()[transformationIndex].transformation;
         } finally {
             a.recycle();
         }
@@ -74,10 +90,17 @@ public class PicassoImageView extends androidx.appcompat.widget.AppCompatImageVi
      */
     @Override
     public void setImageURI(@Nullable Uri uri) {
-        Picasso.get()
+        var requestCreator = Picasso.get()
                 .load(uri)
-                .transform(transformation)
-                .into(this);
+                .transform(transformation);
+
+        if (noPlaceholder) {
+            requestCreator = requestCreator.noPlaceholder();
+        } else {
+            requestCreator = requestCreator.placeholder(placeholderResId);
+        }
+
+        requestCreator.into(this);
     }
 
     /**
@@ -119,6 +142,10 @@ public class PicassoImageView extends androidx.appcompat.widget.AppCompatImageVi
 
         TransformationEnum(@NonNull Transformation transformation) {
             this.transformation = transformation;
+        }
+
+        public static @NonNull TransformationEnum getDefault() {
+            return NONE;
         }
     }
 }
