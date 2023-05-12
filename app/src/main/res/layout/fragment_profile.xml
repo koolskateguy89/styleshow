@@ -58,6 +58,7 @@
                     />
 
             <com.styleshow.components.DynamicPostsView
+                    android:id="@+id/view_dynamic_posts"
                     app:posts="@{viewModel.posts}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

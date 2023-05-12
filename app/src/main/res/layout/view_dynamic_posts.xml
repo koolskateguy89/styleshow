@@ -43,7 +43,8 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/carousel_picture_description"
                 android:backgroundTint="@{layout != LayoutType.CAROUSEL ? R.attr.colorPrimary : R.attr.colorButtonNormal}"
-                app:tint="@{layout == LayoutType.CAROUSEL ? R.attr.colorOnPrimary : R.attr.colorOnSurface}" />
+                app:tint="@{layout == LayoutType.CAROUSEL ? R.attr.colorOnPrimary : R.attr.colorOnSurface}"
+                />
 
         <!-- Switcher flow -->
         <androidx.constraintlayout.helper.widget.Flow

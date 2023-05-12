@@ -4,19 +4,23 @@ import static com.google.android.material.animation.AnimationUtils.lerp;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.IntConsumer;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.styleshow.common.Constants;
+import com.styleshow.common.ClickableRecyclerAdapter;
 import com.styleshow.databinding.ItemPostCarouselBinding;
 import com.styleshow.domain.model.Post;
-import com.styleshow.ui.post.PostActivity;
 
-public class PostCarouselAdapter extends RecyclerView.Adapter<PostCarouselAdapter.PostHolder> {
+/**
+ * The adapter for the carousel of post previews.
+ *
+ * @see com.styleshow.R.layout#item_post_carousel
+ */
+public class PostCarouselAdapter extends ClickableRecyclerAdapter<PostCarouselAdapter.PostHolder, Post> {
 
     private final List<Post> posts;
 
@@ -33,10 +37,13 @@ public class PostCarouselAdapter extends RecyclerView.Adapter<PostCarouselAdapte
      *
      * @note Do not call {@link #setPosts(List)} if using this constructor with an immutable list.
      */
-    public PostCarouselAdapter(List<Post> posts) {
+    public PostCarouselAdapter(@NonNull List<Post> posts) {
         this.posts = posts;
     }
 
+    /**
+     * Mutate the internal posts lists and notify of a data set change.
+     */
     public void setPosts(List<Post> posts) {
         this.posts.clear();
         this.posts.addAll(posts);
@@ -52,7 +59,9 @@ public class PostCarouselAdapter extends RecyclerView.Adapter<PostCarouselAdapte
                 false
         );
 
-        return new PostHolder(binding);
+        return new PostHolder(binding, index -> {
+            onItemClick(posts.get(index));
+        });
     }
 
     @Override
@@ -67,24 +76,23 @@ public class PostCarouselAdapter extends RecyclerView.Adapter<PostCarouselAdapte
     }
 
     static class PostHolder extends RecyclerView.ViewHolder {
-        final ItemPostCarouselBinding binding;
 
-        public PostHolder(ItemPostCarouselBinding binding) {
+        final @NonNull ItemPostCarouselBinding binding;
+
+        public PostHolder(@NonNull ItemPostCarouselBinding binding, @NonNull IntConsumer onItemClick) {
             super(binding.getRoot());
             this.binding = binding;
+
+            this.itemView.setOnClickListener(v -> {
+                onItemClick.accept(getLayoutPosition());
+            });
         }
 
         @SuppressLint("RestrictedApi")
-        public void bind(Post post) {
+        public void bind(@NonNull Post post) {
             binding.setPost(post);
 
-            // Open post on click
-            binding.ivImage.setOnClickListener(v -> {
-                var intent = new Intent(v.getContext(), PostActivity.class);
-                intent.putExtra(Constants.POST_NAME, post);
-                v.getContext().startActivity(intent);
-            });
-
+            // Update caption position when the carousel item is moved
             // https://github.com/material-components/material-components-android/blob/master/docs/components/Carousel.md#reacting-to-changes-in-item-mask-size
             binding.container.setOnMaskChangedListener(maskRect -> {
                 // Any custom motion to run when mask size changes

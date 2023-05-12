@@ -17,12 +17,12 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.BindingAdapter;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.carousel.CarouselLayoutManager;
 import com.styleshow.R;
 import com.styleshow.adapters.PostCarouselAdapter;
 import com.styleshow.adapters.PostPreviewAdapter;
-import com.styleshow.common.Constants;
+import com.styleshow.common.ClickableRecyclerAdapter;
+import com.styleshow.common.ItemClickListener;
 import com.styleshow.common.ThemeColor;
 import com.styleshow.databinding.ViewDynamicPostsBinding;
 import com.styleshow.domain.model.Post;
@@ -33,6 +33,8 @@ import timber.log.Timber;
 /**
  * Custom view to display either a grid or carousel of posts.
  * It contains controls to switch between the two layouts.
+ * <p>
+ * Using SharedPreferences to store the layout type.
  */
 public class DynamicPostsView extends ConstraintLayout {
 
@@ -41,7 +43,8 @@ public class DynamicPostsView extends ConstraintLayout {
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
     private ViewDynamicPostsBinding binding; // final
     private SharedPreferences sharedPrefs; // final
-    private RecyclerView.Adapter<?> adapter;
+    private ClickableRecyclerAdapter<?, Post> adapter;
+    private @Nullable ItemClickListener<Post> itemClickListener;
 
     public DynamicPostsView(@NonNull Context context) {
         super(context);
@@ -138,6 +141,7 @@ public class DynamicPostsView extends ConstraintLayout {
 
     private void showGridLayout() {
         adapter = new PostPreviewAdapter(posts);
+        adapter.setItemClickListener(itemClickListener);
         binding.rvPosts.setAdapter(adapter);
 
         int numColumns = getContext().getResources().getInteger(R.integer.dynamic_posts_view_grid_columns);
@@ -147,6 +151,7 @@ public class DynamicPostsView extends ConstraintLayout {
 
     private void showCarouselLayout() {
         adapter = new PostCarouselAdapter(posts);
+        adapter.setItemClickListener(itemClickListener);
         binding.rvPosts.setAdapter(adapter);
 
         binding.rvPosts.setLayoutManager(new CarouselLayoutManager());
@@ -186,12 +191,18 @@ public class DynamicPostsView extends ConstraintLayout {
             adapter.notifyDataSetChanged();
     }
 
-    public LayoutType getLayout() {
+    public @NonNull LayoutType getLayout() {
         return layoutSubject.getValue();
     }
 
     public void setLayout(@NonNull LayoutType layout) {
         layoutSubject.onNext(layout);
+    }
+
+    public void setItemClickListener(@Nullable ItemClickListener<Post> itemClickListener) {
+        this.itemClickListener = itemClickListener;
+        if (adapter != null)
+            adapter.setItemClickListener(itemClickListener);
     }
 
     /**

@@ -47,11 +47,12 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     // Material Components: https://github.com/material-components/material-components-android
     implementation 'com.google.android.material:material:1.9.0'
-    // AndroidX Components
+    // AndroidX libraries
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.navigation:navigation-fragment:2.5.3'
     implementation 'androidx.navigation:navigation-ui:2.5.3'
     implementation 'androidx.activity:activity:1.7.1'
+    implementation "androidx.preference:preference:1.2.0"
     // LiveData
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
     // ViewModel
@@ -68,6 +69,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth'
     // Cloud Firestore
     implementation 'com.google.firebase:firebase-firestore'
+    // Cloud Storage
+    implementation 'com.google.firebase:firebase-storage'
 
     // Dagger Hilt
     implementation 'com.google.dagger:hilt-android:2.46'

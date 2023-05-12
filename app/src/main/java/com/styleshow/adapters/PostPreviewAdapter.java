@@ -2,18 +2,22 @@ package com.styleshow.adapters;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.IntConsumer;
 
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.styleshow.common.Constants;
+import com.styleshow.common.ClickableRecyclerAdapter;
 import com.styleshow.databinding.ItemPostPreviewBinding;
 import com.styleshow.domain.model.Post;
-import com.styleshow.ui.post.PostActivity;
 
-public class PostPreviewAdapter extends RecyclerView.Adapter<PostPreviewAdapter.PostPreviewHolder> {
+/**
+ * The adapter for the grid of post previews.
+ *
+ * @see com.styleshow.R.layout#item_post_preview
+ */
+public class PostPreviewAdapter extends ClickableRecyclerAdapter<PostPreviewAdapter.PostPreviewHolder, Post> {
 
     private final List<Post> posts;
 
@@ -49,13 +53,18 @@ public class PostPreviewAdapter extends RecyclerView.Adapter<PostPreviewAdapter.
                 false
         );
 
-        return new PostPreviewHolder(postPreviewBinding);
+        return new PostPreviewHolder(postPreviewBinding, index -> {
+            onItemClick(posts.get(index));
+        });
     }
 
     @Override
     public void onBindViewHolder(@NonNull PostPreviewHolder holder, int position) {
         Post post = posts.get(position);
         holder.bind(post);
+        holder.itemView.setOnClickListener(v -> {
+
+        });
     }
 
     @Override
@@ -64,21 +73,20 @@ public class PostPreviewAdapter extends RecyclerView.Adapter<PostPreviewAdapter.
     }
 
     static class PostPreviewHolder extends RecyclerView.ViewHolder {
-        final ItemPostPreviewBinding binding;
 
-        public PostPreviewHolder(ItemPostPreviewBinding binding) {
+        final @NonNull ItemPostPreviewBinding binding;
+
+        public PostPreviewHolder(@NonNull ItemPostPreviewBinding binding, @NonNull IntConsumer onItemClick) {
             super(binding.getRoot());
             this.binding = binding;
+
+            this.binding.ivImage.setOnClickListener(v -> {
+                onItemClick.accept(getLayoutPosition());
+            });
         }
 
         public void bind(Post post) {
             binding.setPost(post);
-
-            binding.ivImage.setOnClickListener(v -> {
-                var intent = new Intent(v.getContext(), PostActivity.class);
-                intent.putExtra(Constants.POST_NAME, post);
-                v.getContext().startActivity(intent);
-            });
         }
     }
 }

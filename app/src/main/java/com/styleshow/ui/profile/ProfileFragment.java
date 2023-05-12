@@ -10,8 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.styleshow.R;
+import com.styleshow.common.Constants;
 import com.styleshow.databinding.FragmentProfileBinding;
 import com.styleshow.ui.login.LoginActivity;
+import com.styleshow.ui.post.PostActivity;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
@@ -22,12 +24,12 @@ import timber.log.Timber;
 public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;
+    private ProfileViewModel viewModel;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        ProfileViewModel viewModel =
-                new ViewModelProvider(this).get(ProfileViewModel.class);
+        viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
         viewModel.loadProfile();
 
         binding = FragmentProfileBinding.inflate(inflater, container, false);
@@ -63,6 +65,13 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        // Open post (fullscreen) on click
+        binding.viewDynamicPosts.setItemClickListener(post -> {
+            var intent = new Intent(getContext(), PostActivity.class);
+            intent.putExtra(Constants.POST_NAME, post);
+            startActivity(intent);
+        });
+
         return binding.getRoot();
     }
 
@@ -70,5 +79,6 @@ public class ProfileFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+        viewModel = null;
     }
 }

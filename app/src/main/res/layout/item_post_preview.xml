@@ -11,9 +11,7 @@
 
     <com.styleshow.components.SquareFrameLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            >
-
+            android:layout_height="wrap_content">
         <com.styleshow.components.PicassoImageView
                 android:id="@+id/iv_image"
                 android:src="@{post.imageUrl}"
@@ -23,7 +21,5 @@
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/post_picture_description"
                 />
-
     </com.styleshow.components.SquareFrameLayout>
-
 </layout>

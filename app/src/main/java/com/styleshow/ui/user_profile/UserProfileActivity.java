@@ -1,11 +1,13 @@
 package com.styleshow.ui.user_profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.styleshow.common.Constants;
 import com.styleshow.databinding.ActivityUserProfileBinding;
 import com.styleshow.domain.model.UserProfile;
+import com.styleshow.ui.post.PostActivity;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
@@ -55,6 +57,13 @@ public class UserProfileActivity extends AppCompatActivity {
                     binding.viewSwitcher.setDisplayedChild(1);
                 }
             }
+        });
+
+        // Open post (fullscreen) on click
+        binding.viewDynamicPosts.setItemClickListener(post -> {
+            var intent = new Intent(this, PostActivity.class);
+            intent.putExtra(Constants.POST_NAME, post);
+            startActivity(intent);
         });
     }
 }
