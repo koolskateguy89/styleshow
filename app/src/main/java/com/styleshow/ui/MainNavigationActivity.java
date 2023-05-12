@@ -9,6 +9,8 @@ import com.styleshow.R;
 import com.styleshow.databinding.ActivityMainNavigationBinding;
 import dagger.hilt.android.AndroidEntryPoint;
 
+// TODO?: try and store last tab in shared prefs
+
 @AndroidEntryPoint
 public class MainNavigationActivity extends AppCompatActivity {
 

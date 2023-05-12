@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         boolean loggedIn = loginRepository.isLoggedIn();
-        Timber.d("!loggedIn = %s", loggedIn);
 
         Intent intent;
         if (loggedIn) {

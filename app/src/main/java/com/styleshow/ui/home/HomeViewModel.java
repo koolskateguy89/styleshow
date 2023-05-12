@@ -35,7 +35,8 @@ public class HomeViewModel extends ViewModel {
             new MutableLiveData<>(LoadingState.IDLE);
 
     private final BehaviorSubject<String> querySubject = BehaviorSubject.createDefault("");
-    private final MutableLiveData<List<UserProfile>> mFilteredProfiles = new MutableLiveData<>(List.of());
+    private final MutableLiveData<List<UserProfile>> mFilteredProfiles =
+            new MutableLiveData<>(List.of());
     private final MutableLiveData<LoadingState> mSearchLoadingState =
             new MutableLiveData<>(LoadingState.IDLE);
 
@@ -48,6 +49,7 @@ public class HomeViewModel extends ViewModel {
     public void setup() {
         // Debounce the query subject
         var filteredProfilesDisposable = querySubject
+                .distinctUntilChanged() // idk if there's any point in this
                 .debounce(Constants.SEARCH_QUERY_DEBOUNCE_MILLIS, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.single())
                 .observeOn(AndroidSchedulers.mainThread())
