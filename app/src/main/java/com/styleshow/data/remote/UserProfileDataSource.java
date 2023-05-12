@@ -76,4 +76,33 @@ public class UserProfileDataSource {
                 })
                 ;
     }
+
+    /**
+     * Firestore doesn't support full text search, so we have to do a prefix search
+     *
+     * @see <a href="https://stackoverflow.com/q/46568142">https://stackoverflow.com/q/46568142</a>
+     */
+    public Task<List<UserProfile>> searchProfiles(@NonNull String query) {
+        return mProfiles
+                .orderBy("username")
+                .limit(10)
+                .whereGreaterThanOrEqualTo("username", query)
+                .whereLessThanOrEqualTo("username", query + "\uf8ff")
+                .get()
+                .continueWith(task -> {
+                    if (!task.isSuccessful())
+                        return null;
+
+                    var documents = task.getResult().getDocuments();
+
+                    return documents.stream()
+                            .map(UserProfileDataSource::getUserProfileFromDocument)
+                            .filter(Objects::nonNull)
+                            .collect(Collectors.toList());
+                })
+                .addOnFailureListener(e -> {
+                    Timber.w(e, "failed to search profiles for query '%s'", query);
+                })
+                ;
+    }
 }

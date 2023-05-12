@@ -16,10 +16,24 @@
             android:layout_height="match_parent"
         >
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 >
+
+            <!-- NestedScrollingChild goes here (NestedScrollView, RecyclerView, etc.). -->
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_posts"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_post"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/fab_new_post"
@@ -31,19 +45,42 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginEnd="8dp"
+                    app:layout_anchor="@id/rv_posts"
+                    app:layout_anchorGravity="bottom|end"
                     />
 
-            <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_posts"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
+            <com.google.android.material.appbar.AppBarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <com.google.android.material.search.SearchBar
+                        android:id="@+id/search_bar"
+                        android:hint="@string/hint_query"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
+            </com.google.android.material.appbar.AppBarLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.search.SearchView
+                    android:id="@+id/sv"
+                    android:hint="@string/hint_query"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_anchor="@id/search_bar">
+
+                <!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
+                <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_profiles"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginEnd="4dp"
+                        />
+
+            </com.google.android.material.search.SearchView>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <include layout="@layout/view_progress" />
 

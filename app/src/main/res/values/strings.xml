@@ -17,6 +17,7 @@
 
     <!-- Home fragment -->
     <string name="new_post_btn_description">Make new post</string>
+    <string name="hint_query">Username</string>
 
     <!-- New post activity -->
     <string name="hint_caption">Caption</string>
@@ -26,9 +27,6 @@
     <!-- Profile fragment -->
     <string name="action_sign_out">Sign Out</string>
     <string name="signed_out">You have been signed out</string>
-
-    <!-- Search fragment -->
-    <string name="hint_query">Username</string>
 
     <!-- UserProfile -->
     <string name="profile_picture_description">Profile picture</string>

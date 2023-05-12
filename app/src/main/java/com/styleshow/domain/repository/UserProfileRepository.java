@@ -9,9 +9,7 @@ import com.styleshow.domain.model.UserProfile;
 
 public interface UserProfileRepository {
 
-    Task<List<UserProfile>> getAllProfiles();
-
     Task<UserProfile> getProfileForUid(@NonNull String uid);
 
-    List<UserProfile> filterProfiles(@NonNull List<UserProfile> profiles, @NonNull String query);
+    Task<List<UserProfile>> searchProfiles(@NonNull String query);
 }

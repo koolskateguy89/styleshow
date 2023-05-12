@@ -1,7 +1,6 @@
 package com.styleshow.data.repository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.Task;
@@ -18,24 +17,12 @@ public class UserProfileRepositoryImpl implements UserProfileRepository {
     }
 
     @Override
-    public Task<List<UserProfile>> getAllProfiles() {
-        return dataSource.getAllProfiles();
-    }
-
-    @Override
     public Task<UserProfile> getProfileForUid(@NonNull String uid) {
         return dataSource.getProfileForUid(uid);
     }
 
     @Override
-    public List<UserProfile> filterProfiles(@NonNull List<UserProfile> profiles, @NonNull String query) {
-        if (query.isEmpty()) {
-            return profiles;
-        }
-
-        return profiles.stream()
-                .filter(profile -> profile.getUsername().toLowerCase().contains(query.toLowerCase()))
-                .collect(Collectors.toList())
-                ;
+    public Task<List<UserProfile>> searchProfiles(@NonNull String query) {
+        return dataSource.searchProfiles(query);
     }
 }
