@@ -18,6 +18,8 @@ import timber.log.Timber;
 
 // TODO: only show error on email & password after "touched"
 
+// TODO: show loading indicator
+
 @AndroidEntryPoint
 public class LoginActivity extends AppCompatActivity {
 
