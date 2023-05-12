@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.styleshow.adapters.PostAdapter;
 import com.styleshow.databinding.FragmentHomeBinding;
-import com.styleshow.ui.messages.MessagesActivity;
 import com.styleshow.ui.new_post.NewPostActivity;
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -23,6 +22,10 @@ TODO:
   - [ ] Properly customise button that does this (icon etc.)
 - [ ] floating action button to create new post
  */
+
+// TODO: put user search at the top of this fragment
+
+// TODO: movable FAB, see https://stackoverflow.com/a/46373935/
 
 // TODO: on long swipe up at the top, refresh posts
 
@@ -39,15 +42,8 @@ public class HomeFragment extends Fragment {
         viewModel.loadPosts();
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
-
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(viewModel);
-
-        binding.btnMessages.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), MessagesActivity.class);
-            startActivity(intent);
-        });
 
         binding.fabNewPost.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), NewPostActivity.class);
@@ -62,9 +58,6 @@ public class HomeFragment extends Fragment {
         viewModel.getPosts().observe(getViewLifecycleOwner(), postAdapter::setPosts);
 
         viewModel.getLoadingState().observe(getViewLifecycleOwner(), loadingState -> {
-            if (loadingState == null)
-                return;
-
             switch (loadingState) {
                 case LOADING -> {
                     // Display progress indicator
@@ -77,7 +70,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        return root;
+        return binding.getRoot();
     }
 
     @Override

@@ -40,19 +40,15 @@ public class ProfileFragment extends Fragment {
             Timber.d("Signing out");
             viewModel.logout();
 
-            Toast.makeText(getContext(), R.string.signed_out, Toast.LENGTH_LONG).show();
+            Toast.makeText(requireContext(), R.string.signed_out, Toast.LENGTH_LONG).show();
 
-            Intent intent = new Intent(getContext(), LoginActivity.class);
+            Intent intent = new Intent(requireContext(), LoginActivity.class);
             startActivity(intent);
 
-            if (getActivity() != null)
-                getActivity().finish();
+            requireActivity().finish();
         });
 
         viewModel.getLoadingState().observe(getViewLifecycleOwner(), loadingState -> {
-            if (loadingState == null)
-                return;
-
             switch (loadingState) {
                 case LOADING -> {
                     // Display progress indicator
@@ -67,7 +63,7 @@ public class ProfileFragment extends Fragment {
 
         // Open post (fullscreen) on click
         binding.viewDynamicPosts.setItemClickListener(post -> {
-            var intent = new Intent(getContext(), PostActivity.class);
+            var intent = new Intent(requireContext(), PostActivity.class);
             intent.putExtra(Constants.POST_NAME, post);
             startActivity(intent);
         });

@@ -13,9 +13,9 @@
 
     <fragment
             android:id="@+id/navigation_search"
-            android:name="com.styleshow.ui.search.SearchFragment"
-            android:label="@string/title_search"
-            tools:layout="@layout/fragment_search" />
+            android:name="com.styleshow.ui.messages.MessagesFragment"
+            android:label="@string/title_messages"
+            tools:layout="@layout/fragment_messages" />
 
     <fragment
             android:id="@+id/navigation_profile"

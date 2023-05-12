@@ -3,7 +3,7 @@
 
     <!-- Main (bottom bar) navigation -->
     <string name="title_home">Home</string>
-    <string name="title_search">Search</string>
+    <string name="title_messages">Messages</string>
     <string name="title_profile">Profile</string>
 
     <!-- Login activity -->
