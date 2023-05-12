@@ -1,20 +1,39 @@
 package com.styleshow.ui.new_post;
 
-class NewPostFormState {
+import android.net.Uri;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-    final String caption;
-    final String imageUrl;
-    final String shoeUrl;
+public class NewPostFormState {
 
-    NewPostFormState(String caption, String imageUrl, String shoeUrl) {
+    public final @NonNull String caption;
+    public final @Nullable Uri imageUri;
+    public final String shoeUrl; // might have to change to Uri
+
+    NewPostFormState(
+            @NonNull String caption,
+            @Nullable Uri imageUri,
+            String shoeUrl
+    ) {
         this.caption = caption;
-        this.imageUrl = imageUrl;
+        this.imageUri = imageUri;
         this.shoeUrl = shoeUrl;
     }
 
-    NewPostFormState withCaption(String caption) {
-        return new NewPostFormState(caption, imageUrl, shoeUrl);
+    public boolean isDataValid() {
+        // TODO
+        return imageUri != null;
     }
 
-    // TODO: withImageUrl & withShoeUrl?
+    NewPostFormState withCaption(@NonNull String caption) {
+        return new NewPostFormState(caption, imageUri, shoeUrl);
+    }
+
+    NewPostFormState withImageUri(@Nullable Uri imageUri) {
+        return new NewPostFormState(caption, imageUri, shoeUrl);
+    }
+
+    NewPostFormState withShoeUrl(String shoeUrl) {
+        return new NewPostFormState(caption, imageUri, shoeUrl);
+    }
 }

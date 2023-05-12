@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="PicassoImageView">
+        <attr name="noPlaceholder" format="boolean" />
+        <attr name="placeholder" format="reference" />
         <attr name="transform" format="enum">
             <enum name="none" value="0" />
             <enum name="cropCircle" value="1" />
