@@ -19,6 +19,8 @@ import timber.log.Timber;
 
 // TODO: display number of likes
 
+// TODO: on tablets, show image on left and actions,text,etc on right
+
 @AndroidEntryPoint
 public class PostActivity extends AppCompatActivity {
 

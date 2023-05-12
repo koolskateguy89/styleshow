@@ -1,7 +1,6 @@
 package com.styleshow.ui.user_profile;
 
 import java.util.List;
-import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
 

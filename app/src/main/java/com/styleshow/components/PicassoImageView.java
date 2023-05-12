@@ -67,6 +67,11 @@ public class PicassoImageView extends androidx.appcompat.widget.AppCompatImageVi
         }
     }
 
+    /**
+     * Load the image from the given URI using Picasso.
+     *
+     * @see Picasso
+     */
     @Override
     public void setImageURI(@Nullable Uri uri) {
         Picasso.get()
@@ -85,7 +90,7 @@ public class PicassoImageView extends androidx.appcompat.widget.AppCompatImageVi
      */
     public enum TransformationEnum {
         /**
-         * No-op transformation.
+         * No-op transformation. Does not change the image.
          *
          * @see NoOpTransformation
          */

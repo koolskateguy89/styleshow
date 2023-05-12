@@ -24,6 +24,8 @@ TODO:
 - [ ] floating action button to create new post
  */
 
+// TODO: on long swipe up at the top, refresh posts
+
 @AndroidEntryPoint
 public class HomeFragment extends Fragment {
 

@@ -22,6 +22,8 @@ could just do a tf tbf
 
 // TODO: decide on whether to instantly open image picker (current) or open it on image click
 
+// TODO: intent filter for image share action, see https://developer.android.com/training/basics/intents/filters
+
 /**
  * @see <a href="https://developer.android.com/training/data-storage/shared/photopicker#select-single-item">Image picker</a>
  */
