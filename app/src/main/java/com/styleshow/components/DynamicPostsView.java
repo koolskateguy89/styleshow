@@ -30,8 +30,10 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.subjects.BehaviorSubject;
 import timber.log.Timber;
 
-// TODO: change switcher to use Toggle Button:
 // https://github.com/material-components/material-components-android/blob/master/docs/components/Button.md#toggle-button
+// ^ Tried to use Material toggle button but for some reason the not-selected button's
+// icon would have the wrong color tint initially. I couldn't figure out why. So just
+// didn't use it.
 
 // FIXME: for some reason sometimes the top row of the grid isn't sized correctly
 // i have no idea why
@@ -79,7 +81,7 @@ public class DynamicPostsView extends ConstraintLayout {
     /**
      * Adapter for the bg colour of the button.
      */
-    @BindingAdapter("tint")
+    @BindingAdapter("app:tint")
     public static void tintAdaptor(@NonNull ImageButton view, @AttrRes int themeColorRes) {
         @ColorInt int tint = ThemeColor.getThemeColor(view.getContext(), themeColorRes);
         view.getDrawable().setTint(tint);

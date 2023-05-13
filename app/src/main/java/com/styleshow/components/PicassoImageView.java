@@ -15,6 +15,9 @@ import jp.wasabeef.transformers.picasso.CropCircleTransformation;
 import jp.wasabeef.transformers.picasso.CropSquareTransformation;
 import jp.wasabeef.transformers.picasso.GrayscaleTransformation;
 
+// TODO: convert transformation type to ints
+// see https://medium.com/trade-me/android-then-and-now-intro-intdef-enums-bca22d5cca56
+
 /**
  * A custom ImageView that uses Picasso to load images.
  * <p>
