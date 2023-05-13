@@ -2,6 +2,7 @@ package com.styleshow.ui.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.styleshow.R;
-import com.styleshow.common.Constants;
 import com.styleshow.databinding.FragmentProfileBinding;
 import com.styleshow.ui.login.LoginActivity;
 import com.styleshow.ui.post.PostActivity;
@@ -35,6 +35,18 @@ public class ProfileFragment extends Fragment {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(viewModel);
+
+        var openPost = registerForActivityResult(new PostActivity.OpenPostContract(), pair -> {
+            // if post did not change, do nothing
+            if (pair == null)
+                return;
+
+            int index = pair.first;
+            var post = pair.second;
+
+            viewModel.postUpdated(index, post);
+            binding.viewDynamicPosts.getAdapter().notifyItemChanged(index, post);
+        });
 
         binding.btnSignOut.setOnClickListener(v -> {
             Timber.d("Signing out");
@@ -62,10 +74,8 @@ public class ProfileFragment extends Fragment {
         });
 
         // Open post (fullscreen) on click
-        binding.viewDynamicPosts.setItemClickListener(post -> {
-            var intent = new Intent(requireContext(), PostActivity.class);
-            intent.putExtra(Constants.POST_NAME, post);
-            startActivity(intent);
+        binding.viewDynamicPosts.setItemClickListener((index, post) -> {
+            openPost.launch(new Pair<>(index, post));
         });
 
         return binding.getRoot();

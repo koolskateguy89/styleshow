@@ -33,6 +33,7 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/Theme.StyleShow"
+            android:enableOnBackInvokedCallback="true"
             tools:targetApi="31">
         <!-- New Post Activity -->
         <activity

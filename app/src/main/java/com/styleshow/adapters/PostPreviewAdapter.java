@@ -19,28 +19,15 @@ import com.styleshow.domain.model.Post;
  */
 public class PostPreviewAdapter extends ClickableRecyclerAdapter<PostPreviewAdapter.PostPreviewHolder, Post> {
 
-    private final List<Post> posts;
+    private List<Post> posts;
 
-    /**
-     * Using this constructor means this will manage the list of posts.
-     */
-    public PostPreviewAdapter() {
-        this(new ArrayList<>());
-    }
-
-    /**
-     * Using this constructor means the caller will have to manage the list of posts.
-     * The caller can make modifications to the list and call {@link #notifyDataSetChanged()}.
-     *
-     * @note Do not call {@link #setPosts(List)} if using this constructor with an immutable list.
-     */
     public PostPreviewAdapter(List<Post> posts) {
         this.posts = posts;
     }
 
-    public void setPosts(List<Post> posts) {
-        this.posts.clear();
-        this.posts.addAll(posts);
+    @Override
+    public void setItems(@NonNull List<Post> posts) {
+        this.posts = posts;
         notifyDataSetChanged();
     }
 
@@ -54,7 +41,7 @@ public class PostPreviewAdapter extends ClickableRecyclerAdapter<PostPreviewAdap
         );
 
         return new PostPreviewHolder(postPreviewBinding, index -> {
-            onItemClick(posts.get(index));
+            onItemClick(index, posts.get(index));
         });
     }
 

@@ -22,31 +22,15 @@ import com.styleshow.domain.model.Post;
  */
 public class PostCarouselAdapter extends ClickableRecyclerAdapter<PostCarouselAdapter.PostHolder, Post> {
 
-    private final List<Post> posts;
+    private List<Post> posts;
 
-    /**
-     * Using this constructor means this will manage the list of posts.
-     */
-    public PostCarouselAdapter() {
-        this(new ArrayList<>());
-    }
-
-    /**
-     * Using this constructor means the caller will have to manage the list of posts.
-     * The caller can make modifications to the list and call {@link #notifyDataSetChanged()}.
-     *
-     * @note Do not call {@link #setPosts(List)} if using this constructor with an immutable list.
-     */
     public PostCarouselAdapter(@NonNull List<Post> posts) {
         this.posts = posts;
     }
 
-    /**
-     * Mutate the internal posts lists and notify of a data set change.
-     */
-    public void setPosts(List<Post> posts) {
-        this.posts.clear();
-        this.posts.addAll(posts);
+    @Override
+    public void setItems(@NonNull List<Post> posts) {
+        this.posts = posts;
         notifyDataSetChanged();
     }
 
@@ -60,7 +44,7 @@ public class PostCarouselAdapter extends ClickableRecyclerAdapter<PostCarouselAd
         );
 
         return new PostHolder(binding, index -> {
-            onItemClick(posts.get(index));
+            onItemClick(index, posts.get(index));
         });
     }
 

@@ -17,6 +17,7 @@ public class PostViewModel extends ViewModel {
     private final PostRepository postRepository;
 
     private final MutableLiveData<Post> post = new MutableLiveData<>();
+    private boolean originalLikeState;
 
     @Inject
     public PostViewModel(PostRepository postRepository) {
@@ -30,13 +31,13 @@ public class PostViewModel extends ViewModel {
     @MainThread
     public void setPost(Post post) {
         this.post.setValue(post);
+        originalLikeState = post.isLiked();
     }
 
-    /*
-    FIXME: quite a big problem in that the post is not updated in the previous UI
-    (profile fragment/user_profile activity), thus when going back there then re-opening the post
-    it will be out of date - e.g. showing as liked when it is not in the database.
-     */
+    public boolean hasPostChanged() {
+        return originalLikeState != post.getValue().isLiked();
+    }
+
     public void likeButtonClicked() {
         var post = this.post.getValue();
         boolean isLiked = post.isLiked();

@@ -25,7 +25,8 @@ public class ProfileViewModel extends ViewModel {
 
     private final MutableLiveData<UserProfile> mUserProfile = new MutableLiveData<>();
     private final MutableLiveData<List<Post>> mPosts = new MutableLiveData<>(List.of());
-    private final MutableLiveData<LoadingState> mLoadingState = new MutableLiveData<>(LoadingState.IDLE);
+    private final MutableLiveData<LoadingState> mLoadingState =
+            new MutableLiveData<>(LoadingState.IDLE);
 
     @Inject
     public ProfileViewModel(
@@ -83,5 +84,13 @@ public class ProfileViewModel extends ViewModel {
 
         finalTask.addOnSuccessListener(task -> mLoadingState.setValue(LoadingState.SUCCESS_IDLE))
                 .addOnFailureListener(e -> mLoadingState.setValue(LoadingState.ERROR));
+    }
+
+    public void postUpdated(int index, Post post) {
+        var posts = mPosts.getValue();
+        // This should never happen
+        if (posts != null)
+            posts.set(index, post);
+        // Updating the recycler view is handled by the view
     }
 }

@@ -1,6 +1,5 @@
 package com.styleshow.components;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -17,6 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.BindingAdapter;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.carousel.CarouselLayoutManager;
 import com.styleshow.R;
 import com.styleshow.adapters.PostCarouselAdapter;
@@ -33,7 +33,7 @@ import timber.log.Timber;
 // TODO: change switcher to use Toggle Button:
 // https://github.com/material-components/material-components-android/blob/master/docs/components/Button.md#toggle-button
 
-// FIXME: for some reason the top row of the grid isn't sized correctly
+// FIXME: for some reason sometimes the top row of the grid isn't sized correctly
 // i have no idea why
 
 /**
@@ -44,13 +44,17 @@ import timber.log.Timber;
  */
 public class DynamicPostsView extends ConstraintLayout {
 
-    private final List<Post> posts = new ArrayList<>();
     private final BehaviorSubject<LayoutType> layoutSubject = BehaviorSubject.create();
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private List<Post> posts = List.of();
     private ViewDynamicPostsBinding binding; // final
     private SharedPreferences sharedPrefs; // final
-    private ClickableRecyclerAdapter<?, Post> adapter;
     private @Nullable ItemClickListener<Post> itemClickListener;
+
+    private PostPreviewAdapter gridAdapter;
+    private RecyclerView.LayoutManager gridLayoutManager;
+    private PostCarouselAdapter carouselAdapter;
+    private RecyclerView.LayoutManager carouselLayoutManager;
 
     public DynamicPostsView(@NonNull Context context) {
         super(context);
@@ -146,21 +150,30 @@ public class DynamicPostsView extends ConstraintLayout {
     }
 
     private void showGridLayout() {
-        adapter = new PostPreviewAdapter(posts);
-        adapter.setItemClickListener(itemClickListener);
-        binding.rvPosts.setAdapter(adapter);
+        if (gridAdapter == null) {
+            gridAdapter = new PostPreviewAdapter(posts);
+        }
+        if (gridLayoutManager == null) {
+            int numColumns = getContext().getResources().getInteger(R.integer.dynamic_posts_view_grid_columns);
+            gridLayoutManager = new GridLayoutManager(getContext(), numColumns);
+        }
 
-        int numColumns = getContext().getResources().getInteger(R.integer.dynamic_posts_view_grid_columns);
-
-        binding.rvPosts.setLayoutManager(new GridLayoutManager(getContext(), numColumns));
+        gridAdapter.setItemClickListener(itemClickListener);
+        binding.rvPosts.setAdapter(gridAdapter);
+        binding.rvPosts.setLayoutManager(gridLayoutManager);
     }
 
     private void showCarouselLayout() {
-        adapter = new PostCarouselAdapter(posts);
-        adapter.setItemClickListener(itemClickListener);
-        binding.rvPosts.setAdapter(adapter);
+        if (carouselAdapter == null) {
+            carouselAdapter = new PostCarouselAdapter(posts);
+        }
+        if (carouselLayoutManager == null) {
+            carouselLayoutManager = new CarouselLayoutManager();
+        }
 
-        binding.rvPosts.setLayoutManager(new CarouselLayoutManager());
+        carouselAdapter.setItemClickListener(itemClickListener);
+        binding.rvPosts.setAdapter(carouselAdapter);
+        binding.rvPosts.setLayoutManager(carouselLayoutManager);
     }
 
     /**
@@ -191,10 +204,9 @@ public class DynamicPostsView extends ConstraintLayout {
     }
 
     public void setPosts(@NonNull List<Post> posts) {
-        this.posts.clear();
-        this.posts.addAll(posts);
-        if (adapter != null)
-            adapter.notifyDataSetChanged();
+        this.posts = posts;
+        if (getAdapter() != null)
+            getAdapter().setItems(posts);
     }
 
     public @NonNull LayoutType getLayout() {
@@ -207,8 +219,15 @@ public class DynamicPostsView extends ConstraintLayout {
 
     public void setItemClickListener(@Nullable ItemClickListener<Post> itemClickListener) {
         this.itemClickListener = itemClickListener;
-        if (adapter != null)
-            adapter.setItemClickListener(itemClickListener);
+        if (getAdapter() != null)
+            getAdapter().setItemClickListener(itemClickListener);
+    }
+
+    public ClickableRecyclerAdapter<?, Post> getAdapter() {
+        return switch (getLayout()) {
+            case GRID -> gridAdapter;
+            case CAROUSEL -> carouselAdapter;
+        };
     }
 
     /**

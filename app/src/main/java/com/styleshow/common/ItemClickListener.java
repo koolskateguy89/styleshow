@@ -18,5 +18,5 @@ public interface ItemClickListener<T> {
      *
      * @param item the item represented by the view that was clicked
      */
-    void onItemClick(@NonNull T item);
+    void onItemClick(int index, @NonNull T item);
 }

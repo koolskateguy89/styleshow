@@ -11,5 +11,6 @@ public class Constants {
     // intent extras
     public static final String PROFILE_NAME = "profile";
     public static final String POST_NAME = "post";
+    public static final String POST_INDEX_NAME = "post_index";
 
 }

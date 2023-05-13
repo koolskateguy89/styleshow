@@ -1,5 +1,7 @@
 package com.styleshow.common;
 
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,8 +22,10 @@ public abstract class ClickableRecyclerAdapter<VH extends ViewHolder, Item> exte
         this.itemClickListener = itemClickListener;
     }
 
-    protected void onItemClick(@NonNull Item item) {
+    protected void onItemClick(int index, @NonNull Item item) {
         if (itemClickListener != null)
-            itemClickListener.onItemClick(item);
+            itemClickListener.onItemClick(index, item);
     }
+
+    public abstract void setItems(@NonNull List<Item> items);
 }

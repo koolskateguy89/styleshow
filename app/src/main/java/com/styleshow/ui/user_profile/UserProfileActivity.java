@@ -2,6 +2,7 @@ package com.styleshow.ui.user_profile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Pair;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.styleshow.common.Constants;
@@ -43,6 +44,18 @@ public class UserProfileActivity extends AppCompatActivity {
         binding.setProfile(userProfile);
         binding.setViewModel(viewModel);
 
+        var openPost = registerForActivityResult(new PostActivity.OpenPostContract(), pair -> {
+            // if post did not change, do nothing
+            if (pair == null)
+                return;
+
+            int index = pair.first;
+            var post = pair.second;
+
+            viewModel.postUpdated(index, post);
+            binding.viewDynamicPosts.getAdapter().notifyItemChanged(index, post);
+        });
+
         viewModel.getLoadingState().observe(this, loadingState -> {
             if (loadingState == null)
                 return;
@@ -60,10 +73,8 @@ public class UserProfileActivity extends AppCompatActivity {
         });
 
         // Open post (fullscreen) on click
-        binding.viewDynamicPosts.setItemClickListener(post -> {
-            var intent = new Intent(this, PostActivity.class);
-            intent.putExtra(Constants.POST_NAME, post);
-            startActivity(intent);
+        binding.viewDynamicPosts.setItemClickListener((index, post) -> {
+            openPost.launch(new Pair<>(index, post));
         });
     }
 }

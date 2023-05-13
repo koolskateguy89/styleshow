@@ -50,4 +50,12 @@ public class UserProfileViewModel extends ViewModel {
                     mLoadingState.setValue(LoadingState.ERROR);
                 });
     }
+
+    public void postUpdated(int index, Post post) {
+        var posts = mPosts.getValue();
+        // This should never happen
+        if (posts != null)
+            posts.set(index, post);
+        // Updating the recycler view is handled by the view
+    }
 }

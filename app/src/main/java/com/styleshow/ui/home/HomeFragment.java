@@ -31,6 +31,8 @@ TODO:
 
 // TODO: only get like 10 images initially, then on reached bottom and swipe down, get more
 
+// TODO?!: open post activity on post clock
+
 /**
  * The home screen, showing posts and a search bar to find profiles.
  */
@@ -51,19 +53,18 @@ public class HomeFragment extends Fragment {
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(viewModel);
 
-        var makeNewPost = registerForActivityResult(new NewPostActivity.NewPostContract(),
-                resultCode -> {
-                    switch (resultCode) {
-                        case NewPostActivity.RESULT_POST_CREATED -> {
-                            // reload posts
-                            viewModel.loadPosts();
-                        }
-                        case NewPostActivity.RESULT_POST_NOT_CREATED -> {
-                            // do nothing
-                            Timber.d("Post not created");
-                        }
-                    }
-                });
+        var makeNewPost = registerForActivityResult(new NewPostActivity.NewPostContract(), resultCode -> {
+            switch (resultCode) {
+                case NewPostActivity.RESULT_POST_CREATED -> {
+                    // reload posts
+                    viewModel.loadPosts();
+                }
+                case NewPostActivity.RESULT_POST_NOT_CREATED -> {
+                    // do nothing
+                    Timber.d("Post not created");
+                }
+            }
+        });
 
         binding.fabNewPost.setOnClickListener(v -> {
             makeNewPost.launch(null);
