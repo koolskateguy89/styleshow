@@ -18,29 +18,84 @@
             android:layout_height="match_parent"
             >
 
+        <com.styleshow.components.SquareFrameLayout
+                android:id="@+id/view_profile_picture_wrapper"
+                android:layout_width="@dimen/profile_picture_size"
+                android:layout_height="wrap_content">
+            <com.styleshow.components.PicassoImageView
+                    android:src="@{profile.profilePictureUrl}"
+                    tools:src="@drawable/ic_launcher_background"
+                    app:transform="cropCircle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/profile_picture_description"
+                    />
+        </com.styleshow.components.SquareFrameLayout>
+
         <TextView
-                android:id="@+id/username"
-                tools:text="usernameeeeeeeeeeee"
+                android:id="@+id/tv_username"
                 android:text="@{profile.username}"
+                tools:text="username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="4dp"
+                android:textStyle="bold"
                 />
 
         <TextView
-                android:id="@+id/bio"
-                tools:text="biooooooooooooooo"
+                android:id="@+id/tv_bio"
                 android:text="@{profile.bio}"
+                tools:text="bio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/username"
-                android:layout_marginTop="24dp"
+                />
+
+        <Button
+                android:id="@+id/btn_message"
+                android:text="@string/action_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+        <androidx.constraintlayout.helper.widget.Flow
+                android:id="@+id/flow_profile_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="tv_username,tv_bio"
+                android:orientation="vertical"
+                app:flow_horizontalAlign="start"
+                app:flow_verticalGap="@dimen/profile_info_gap"
+                />
+
+        <androidx.constraintlayout.helper.widget.Flow
+                android:id="@+id/flow_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="view_profile_picture_wrapper,flow_profile_info"
+                app:flow_horizontalGap="@dimen/profile_info_gap"
+                />
+
+        <androidx.constraintlayout.helper.widget.Flow
+                android:id="@+id/flow_actions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="btn_message"
+                android:paddingStart="@dimen/profile_actions_gap"
+                android:paddingEnd="@dimen/profile_actions_gap"
+                app:flow_horizontalGap="@dimen/profile_actions_gap"
+                />
+
+        <androidx.constraintlayout.helper.widget.Flow
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:constraint_referenced_ids="flow_profile,flow_actions"
+                android:orientation="vertical"
+                app:flow_verticalGap="16dp"
+                app:flow_horizontalAlign="start"
                 />
 
         <ViewSwitcher

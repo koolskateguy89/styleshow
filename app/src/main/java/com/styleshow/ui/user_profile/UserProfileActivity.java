@@ -1,6 +1,5 @@
 package com.styleshow.ui.user_profile;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
 import androidx.appcompat.app.AppCompatActivity;
@@ -75,6 +74,11 @@ public class UserProfileActivity extends AppCompatActivity {
         // Open post (fullscreen) on click
         binding.viewDynamicPosts.setItemClickListener((index, post) -> {
             openPost.launch(new Pair<>(index, post));
+        });
+
+        // TODO: only show the button if the user is not me
+        binding.btnMessage.setOnClickListener(v -> {
+            // TODO: open user-specific message (coversation) activity
         });
     }
 }

@@ -28,7 +28,12 @@
 
     <!-- Profile fragment -->
     <string name="action_sign_out">Sign Out</string>
+    <string name="action_edit_profile">Edit</string>
+    <string name="action_open_settings">Settings</string>
     <string name="signed_out">You have been signed out</string>
+
+    <!-- User_profile activity -->
+    <string name="action_message">Message</string>
 
     <!-- UserProfile -->
     <string name="profile_picture_description">Profile picture</string>

@@ -17,8 +17,7 @@ import com.styleshow.ui.post.PostActivity;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
-// TODO: edit profile/settings activity (use a FAB?)
-// TODO: show profile picture
+// TODO: edit profile/settings activity
 
 @AndroidEntryPoint
 public class ProfileFragment extends Fragment {
@@ -76,6 +75,14 @@ public class ProfileFragment extends Fragment {
         // Open post (fullscreen) on click
         binding.viewDynamicPosts.setItemClickListener((index, post) -> {
             openPost.launch(new Pair<>(index, post));
+        });
+
+        binding.btnEditProfile.setOnClickListener(v -> {
+            // TODO
+        });
+
+        binding.btnOpenSettings.setOnClickListener(v -> {
+            // TODO
         });
 
         return binding.getRoot();
