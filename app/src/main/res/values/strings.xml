@@ -6,9 +6,6 @@
     <string name="title_messages">Messages</string>
     <string name="title_profile">Profile</string>
 
-    <!-- Main navigation activity -->
-    <string name="sp_last_destination_key">last_destination</string>
-
     <!-- Login activity -->
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
