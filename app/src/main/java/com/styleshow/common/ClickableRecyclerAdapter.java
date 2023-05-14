@@ -24,7 +24,7 @@ public abstract class ClickableRecyclerAdapter<VH extends ViewHolder, Item> exte
 
     protected void onItemClick(int index, @NonNull Item item) {
         if (itemClickListener != null)
-            itemClickListener.onItemClick(index, item);
+            itemClickListener.onClick(index, item);
     }
 
     public abstract void setItems(@NonNull List<Item> items);

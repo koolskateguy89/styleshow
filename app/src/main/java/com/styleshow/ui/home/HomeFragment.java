@@ -1,5 +1,8 @@
 package com.styleshow.ui.home;
 
+import java.util.List;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +13,10 @@ import androidx.lifecycle.ViewModelProvider;
 import com.styleshow.adapters.PostAdapter;
 import com.styleshow.adapters.ProfilePreviewAdapter;
 import com.styleshow.common.AfterTextChangedTextWatcher;
+import com.styleshow.common.Constants;
 import com.styleshow.databinding.FragmentHomeBinding;
 import com.styleshow.ui.new_post.NewPostActivity;
+import com.styleshow.ui.user_profile.UserProfileActivity;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
@@ -71,7 +76,16 @@ public class HomeFragment extends Fragment {
         });
 
         // Setup post recycler view
-        var postAdapter = new PostAdapter();
+        var postAdapter = new PostAdapter(List.of());
+        postAdapter.setImageClickListener((index, post) -> {
+            // TODO: activity launcher for post activity
+        });
+        postAdapter.setCaptionClickListener((index, post) -> {
+            var intent = new Intent(requireContext(), UserProfileActivity.class)
+                    .putExtra(Constants.PROFILE_NAME, post.getAuthor());
+            startActivity(intent);
+        });
+
         binding.rvPosts.setAdapter(postAdapter);
         viewModel.getPosts().observe(getViewLifecycleOwner(), postAdapter::setPosts);
 
@@ -94,11 +108,18 @@ public class HomeFragment extends Fragment {
         });
 
         // Setup profile recycler view
-        var profilePreviewAdapter = new ProfilePreviewAdapter();
+        var profilePreviewAdapter = new ProfilePreviewAdapter(List.of());
+        // On click open user profile activity, display the clicked user's profile
+        profilePreviewAdapter.setItemClickListener((index, profile) -> {
+            var intent = new Intent(requireContext(), UserProfileActivity.class)
+                    .putExtra(Constants.PROFILE_NAME, profile);
+            startActivity(intent);
+        });
+
         binding.rvProfiles.setAdapter(profilePreviewAdapter);
 
         viewModel.getFilteredProfiles()
-                .observe(getViewLifecycleOwner(), profilePreviewAdapter::setProfiles);
+                .observe(getViewLifecycleOwner(), profilePreviewAdapter::setItems);
 
         // Handle profile loading state
         viewModel.getSearchLoadingState().observe(getViewLifecycleOwner(), loadingState -> {

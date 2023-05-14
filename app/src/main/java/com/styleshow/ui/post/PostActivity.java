@@ -60,23 +60,13 @@ public class PostActivity extends AppCompatActivity {
         finish();
     }
 
-    // TODO?: This is only called if the activity has launchmode of singleTop
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-
-        // im not really sure what to do here
-        Timber.d("onNewIntent: %s", intent);
-    }
-
     public static class OpenPostContract extends ActivityResultContract<Pair<Integer, Post>, Pair<Integer, Post>> {
 
         @Override
         public @NonNull Intent createIntent(@NonNull Context context, Pair<Integer, Post> pair) {
-            var intent = new Intent(context, PostActivity.class);
-            intent.putExtra(Constants.POST_NAME, pair.second);
-            intent.putExtra(Constants.POST_INDEX_NAME, (int) pair.first);
-            return intent;
+            return new Intent(context, PostActivity.class)
+                    .putExtra(Constants.POST_NAME, pair.second)
+                    .putExtra(Constants.POST_INDEX_NAME, (int) pair.first);
         }
 
         @Override

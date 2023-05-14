@@ -1,39 +1,29 @@
 package com.styleshow.adapters;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.function.IntConsumer;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+import com.styleshow.common.ItemClickListener;
 import com.styleshow.databinding.ItemPostBinding;
 import com.styleshow.domain.model.Post;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
 
-    private final List<Post> posts;
+    private List<Post> posts;
+    private @Nullable ItemClickListener<Post> imageClickListener;
+    private @Nullable ItemClickListener<Post> captionClickListener;
 
-    /**
-     * Using this constructor means this will manage the list of posts.
-     */
-    public PostAdapter() {
-        this(new ArrayList<>());
-    }
-
-    /**
-     * Using this constructor means the caller will have to manage the list of posts.
-     * The caller can make modifications to the list and call {@link #notifyDataSetChanged()}.
-     *
-     * @note Do not call {@link #setPosts(List)} if using this constructor with an immutable list.
-     */
     public PostAdapter(@NonNull List<Post> posts) {
         this.posts = posts;
     }
 
-    public void setPosts(List<Post> posts) {
-        this.posts.clear();
-        this.posts.addAll(posts);
+    public void setPosts(@NonNull List<Post> posts) {
+        this.posts = posts;
         notifyDataSetChanged();
     }
 
@@ -45,7 +35,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
                 false
         );
 
-        return new PostHolder(postPreviewBinding);
+        return new PostHolder(postPreviewBinding, index -> {
+            if (imageClickListener != null)
+                imageClickListener.onClick(index, posts.get(index));
+        }, index -> {
+            if (captionClickListener != null)
+                captionClickListener.onClick(index, posts.get(index));
+        });
     }
 
     @Override
@@ -59,12 +55,32 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         return posts.size();
     }
 
-    static class PostHolder extends RecyclerView.ViewHolder {
-        final ItemPostBinding binding;
+    public void setImageClickListener(@Nullable ItemClickListener<Post> imageClickListener) {
+        this.imageClickListener = imageClickListener;
+    }
 
-        public PostHolder(ItemPostBinding binding) {
+    public void setCaptionClickListener(@Nullable ItemClickListener<Post> captionClickListener) {
+        this.captionClickListener = captionClickListener;
+    }
+
+    static class PostHolder extends RecyclerView.ViewHolder {
+        final @NonNull ItemPostBinding binding;
+
+        public PostHolder(
+                @NonNull ItemPostBinding binding,
+                @NonNull IntConsumer onImageClick,
+                @NonNull IntConsumer onCaptionClick
+        ) {
             super(binding.getRoot());
             this.binding = binding;
+
+            binding.ivImage.setOnClickListener(v -> {
+                onImageClick.accept(getLayoutPosition());
+            });
+
+            binding.viewPostCaption.setOnClickListener(v -> {
+                onCaptionClick.accept(getLayoutPosition());
+            });
         }
 
         public void bind(Post post) {

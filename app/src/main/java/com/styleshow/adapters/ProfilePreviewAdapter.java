@@ -1,28 +1,28 @@
 package com.styleshow.adapters;
 
-// TODO: onclick open user profile activity
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.function.IntConsumer;
 
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.squareup.picasso.Picasso;
-import com.styleshow.common.Constants;
+import com.styleshow.common.ClickableRecyclerAdapter;
 import com.styleshow.databinding.ItemProfilePreviewBinding;
 import com.styleshow.domain.model.UserProfile;
-import com.styleshow.ui.user_profile.UserProfileActivity;
 
-public class ProfilePreviewAdapter extends RecyclerView.Adapter<ProfilePreviewAdapter.ProfilePreviewHolder> {
+public class ProfilePreviewAdapter extends
+        ClickableRecyclerAdapter<ProfilePreviewAdapter.ProfilePreviewHolder, UserProfile> {
 
-    private final List<UserProfile> profiles = new ArrayList<>();
+    private List<UserProfile> profiles;
 
-    public void setProfiles(List<UserProfile> profiles) {
-        this.profiles.clear();
-        this.profiles.addAll(profiles);
+    public ProfilePreviewAdapter(@NonNull List<UserProfile> profiles) {
+        this.profiles = profiles;
+    }
+
+    @Override
+    public void setItems(@NonNull List<UserProfile> profiles) {
+        this.profiles = profiles;
         notifyDataSetChanged();
     }
 
@@ -35,7 +35,9 @@ public class ProfilePreviewAdapter extends RecyclerView.Adapter<ProfilePreviewAd
                 false
         );
 
-        return new ProfilePreviewHolder(profilePreviewBinding);
+        return new ProfilePreviewHolder(profilePreviewBinding, index -> {
+            onItemClick(index, profiles.get(index));
+        });
     }
 
     @Override
@@ -52,20 +54,17 @@ public class ProfilePreviewAdapter extends RecyclerView.Adapter<ProfilePreviewAd
     static class ProfilePreviewHolder extends RecyclerView.ViewHolder {
         final ItemProfilePreviewBinding binding;
 
-        public ProfilePreviewHolder(ItemProfilePreviewBinding binding) {
+        public ProfilePreviewHolder(ItemProfilePreviewBinding binding, @NonNull IntConsumer onItemClick) {
             super(binding.getRoot());
             this.binding = binding;
+
+            this.itemView.setOnClickListener(v -> {
+                onItemClick.accept(getLayoutPosition());
+            });
         }
 
         public void bind(UserProfile profile) {
             binding.setProfile(profile);
-
-            // On click open user profile activity, display the clicked user's profile
-            binding.getRoot().setOnClickListener(v -> {
-                Intent intent = new Intent(v.getContext(), UserProfileActivity.class);
-                intent.putExtra(Constants.PROFILE_NAME, profile);
-                v.getContext().startActivity(intent);
-            });
         }
     }
 }

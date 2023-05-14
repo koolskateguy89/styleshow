@@ -3,7 +3,6 @@ package com.styleshow.components;
 import java.util.Date;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -11,10 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import com.styleshow.R;
-import com.styleshow.common.Constants;
 import com.styleshow.databinding.ViewPostCaptionBinding;
 import com.styleshow.domain.model.UserProfile;
-import com.styleshow.ui.user_profile.UserProfileActivity;
 
 /**
  * View that contains the caption for a post. Does not contain any logic, just UI.
@@ -72,12 +69,6 @@ public class PostCaptionView extends ConstraintLayout {
         }
 
         binding.setCaption(caption);
-
-        binding.ivImage.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), UserProfileActivity.class);
-            intent.putExtra(Constants.PROFILE_NAME, author);
-            getContext().startActivity(intent);
-        });
     }
 
     public String getCaption() {
