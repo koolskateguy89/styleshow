@@ -3,8 +3,7 @@
         xmlns:tools="http://schemas.android.com/tools">
 
     <!--
-    TODO: test on lower android version, like 29/30
-    TODO?: add image permission
+    TODO?: request permissions on startup/when needed
     -->
 
     <!-- Internet permission -->
@@ -16,6 +15,9 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
             android:maxSdkVersion="32" />
+
+    <!-- Sending notifications -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
     <!--
     TODO: have a look at handling intent CREATE_SOCIAL_MEDIA_POSTING, see
@@ -38,27 +40,32 @@
         <!-- New Post Activity -->
         <activity
                 android:name=".ui.new_post.NewPostActivity"
-                android:exported="false" />
+                android:exported="false"
+                />
 
         <!-- Post Activity -->
         <activity
                 android:name=".ui.post.PostActivity"
-                android:exported="false" />
+                android:exported="false"
+                />
 
         <!-- User profile Activity -->
         <activity
                 android:name=".ui.user_profile.UserProfileActivity"
-                android:exported="false" />
+                android:exported="false"
+                />
 
         <!-- Main navigation Activity -->
         <activity
                 android:name=".ui.MainNavigationActivity"
-                android:exported="false" />
+                android:exported="false"
+                />
 
         <!-- Login Activity -->
         <activity
                 android:name=".ui.login.LoginActivity"
-                android:exported="false" />
+                android:exported="false"
+                />
 
         <!-- Main Activity -->
         <activity
