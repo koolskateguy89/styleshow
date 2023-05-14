@@ -48,6 +48,7 @@
         <com.styleshow.components.PostCaptionView
                 android:id="@+id/view_post_caption"
                 app:caption="@{viewModel.post.caption}"
+                app:postedAt="@{viewModel.post.postedAt}"
                 app:author="@{viewModel.post.author}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

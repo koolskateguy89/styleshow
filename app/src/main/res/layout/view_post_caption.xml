@@ -8,7 +8,11 @@
         <variable
                 name="caption"
                 type="String" />
-        <variable name="author"
+        <variable
+                name="postedAt"
+                type="java.util.Date" />
+        <variable
+                name="author"
                 type="com.styleshow.domain.model.UserProfile" />
     </data>
 
@@ -22,10 +26,9 @@
                 android:id="@+id/view_image_wrapper"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintVertical_bias="0.5"
                 >
             <com.styleshow.components.PicassoImageView
                     android:id="@+id/iv_image"
@@ -39,18 +42,6 @@
                     />
         </com.styleshow.components.SquareFrameLayout>
 
-        <androidx.constraintlayout.helper.widget.Flow
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/view_image_wrapper"
-                android:layout_marginStart="8dp"
-                app:constraint_referenced_ids="tv_username,tv_caption"
-                android:orientation="vertical"
-                app:flow_horizontalAlign="start"
-                />
-
         <TextView
                 android:id="@+id/tv_username"
                 android:text="@{author.username}"
@@ -60,12 +51,53 @@
                 android:textAppearance="?attr/textAppearanceTitleMedium"
                 />
 
+        <!-- TODO: format date -->
+        <TextView
+                android:id="@+id/tv_date"
+                android:text='@{postedAt.toLocaleString() ?? "No Date"}'
+                tools:text="Date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceCaption"
+                />
+
         <TextView
                 android:id="@+id/tv_caption"
                 android:text="@{caption}"
                 tools:text="Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                />
+
+        <androidx.constraintlayout.helper.widget.Flow
+                android:id="@+id/flow_caption"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="flow_caption_top,flow_caption_bottom"
+                android:orientation="vertical"
+                app:layout_constraintStart_toEndOf="@+id/view_image_wrapper"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:flow_horizontalAlign="start"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                />
+
+        <androidx.constraintlayout.helper.widget.Flow
+                android:id="@+id/flow_caption_top"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="tv_username,tv_date"
+                app:flow_horizontalGap="10dp"
+                app:flow_horizontalStyle="spread_inside"
+                />
+
+        <androidx.constraintlayout.helper.widget.Flow
+                android:id="@+id/flow_caption_bottom"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="tv_caption"
                 />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

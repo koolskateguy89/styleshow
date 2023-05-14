@@ -1,5 +1,7 @@
 package com.styleshow.components;
 
+import java.util.Date;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
@@ -14,10 +16,22 @@ import com.styleshow.databinding.ViewPostCaptionBinding;
 import com.styleshow.domain.model.UserProfile;
 import com.styleshow.ui.user_profile.UserProfileActivity;
 
+/**
+ * View that contains the caption for a post. Does not contain any logic, just UI.
+ * <p>
+ * Includes:
+ * <ul>
+ *     <li>Author's profile picture</li>
+ *     <li>Author's username</li>
+ *     <li>Post postedAt timestamp</li>
+ *     <li>Post caption</li>
+ * </ul>
+ */
 public class PostCaptionView extends ConstraintLayout {
 
     private ViewPostCaptionBinding binding;
     private String caption;
+    private Date postedAt;
     private UserProfile author;
 
     public PostCaptionView(@NonNull Context context) {
@@ -73,6 +87,15 @@ public class PostCaptionView extends ConstraintLayout {
     public void setCaption(String caption) {
         this.caption = caption;
         binding.setCaption(caption);
+    }
+
+    public Date getPostedAt() {
+        return postedAt;
+    }
+
+    public void setPostedAt(Date postedAt) {
+        this.postedAt = postedAt;
+        binding.setPostedAt(postedAt);
     }
 
     public UserProfile getAuthor() {
