@@ -19,17 +19,10 @@ import com.styleshow.databinding.ActivityNewPostBinding;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
-/*
-TODO
-- [x] add image picker
-
-shoeUrl "provider" - can we use like a web view intent? - get the url they wer eon
-could just do a tf tbf
- */
-
-// TODO: at top, show a label saying "New Post"
-
 /**
+ * Activity for creating a new post. The user can select an image, enter a caption and a
+ * shoe URL, and then post it.
+ *
  * @see <a href="https://developer.android.com/training/data-storage/shared/photopicker#select-single-item">Image picker</a>
  */
 @AndroidEntryPoint
@@ -77,14 +70,20 @@ public class NewPostActivity extends AppCompatActivity {
                     .build());
         });
 
-        // TODO: etShoeUrl or something
-
         binding.etCaption.addTextChangedListener(new AfterTextChangedTextWatcher(s -> {
-            viewModel.captionChanged(s.toString());
+            viewModel.setCaption(s.toString());
+        }));
+
+        binding.etShoeUrl.addTextChangedListener(new AfterTextChangedTextWatcher(s -> {
+            viewModel.setShoeUrl(s.toString());
         }));
 
         binding.btnPost.setOnClickListener(v -> {
-            viewModel.publishPost();
+            if (viewModel.isDataValid()) {
+                viewModel.publishPost();
+            } else {
+                Toast.makeText(this, R.string.invalid_post, Toast.LENGTH_SHORT).show();
+            }
         });
 
         // Handle loading state (when uploading post)

@@ -3,10 +3,10 @@ package com.styleshow.ui.new_post;
 import javax.inject.Inject;
 
 import android.net.Uri;
+import android.webkit.URLUtil;
 import androidx.annotation.MainThread;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 import com.styleshow.data.LoadingState;
 import com.styleshow.domain.repository.PostRepository;
@@ -18,26 +18,24 @@ public class NewPostViewModel extends ViewModel {
 
     private final PostRepository postRepository;
 
-    private final MutableLiveData<NewPostFormState> formState = new MutableLiveData<>(
-            new NewPostFormState("caption", null, "")
-    );
     private final MutableLiveData<Uri> mImageUri = new MutableLiveData<>();
     private final MutableLiveData<String> mCaption = new MutableLiveData<>("");
     private final MutableLiveData<String> mShoeUrl = new MutableLiveData<>("");
-    private final LiveData<Boolean> mIsDataValid;
     private final MutableLiveData<LoadingState> mLoadingState =
             new MutableLiveData<>(LoadingState.IDLE);
 
     @Inject
     public NewPostViewModel(PostRepository postRepository) {
         this.postRepository = postRepository;
+    }
 
-        // TODO: mediatorLiveData with multiple sources of all fields
+    public LiveData<String> getCaption() {
+        return mCaption;
+    }
 
-        mIsDataValid = Transformations.map(mImageUri, imageUri -> {
-            // TODO: more validation
-            return imageUri != null;
-        });
+    @MainThread
+    public void setCaption(String caption) {
+        mCaption.setValue(caption);
     }
 
     public LiveData<Uri> getImageUri() {
@@ -49,25 +47,33 @@ public class NewPostViewModel extends ViewModel {
         mImageUri.setValue(imageUri);
     }
 
-    public LiveData<String> getCaption() {
-        return mCaption;
-    }
-
     public LiveData<String> getShoeUrl() {
         return mShoeUrl;
     }
 
-    public LiveData<Boolean> getIsDataValid() {
-        return mIsDataValid;
+    @MainThread
+    public void setShoeUrl(String shoeUrl) {
+        mShoeUrl.setValue(shoeUrl);
+    }
+
+    public boolean isDataValid() {
+        Uri imageUri = mImageUri.getValue();
+        String caption = mCaption.getValue();
+        String shoeUrl = mShoeUrl.getValue();
+        boolean validShoeUrl = URLUtil.isValidUrl(shoeUrl);
+
+        if (imageUri == null || caption == null || shoeUrl == null)
+            return false;
+
+        if (caption.isBlank() || validShoeUrl) {
+            return false;
+        }
+
+        return true;
     }
 
     public LiveData<LoadingState> getLoadingState() {
         return mLoadingState;
-    }
-
-    @MainThread
-    public void captionChanged(String caption) {
-        mCaption.setValue(caption);
     }
 
     @MainThread

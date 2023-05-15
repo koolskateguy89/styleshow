@@ -20,8 +20,11 @@
     <string name="hint_query">Username</string>
 
     <!-- New post activity -->
+    <string name="title_new_post">New Post</string>
     <string name="hint_caption">Caption</string>
+    <string name="hint_shoe_url">Link</string>
     <string name="action_post">Post</string>
+    <string name="invalid_post">Invalid post details</string>
     <string name="no_image_selected">You need to select an image!</string>
     <string name="post_successful">Post published!</string>
     <string name="post_failed">Error publishing post...</string>
