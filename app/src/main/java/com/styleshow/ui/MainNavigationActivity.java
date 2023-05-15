@@ -15,6 +15,10 @@ import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import timber.log.Timber;
 
+/**
+ * Essentially the main activity for the app. Handles top-level navigation. Also starts
+ * the handling of the share action from other apps.
+ */
 @AndroidEntryPoint
 public class MainNavigationActivity extends AppCompatActivity {
 

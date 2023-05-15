@@ -27,8 +27,6 @@ shoeUrl "provider" - can we use like a web view intent? - get the url they wer e
 could just do a tf tbf
  */
 
-// TODO: intent filter for image share action, see https://developer.android.com/training/basics/intents/filters
-
 // TODO: at top, show a label saying "New Post"
 
 /**
