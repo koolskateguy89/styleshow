@@ -7,6 +7,8 @@ import timber.log.Timber.DebugTree;
 
 // TODO: error screen if internet is not available
 // not sure where to put it tho
+// can't use broadcast receiver for this because it's deprecated
+// supposedly have to use WorkManager
 
 @HiltAndroidApp
 public class StyleShowApp extends Application {

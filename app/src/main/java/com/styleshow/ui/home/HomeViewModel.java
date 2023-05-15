@@ -106,6 +106,14 @@ public class HomeViewModel extends ViewModel {
                 });
     }
 
+    public void postUpdated(int index, Post post) {
+        var posts = mPosts.getValue();
+        // This should never happen
+        if (posts != null)
+            posts.set(index, post);
+        // Updating the recycler view is handled by the view
+    }
+
     public void setSearchQuery(@NonNull String query) {
         querySubject.onNext(query);
     }

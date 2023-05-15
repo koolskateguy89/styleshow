@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.styleshow.common.AfterTextChangedTextWatcher;
 import com.styleshow.common.Constants;
 import com.styleshow.databinding.FragmentHomeBinding;
 import com.styleshow.ui.new_post.NewPostActivity;
+import com.styleshow.ui.post.PostActivity;
 import com.styleshow.ui.user_profile.UserProfileActivity;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
@@ -36,10 +38,9 @@ TODO:
 
 // TODO: only get like 10 images initially, then on reached bottom and swipe down, get more
 
-// TODO?!: open post activity on post clock
-
 /**
- * The home screen, showing posts and a search bar to find profiles.
+ * The home screen, showing posts, a user search bar, and a floating action button
+ * to create a new post.
  */
 @AndroidEntryPoint
 public class HomeFragment extends Fragment {
@@ -57,6 +58,18 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(viewModel);
+
+        var openPost = registerForActivityResult(new PostActivity.OpenPostContract(), pair -> {
+            // if post did not change, do nothing
+            if (pair == null)
+                return;
+
+            int index = pair.first;
+            var post = pair.second;
+
+            viewModel.postUpdated(index, post);
+            binding.rvPosts.getAdapter().notifyItemChanged(index, post);
+        });
 
         var makeNewPost = registerForActivityResult(new NewPostActivity.NewPostContract(), resultCode -> {
             switch (resultCode) {
@@ -77,9 +90,11 @@ public class HomeFragment extends Fragment {
 
         // Setup post recycler view
         var postAdapter = new PostAdapter(List.of());
+        // Open post on image click
         postAdapter.setImageClickListener((index, post) -> {
-            // TODO: activity launcher for post activity
+            openPost.launch(new Pair<>(index, post));
         });
+        // Open profile on caption click
         postAdapter.setCaptionClickListener((index, post) -> {
             var intent = new Intent(requireContext(), UserProfileActivity.class)
                     .putExtra(Constants.PROFILE_NAME, post.getAuthor());

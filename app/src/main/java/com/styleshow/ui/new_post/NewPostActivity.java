@@ -28,6 +28,8 @@ could just do a tf tbf
 
 // TODO: intent filter for image share action, see https://developer.android.com/training/basics/intents/filters
 
+// TODO: at top, show a label saying "New Post"
+
 /**
  * @see <a href="https://developer.android.com/training/data-storage/shared/photopicker#select-single-item">Image picker</a>
  */
