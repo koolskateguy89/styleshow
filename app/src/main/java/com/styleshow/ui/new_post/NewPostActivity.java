@@ -3,6 +3,7 @@ package com.styleshow.ui.new_post;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
 import androidx.activity.result.PickVisualMediaRequest;
@@ -46,7 +47,10 @@ public class NewPostActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        @Nullable Uri imageUri = getIntent().getParcelableExtra(Intent.EXTRA_STREAM);
         viewModel = new ViewModelProvider(this).get(NewPostViewModel.class);
+        if (imageUri != null)
+            viewModel.setImageUri(imageUri);
 
         binding = ActivityNewPostBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -57,7 +61,7 @@ public class NewPostActivity extends AppCompatActivity {
         var pickMedia = registerForActivityResult(new PickVisualMedia(), uri -> {
             if (uri != null) {
                 Timber.i("Selected URI = %s", uri);
-                viewModel.imageChanged(uri);
+                viewModel.setImageUri(uri);
 
                 // https://developer.android.com/training/data-storage/shared/photopicker#persist-media-file-access
                 // Persist access permissions so can access the file while uploading
@@ -109,11 +113,12 @@ public class NewPostActivity extends AppCompatActivity {
      * Contract for launching {@link NewPostActivity}. Result is {@link #RESULT_POST_CREATED} or
      * {@link #RESULT_POST_NOT_CREATED}.
      */
-    public static class NewPostContract extends ActivityResultContract<Void, Integer> {
+    public static class NewPostContract extends ActivityResultContract<Uri, Integer> {
 
         @Override
-        public @NonNull Intent createIntent(@NonNull Context context, Void unused) {
-            return new Intent(context, NewPostActivity.class);
+        public @NonNull Intent createIntent(@NonNull Context context, @Nullable Uri imageUri) {
+            return new Intent(context, NewPostActivity.class)
+                    .putExtra(Intent.EXTRA_STREAM, imageUri);
         }
 
         @Override

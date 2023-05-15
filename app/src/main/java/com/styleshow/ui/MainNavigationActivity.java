@@ -1,5 +1,6 @@
 package com.styleshow.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import timber.log.Timber;
 public class MainNavigationActivity extends AppCompatActivity {
 
     private ActivityMainNavigationBinding binding;
+    private NavController navController;
     private ConnectivityObserver connectivityObserver;
     private CompositeDisposable compositeDisposable;
 
@@ -28,11 +30,12 @@ public class MainNavigationActivity extends AppCompatActivity {
         binding = ActivityMainNavigationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main_navigation);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main_navigation);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
         compositeDisposable = new CompositeDisposable();
 
+        // TODO?: inject NetworkConnectivityObserver
         connectivityObserver = new NetworkConnectivityObserver(this);
         compositeDisposable.add(connectivityObserver.observe().subscribe(status -> {
             // TODO: no network activity
@@ -54,6 +57,23 @@ public class MainNavigationActivity extends AppCompatActivity {
                 }
             }
         }));
+    }
+
+    // This being invoked means the user clicked on share from another app
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        // TODO: use switch if having to handle multiple actions
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if (type.startsWith("image/")) {
+                Timber.i("(onNewIntent) action = %s", intent.getAction());
+                navController.navigate(R.id.navigation_home, intent.getExtras());
+            }
+        }
     }
 
     @Override

@@ -7,9 +7,16 @@ import androidx.annotation.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.subjects.BehaviorSubject;
 
+/**
+ * Observes connectivity status of the device's network connection.
+ *
+ * @see ConnectivityObserver
+ * @see <a href="https://youtu.be/TzV0oCRDNfM">[https://youtu.be/TzV0oCRDNfM]</a>
+ */
 public class NetworkConnectivityObserver implements ConnectivityObserver {
 
     private final @NonNull ConnectivityManager connectivityManager;
+    private final BehaviorSubject<Status> statusSubject = BehaviorSubject.create();
 
     public NetworkConnectivityObserver(Context context) {
         connectivityManager =
@@ -18,8 +25,6 @@ public class NetworkConnectivityObserver implements ConnectivityObserver {
 
     @Override
     public @NonNull Observable<Status> observe() {
-        BehaviorSubject<Status> statusSubject = BehaviorSubject.create();
-
         var networkCallback = new ConnectivityManager.NetworkCallback() {
             @Override
             public void onAvailable(@NonNull Network network) {

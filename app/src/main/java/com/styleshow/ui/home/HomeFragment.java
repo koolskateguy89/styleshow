@@ -3,12 +3,14 @@ package com.styleshow.ui.home;
 import java.util.List;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.styleshow.adapters.PostAdapter;
@@ -49,8 +51,8 @@ public class HomeFragment extends Fragment {
     private HomeViewModel viewModel;
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         viewModel.loadPosts();
         viewModel.setup();
@@ -149,6 +151,14 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
+
+        // Handle send action to create new post
+        var args = getArguments();
+        if (args != null && args.containsKey(Intent.EXTRA_STREAM)) {
+            Uri imageUri = args.getParcelable(Intent.EXTRA_STREAM);
+            Timber.i("Received image uri: %s", imageUri);
+            makeNewPost.launch(imageUri);
+        }
 
         return binding.getRoot();
     }

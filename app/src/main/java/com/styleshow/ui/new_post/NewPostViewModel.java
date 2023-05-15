@@ -44,6 +44,11 @@ public class NewPostViewModel extends ViewModel {
         return mImageUri;
     }
 
+    @MainThread
+    public void setImageUri(Uri imageUri) {
+        mImageUri.setValue(imageUri);
+    }
+
     public LiveData<String> getCaption() {
         return mCaption;
     }
@@ -63,11 +68,6 @@ public class NewPostViewModel extends ViewModel {
     @MainThread
     public void captionChanged(String caption) {
         mCaption.setValue(caption);
-    }
-
-    @MainThread
-    public void imageChanged(Uri imageUri) {
-        mImageUri.setValue(imageUri);
     }
 
     @MainThread

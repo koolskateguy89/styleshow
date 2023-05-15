@@ -57,8 +57,15 @@
         <!-- Main navigation Activity -->
         <activity
                 android:name=".ui.MainNavigationActivity"
-                android:exported="false"
-                />
+                android:exported="true"
+                android:launchMode="singleInstance"
+                >
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/*" />
+            </intent-filter>
+        </activity>
 
         <!-- Login Activity -->
         <activity

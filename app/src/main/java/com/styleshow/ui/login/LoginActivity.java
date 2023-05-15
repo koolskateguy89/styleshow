@@ -20,6 +20,8 @@ import timber.log.Timber;
 
 // TODO: show loading indicator
 
+// TODO: don't allow them to login if they dont have network
+
 @AndroidEntryPoint
 public class LoginActivity extends AppCompatActivity {
 
