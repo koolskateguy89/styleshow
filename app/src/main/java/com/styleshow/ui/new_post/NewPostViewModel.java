@@ -84,8 +84,8 @@ public class NewPostViewModel extends ViewModel {
 
         postRepository.publishPost(
                 mImageUri.getValue(),
-                mCaption.getValue(),
-                mShoeUrl.getValue()
+                mCaption.getValue().trim(),
+                mShoeUrl.getValue().trim()
         ).addOnSuccessListener(postId -> {
             mLoadingState.setValue(LoadingState.SUCCESS_IDLE);
         }).addOnFailureListener(e -> {

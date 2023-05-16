@@ -38,11 +38,18 @@
     <!-- User_profile activity -->
     <string name="action_message">Message</string>
 
+    <!-- Post activity -->
+    <string name="hint_comment">Comment</string>
+    <string name="action_comment">Comment</string>
+
     <!-- UserProfile -->
     <string name="profile_picture_description">Profile picture</string>
 
     <!-- Post -->
     <string name="post_picture_description">Post picture</string>
+
+    <!-- Comment -->
+    <string name="commenter_picture_description">Commenter picture</string>
 
     <!-- Dynamic posts view -->
     <string name="grid_picture_description">Grid</string>

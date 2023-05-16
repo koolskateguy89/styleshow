@@ -65,7 +65,7 @@ public class ProfileViewModel extends ViewModel {
         var profileTask = userProfileRepository.getProfileForUid(uid)
                 .addOnSuccessListener(mUserProfile::setValue)
                 .addOnFailureListener(e -> {
-                    Timber.e(e, "error loading userProfile for uid '%s'", uid);
+                    Timber.w(e, "error loading userProfile for uid '%s'", uid);
                 });
 
         var finalTask = profileTask.continueWithTask(profTask -> {
@@ -78,7 +78,7 @@ public class ProfileViewModel extends ViewModel {
             return postRepository.getPostsByUser(profile)
                     .addOnSuccessListener(mPosts::setValue)
                     .addOnFailureListener(e -> {
-                        Timber.e(e, "error loading posts for uid '%s'", uid);
+                        Timber.w(e, "error loading posts for uid '%s'", uid);
                     });
         });
 

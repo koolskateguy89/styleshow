@@ -40,8 +40,14 @@
                 android:id="@+id/view_post_actions"
                 app:liked="@{viewModel.post.liked}"
                 app:onLikeClickListener="@{() -> viewModel.likeButtonClicked()}"
-                app:onCommentClickListener="@{() -> viewModel.commentButtonClicked()}"
+                app:onCommentClickListener="@{() -> etComment.requestFocus()}"
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                />
+
+        <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/divider2"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />
 
@@ -55,10 +61,65 @@
                 />
 
         <com.google.android.material.divider.MaterialDivider
-                android:id="@+id/divider2"
+                android:id="@+id/divider3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />
+
+        <ViewSwitcher
+                android:id="@+id/view_switcher"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/layout_comment"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/hint_comment"
+                        app:endIconMode="custom"
+                        app:endIconDrawable="@drawable/ic_send_24dp"
+                        app:endIconContentDescription="@string/action_comment"
+                        app:endIconOnClickListener="@{() -> viewModel.tryPostComment()}"
+                        >
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_comment"
+                            android:text="@={viewModel.comment}"
+                            android:inputType="text"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_comments"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        />
+
+                <androidx.constraintlayout.helper.widget.Flow
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:constraint_referenced_ids="layout_comment,rv_comments"
+                        android:orientation="vertical"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <include layout="@layout/view_progress" />
+
+        </ViewSwitcher>
 
         <androidx.constraintlayout.helper.widget.Flow
                 android:layout_width="0dp"
@@ -66,7 +127,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:constraint_referenced_ids="image_wrapper,divider1,view_post_actions,divider2,view_post_caption"
+                app:constraint_referenced_ids="image_wrapper,divider1,view_post_actions,divider2,view_post_caption,divider3,view_switcher"
                 android:orientation="vertical"
                 />
 

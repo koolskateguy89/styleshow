@@ -5,9 +5,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import android.net.Uri;
 import androidx.annotation.NonNull;
@@ -33,6 +34,8 @@ public class PostDataSource {
     private final LoginDataSource mLoginDataSource;
     private final UserProfileDataSource mUserProfileDataSource;
 
+    private final Executor executor = Executors.newSingleThreadExecutor();
+
     public PostDataSource(
             FirebaseFirestore firestore,
             FirebaseStorage storage,
@@ -56,27 +59,14 @@ public class PostDataSource {
     }
 
     // TODO: impl. pagination
-    @SuppressWarnings("unchecked")
     public Task<List<Post>> getAllPosts() {
         // This can only be called when the user is logged in so we can safely get the uid
-        @SuppressWarnings("ConstantConditions")
         String currentUserId = mLoginDataSource.getCurrentUser().getUid();
 
-        var profilesTask = mUserProfileDataSource.getAllProfiles()
-                .continueWith(task -> {
-                    if (!task.isSuccessful())
-                        return null;
-
-                    var profiles = task.getResult();
-
-                    return profiles.stream()
-                            .collect(Collectors.toMap(UserProfile::getUid, Function.identity()));
-                });
-
-        var postDtosTask = mPostRef
+        return mPostRef
                 .orderBy("postedAt", Query.Direction.DESCENDING) // newest first
                 .get()
-                .continueWith(task -> {
+                .continueWith(executor, task -> {
                     if (!task.isSuccessful())
                         return null;
 
@@ -86,21 +76,42 @@ public class PostDataSource {
                             .map(PostDataSource::getPostDtoFromDocument)
                             .filter(Objects::nonNull)
                             ;
-                });
+                })
+                .continueWithTask(executor, task -> {
+                    if (!task.isSuccessful() && task.getException() != null)
+                        return Tasks.forException(task.getException());
 
-        return Tasks.whenAllComplete(profilesTask, postDtosTask)
-                .continueWith(task -> {
-                    if (!task.isSuccessful())
-                        return null;
-
-                    var tasks = task.getResult();
-
-                    var profiles = (Map<String, UserProfile>) tasks.get(0).getResult();
-                    var postDtos = (Stream<PostDto>) tasks.get(1).getResult();
-
-                    return postDtos
-                            .map(postDto -> postDto.toPost(profiles.get(postDto.uid), currentUserId))
+                    // Can't re-use streams
+                    var postDtos = task.getResult()
                             .collect(Collectors.toList());
+
+                    var uids = postDtos.stream()
+                            .map(postDto -> postDto.uid)
+                            .distinct()
+                            .collect(Collectors.toList());
+
+                    return mUserProfileDataSource
+                            .getProfilesForUids(uids)
+                            .continueWith(task1 -> {
+                                if (!task1.isSuccessful())
+                                    return null;
+
+                                var profiles = task1.getResult();
+
+                                return profiles.stream()
+                                        .collect(Collectors.toMap(UserProfile::getUid, Function.identity()));
+                            })
+                            .continueWith(task1 -> {
+                                if (!task1.isSuccessful())
+                                    return null;
+
+                                var profilesMap = task1.getResult();
+
+                                return postDtos
+                                        .stream()
+                                        .map(postDto -> postDto.toPost(profilesMap.get(postDto.uid), currentUserId))
+                                        .collect(Collectors.toList());
+                            });
                 })
                 .addOnSuccessListener(posts -> {
                     Timber.d("All %d posts: %s", posts.size(), posts);

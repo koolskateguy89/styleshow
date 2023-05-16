@@ -46,7 +46,7 @@ public class UserProfileViewModel extends ViewModel {
                     mLoadingState.setValue(LoadingState.SUCCESS_IDLE);
                 })
                 .addOnFailureListener(e -> {
-                    Timber.e(e, "error loading posts for uid '%s'", uid);
+                    Timber.w(e, "error loading posts for uid '%s'", uid);
                     mLoadingState.setValue(LoadingState.ERROR);
                 });
     }

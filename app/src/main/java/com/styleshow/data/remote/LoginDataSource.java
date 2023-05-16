@@ -1,7 +1,6 @@
 package com.styleshow.data.remote;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -16,7 +15,7 @@ public class LoginDataSource {
         mAuth = auth;
     }
 
-    public @Nullable FirebaseUser getCurrentUser() {
+    public FirebaseUser getCurrentUser() {
         return mAuth.getCurrentUser();
     }
 

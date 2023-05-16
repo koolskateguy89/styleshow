@@ -22,6 +22,9 @@ public class UserProfileDataSource {
         mProfiles = firestore.collection("userProfiles");
     }
 
+    /**
+     * Parse a {@link DocumentSnapshot} into a {@link UserProfile}.
+     */
     private static @Nullable UserProfile getUserProfileFromDocument(@NonNull DocumentSnapshot documentSnapshot) {
         var userProfileDto = documentSnapshot.toObject(UserProfileDto.class);
 
@@ -33,22 +36,9 @@ public class UserProfileDataSource {
         return userProfileDto.toUserProfile();
     }
 
-    public Task<List<UserProfile>> getAllProfiles() {
-        return mProfiles.get()
-                .continueWith(task -> {
-                    if (!task.isSuccessful())
-                        return null;
-
-                    var documents = task.getResult().getDocuments();
-
-                    return documents.stream()
-                            .map(UserProfileDataSource::getUserProfileFromDocument)
-                            .filter(Objects::nonNull)
-                            .collect(Collectors.toList());
-                })
-                ;
-    }
-
+    /**
+     * Get the profile for the user with the provided UID.
+     */
     public Task<UserProfile> getProfileForUid(String uid) {
         return mProfiles.document(uid)
                 .get()
@@ -102,6 +92,33 @@ public class UserProfileDataSource {
                 })
                 .addOnFailureListener(e -> {
                     Timber.w(e, "failed to search profiles for query '%s'", query);
+                })
+                ;
+    }
+
+    /**
+     * Get all profiles with the provided UIDs.
+     */
+    public Task<List<UserProfile>> getProfilesForUids(@NonNull List<String> uids) {
+        return mProfiles
+                .whereIn("__name__", uids)
+                .get()
+                .continueWith(task -> {
+                    if (!task.isSuccessful())
+                        return null;
+
+                    var documents = task.getResult().getDocuments();
+
+                    return documents.stream()
+                            .map(UserProfileDataSource::getUserProfileFromDocument)
+                            .filter(Objects::nonNull)
+                            .collect(Collectors.toList());
+                })
+                .addOnSuccessListener(userProfiles -> {
+                    Timber.d("got profiles for uids %s: %s", uids, userProfiles);
+                })
+                .addOnFailureListener(e -> {
+                    Timber.w(e, "failed to get profiles for uids '%s'", uids);
                 })
                 ;
     }

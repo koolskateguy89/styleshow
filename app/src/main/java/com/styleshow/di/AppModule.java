@@ -2,16 +2,19 @@ package com.styleshow.di;
 
 import javax.inject.Singleton;
 
+import androidx.annotation.NonNull;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
+import com.styleshow.data.remote.CommentDataSource;
 import com.styleshow.data.remote.LoginDataSource;
 import com.styleshow.data.remote.PostDataSource;
 import com.styleshow.data.remote.UserProfileDataSource;
+import com.styleshow.data.repository.CommentRepositoryImpl;
 import com.styleshow.data.repository.LoginRepositoryImpl;
 import com.styleshow.data.repository.PostRepositoryImpl;
 import com.styleshow.data.repository.UserProfileRepositoryImpl;
+import com.styleshow.domain.repository.CommentRepository;
 import com.styleshow.domain.repository.LoginRepository;
 import com.styleshow.domain.repository.PostRepository;
 import com.styleshow.domain.repository.UserProfileRepository;
@@ -81,5 +84,21 @@ public class AppModule {
     @Singleton
     UserProfileRepository provideUserProfileRepository(UserProfileDataSource dataSource) {
         return new UserProfileRepositoryImpl(dataSource);
+    }
+
+    @Provides
+    @Singleton
+    CommentDataSource provideCommentDataSource(
+            @NonNull FirebaseFirestore firestore,
+            @NonNull LoginDataSource loginDataSource,
+            @NonNull UserProfileDataSource userProfileDataSource
+    ) {
+        return new CommentDataSource(firestore, loginDataSource, userProfileDataSource);
+    }
+
+    @Provides
+    @Singleton
+    CommentRepository provideCommentRepository(@NonNull CommentDataSource dataSource) {
+        return new CommentRepositoryImpl(dataSource);
     }
 }

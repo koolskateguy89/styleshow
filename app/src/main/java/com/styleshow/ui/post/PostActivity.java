@@ -1,14 +1,18 @@
 package com.styleshow.ui.post;
 
+import java.util.List;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
+import android.widget.Toast;
 import androidx.activity.result.contract.ActivityResultContract;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import com.styleshow.adapters.CommentAdapter;
 import com.styleshow.common.Constants;
 import com.styleshow.databinding.ActivityPostBinding;
 import com.styleshow.domain.model.Post;
@@ -36,11 +40,39 @@ public class PostActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this).get(PostViewModel.class);
         viewModel.setPost(post);
+        viewModel.loadComments();
 
+        // A lot of actions are set in the layout xml using data binding
         binding = ActivityPostBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         binding.setLifecycleOwner(this);
         binding.setViewModel(viewModel);
+
+        // Setup comments recycler view
+        var commentAdapter = new CommentAdapter(List.of());
+        commentAdapter.setItemClickListener((index, comment) -> {
+            // TODO: confirm delete dialog if is my comment
+            Toast.makeText(this, comment.getContent(), Toast.LENGTH_SHORT).show();
+
+            // TODO: viewmodel delete comment
+        });
+
+        viewModel.getComments().observe(this, commentAdapter::setItems);
+        binding.rvComments.setAdapter(commentAdapter);
+
+        // Handle comments loading state
+        viewModel.getCommentLoadingState().observe(this, loadingState -> {
+            switch (loadingState) {
+                case LOADING -> {
+                    // Display progress indicator
+                    binding.viewSwitcher.setDisplayedChild(1);
+                }
+                case SUCCESS_IDLE -> {
+                    // Display comments
+                    binding.viewSwitcher.setDisplayedChild(0);
+                }
+            }
+        });
     }
 
     @Override
