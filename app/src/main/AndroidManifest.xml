@@ -1,32 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools">
-
-    <!--
-    TODO?: request permissions on startup/when needed
-    -->
-
+    <!-- TODO?: request permissions on startup/when needed -->
     <!-- Internet permission -->
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <!-- Required only if your app needs to access images or photos
-    that other apps created. -->
+    <!--
+ Required only if your app needs to access images or photos
+    that other apps created.
+    -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
-            android:maxSdkVersion="32" />
-
-    <!-- Sending notifications -->
+    <uses-permission
+            android:name="android.permission.READ_EXTERNAL_STORAGE"
+            android:maxSdkVersion="32" /> <!-- Sending notifications -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
-
-    <!--
-    TODO: have a look at handling intent CREATE_SOCIAL_MEDIA_POSTING, see
-    https://developer.android.com/reference/app-actions/built-in-intents/social/create-social-media-posting#shortcutsxml
-    it's really complicated tho tbh and idt it geta any marks in spec
-    -->
 
     <application
             android:name=".StyleShowApp"
@@ -39,44 +27,36 @@
             android:supportsRtl="true"
             android:theme="@style/Theme.StyleShow"
             tools:targetApi="31">
-        <!-- New Post Activity -->
+        <activity
+                android:name=".ui.chat.ChatActivity"
+                android:exported="false" />
+        <activity
+                android:name=".ui.select_chat.SelectChatActivity"
+                android:exported="false" /> <!-- New Post Activity -->
         <activity
                 android:name=".ui.new_post.NewPostActivity"
-                android:exported="false"
-                />
-
-        <!-- Post Activity -->
+                android:exported="false" /> <!-- Post Activity -->
         <activity
                 android:name=".ui.post.PostActivity"
-                android:exported="false"
-                />
-
-        <!-- User profile Activity -->
+                android:exported="false" /> <!-- User profile Activity -->
         <activity
                 android:name=".ui.user_profile.UserProfileActivity"
-                android:exported="false"
-                />
-
-        <!-- Main navigation Activity -->
+                android:exported="false" /> <!-- Main navigation Activity -->
         <activity
                 android:name=".ui.MainNavigationActivity"
                 android:exported="true"
-                android:launchMode="singleInstance"
-                >
+                android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="image/*" />
             </intent-filter>
-        </activity>
-
-        <!-- Login Activity -->
+        </activity> <!-- Login Activity -->
         <activity
                 android:name=".ui.login.LoginActivity"
-                android:exported="false"
-                />
-
-        <!-- Main Activity -->
+                android:exported="false" /> <!-- Main Activity -->
         <activity
                 android:name=".MainActivity"
                 android:exported="true"
@@ -86,32 +66,49 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- Boot completed receiver to start service(s) -->
-        <receiver android:name=".BootCompletedReceiver"
+        </activity> <!-- Boot completed receiver to start service(s) -->
+        <receiver
+                android:name=".BootCompletedReceiver"
                 android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
-        <service android:name=".service.CommentNotificationService"
+        <service
+                android:name=".service.CommentNotificationService"
                 android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </service>
-
-        <!-- https://developer.android.com/training/data-storage/shared/photopicker#device-availability -->
+        <!--
+        TODO: ask for runtime perm to send notis
+        https://firebase.google.com/docs/cloud-messaging/android/client#request-permission13
+        -->
+        <!-- Firebase Cloud Messaging Service -->
+        <service
+                android:name=".service.MyFirebaseMessagingService"
+                android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service> <!-- idk if i want this, miscellaneous seems to be the default channel anyway -->
+        <meta-data
+                android:name="com.google.firebase.messaging.default_notification_channel_id"
+                android:value="miscellaneous" /> <!-- https://developer.android.com/training/data-storage/shared/photopicker#device-availability -->
         <!-- Trigger Google Play services to install the backported photo picker module. -->
-        <service android:name="com.google.android.gms.metadata.ModuleDependencies"
+        <service
+                android:name="com.google.android.gms.metadata.ModuleDependencies"
                 android:enabled="false"
                 android:exported="false">
             <intent-filter>
                 <action android:name="com.google.android.gms.metadata.MODULE_DEPENDENCIES" />
             </intent-filter>
-            <meta-data android:name="photopicker_activity:0:required" android:value="" />
+
+            <meta-data
+                    android:name="photopicker_activity:0:required"
+                    android:value="" />
         </service>
     </application>
 

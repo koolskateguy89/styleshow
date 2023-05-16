@@ -21,11 +21,12 @@ public interface PostRepository {
 
     Task<Void> unlikePost(@NonNull String postId);
 
-    // TODO: delete post with ID
-
     Task<String> publishPost(
             @NonNull Uri imageUri,
             @NonNull String caption,
             @NonNull String shoeUrl // might have to change this to a URI or smthn, need to upload to storage
     );
+
+    // TODO: delete post with ID
+
 }

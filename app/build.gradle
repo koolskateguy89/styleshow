@@ -71,6 +71,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore'
     // Cloud Storage
     implementation 'com.google.firebase:firebase-storage'
+    // Cloud Messaging
+    implementation 'com.google.firebase:firebase-messaging'
 
     // Dagger Hilt
     implementation 'com.google.dagger:hilt-android:2.46'

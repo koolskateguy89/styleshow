@@ -47,6 +47,9 @@
     <string name="delete_comment_dialog_cancel">Cancel</string>
     <string name="delete_comment_success">Comment deleted.</string>
 
+    <!-- Select user activity -->
+    <string name="title_select_user">Select User to Message</string>
+
     <!-- UserProfile -->
     <string name="profile_picture_description">Profile picture</string>
 

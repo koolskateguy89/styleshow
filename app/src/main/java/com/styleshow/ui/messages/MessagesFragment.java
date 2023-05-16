@@ -1,5 +1,6 @@
 package com.styleshow.ui.messages;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +10,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.styleshow.databinding.FragmentMessagesBinding;
+import com.styleshow.ui.select_chat.SelectChatActivity;
 import dagger.hilt.android.AndroidEntryPoint;
-import timber.log.Timber;
 
 @AndroidEntryPoint
 public class MessagesFragment extends Fragment {
@@ -29,8 +30,14 @@ public class MessagesFragment extends Fragment {
         // TODO: setup the recycler view
 
         binding.fabNewMessage.setOnClickListener(v -> {
-            // TODO: query for users, ask user to choose one, then open MessageActivity
-            // or ConversationActivity, whatever it'll be called
+            var intent = new Intent(requireContext(), SelectChatActivity.class);
+            startActivity(intent);
+        });
+
+        // TODO (remove): this is a TEST!!
+        binding.fabTestSendMessage.setOnClickListener(v -> {
+            // sends to aaa@aaa.com
+            viewModel.sendMessage("UEl9dsIOexVlZG010enL4VoL15f2", "Test!!");
         });
 
         viewModel.getLoadingState().observe(getViewLifecycleOwner(), loadingState -> {
@@ -40,7 +47,7 @@ public class MessagesFragment extends Fragment {
                     binding.viewSwitcher.setDisplayedChild(1);
                 }
                 case SUCCESS_IDLE -> {
-                    // Display posts
+                    // Display messages
                     binding.viewSwitcher.setDisplayedChild(0);
                 }
             }

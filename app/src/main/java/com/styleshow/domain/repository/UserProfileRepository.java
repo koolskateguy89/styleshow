@@ -12,4 +12,6 @@ public interface UserProfileRepository {
     Task<UserProfile> getProfileForUid(@NonNull String uid);
 
     Task<List<UserProfile>> searchProfiles(@NonNull String query);
+
+    Task<List<UserProfile>> getAllProfilesExceptMe();
 }

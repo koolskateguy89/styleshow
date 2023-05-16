@@ -25,4 +25,9 @@ public class UserProfileRepositoryImpl implements UserProfileRepository {
     public Task<List<UserProfile>> searchProfiles(@NonNull String query) {
         return dataSource.searchProfiles(query);
     }
+
+    @Override
+    public Task<List<UserProfile>> getAllProfilesExceptMe() {
+        return dataSource.getAllProfilesExceptMe();
+    }
 }

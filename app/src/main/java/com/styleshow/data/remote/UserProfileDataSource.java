@@ -17,9 +17,14 @@ import timber.log.Timber;
 
 public class UserProfileDataSource {
 
+    private final @NonNull LoginDataSource mLoginDataSource;
     private final @NonNull CollectionReference mProfiles;
 
-    public UserProfileDataSource(@NonNull FirebaseFirestore firestore) {
+    public UserProfileDataSource(
+            @NonNull LoginDataSource loginDataSource,
+            @NonNull FirebaseFirestore firestore
+    ) {
+        mLoginDataSource = loginDataSource;
         mProfiles = firestore.collection("userProfiles");
     }
 
@@ -35,6 +40,27 @@ public class UserProfileDataSource {
 
         userProfileDto.uid = documentSnapshot.getId();
         return userProfileDto.toUserProfile();
+    }
+
+    // TODO: use for messaging
+    public Task<List<UserProfile>> getAllProfilesExceptMe() {
+        String currentUserId = mLoginDataSource.getCurrentUser().getUid();
+
+        return mProfiles
+                .whereNotEqualTo(FieldPath.documentId(), currentUserId)
+                .get()
+                .continueWith(task -> {
+                    if (!task.isSuccessful())
+                        return null;
+
+                    var documents = task.getResult().getDocuments();
+
+                    return documents.stream()
+                            .map(UserProfileDataSource::getUserProfileFromDocument)
+                            .filter(Objects::nonNull)
+                            .collect(Collectors.toList());
+                })
+                ;
     }
 
     /**

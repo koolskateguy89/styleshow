@@ -21,11 +21,12 @@ import timber.log.Timber;
 // TODO: notifiaction on comment of my post
 
 // FIXME: even with alarm manager, service is killed after a few minutes
+// ^ it seems might have to use a wake lock
 
 @AndroidEntryPoint
 public class CommentNotificationService extends Service {
 
-    private static final int NOTIFICATION_ID = 1;
+    //private static final int NOTIFICATION_ID = 1;
 
     //private static final long INTERVAL_MILLIS = 1000 * 60 * 60; // 1 hour
     private static final long INTERVAL_MILLIS = 1000 * 15; // 15 seconds

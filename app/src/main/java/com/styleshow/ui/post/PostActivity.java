@@ -27,6 +27,10 @@ import timber.log.Timber;
 
 // FIXME: when typing, comment et is not visible cos keyboard is covering it
 
+// TODO: comment et action DONE
+
+// TODO: if my post, allow delete
+
 @AndroidEntryPoint
 public class PostActivity extends AppCompatActivity {
 

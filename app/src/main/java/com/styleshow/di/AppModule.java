@@ -5,17 +5,21 @@ import javax.inject.Singleton;
 import androidx.annotation.NonNull;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.styleshow.data.remote.CommentDataSource;
 import com.styleshow.data.remote.LoginDataSource;
+import com.styleshow.data.remote.MessageDataSource;
 import com.styleshow.data.remote.PostDataSource;
 import com.styleshow.data.remote.UserProfileDataSource;
 import com.styleshow.data.repository.CommentRepositoryImpl;
 import com.styleshow.data.repository.LoginRepositoryImpl;
+import com.styleshow.data.repository.MessageRepositoryImpl;
 import com.styleshow.data.repository.PostRepositoryImpl;
 import com.styleshow.data.repository.UserProfileRepositoryImpl;
 import com.styleshow.domain.repository.CommentRepository;
 import com.styleshow.domain.repository.LoginRepository;
+import com.styleshow.domain.repository.MessageRepository;
 import com.styleshow.domain.repository.PostRepository;
 import com.styleshow.domain.repository.UserProfileRepository;
 import dagger.Module;
@@ -37,6 +41,12 @@ public class AppModule {
     @Singleton
     FirebaseFirestore provideFirebaseFirestore() {
         return FirebaseFirestore.getInstance();
+    }
+
+    @Provides
+    @Singleton
+    FirebaseMessaging provideFirebaseMessaging() {
+        return FirebaseMessaging.getInstance();
     }
 
     @Provides
@@ -76,8 +86,10 @@ public class AppModule {
 
     @Provides
     @Singleton
-    UserProfileDataSource provideUserProfileDataSource(FirebaseFirestore firestore) {
-        return new UserProfileDataSource(firestore);
+    UserProfileDataSource provideUserProfileDataSource(
+            @NonNull LoginDataSource loginDataSource,
+            @NonNull FirebaseFirestore firestore) {
+        return new UserProfileDataSource(loginDataSource, firestore);
     }
 
     @Provides
@@ -100,5 +112,17 @@ public class AppModule {
     @Singleton
     CommentRepository provideCommentRepository(@NonNull CommentDataSource dataSource) {
         return new CommentRepositoryImpl(dataSource);
+    }
+
+    @Provides
+    @Singleton
+    MessageDataSource provideMessageDataSource(@NonNull FirebaseMessaging messaging) {
+        return new MessageDataSource(messaging);
+    }
+
+    @Provides
+    @Singleton
+    MessageRepository provideMessageRepository(@NonNull MessageDataSource dataSource) {
+        return new MessageRepositoryImpl(dataSource);
     }
 }
