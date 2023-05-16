@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.styleshow.data.remote.dto.UserProfileDto;
 import com.styleshow.domain.model.UserProfile;
@@ -101,7 +102,7 @@ public class UserProfileDataSource {
      */
     public Task<List<UserProfile>> getProfilesForUids(@NonNull List<String> uids) {
         return mProfiles
-                .whereIn("__name__", uids)
+                .whereIn(FieldPath.documentId(), uids)
                 .get()
                 .continueWith(task -> {
                     if (!task.isSuccessful())

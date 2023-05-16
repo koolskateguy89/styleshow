@@ -87,8 +87,9 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".StartupReceiver"
-                android:exported="true">
+        <!-- Boot completed receiver to start service(s) -->
+        <receiver android:name=".BootCompletedReceiver"
+                android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
