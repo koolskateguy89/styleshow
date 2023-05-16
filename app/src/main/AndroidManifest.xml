@@ -17,7 +17,9 @@
             android:maxSdkVersion="32" />
 
     <!-- Sending notifications -->
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <!--
     TODO: have a look at handling intent CREATE_SOCIAL_MEDIA_POSTING, see
@@ -84,6 +86,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver android:name=".StartupReceiver"
+                android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".service.CommentNotificationService"
+                android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </service>
 
         <!-- https://developer.android.com/training/data-storage/shared/photopicker#device-availability -->
         <!-- Trigger Google Play services to install the backported photo picker module. -->
