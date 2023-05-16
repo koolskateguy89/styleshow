@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import androidx.annotation.MainThread;
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -12,6 +13,7 @@ import com.styleshow.data.LoadingState;
 import com.styleshow.domain.model.Comment;
 import com.styleshow.domain.model.Post;
 import com.styleshow.domain.repository.CommentRepository;
+import com.styleshow.domain.repository.LoginRepository;
 import com.styleshow.domain.repository.PostRepository;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import timber.log.Timber;
@@ -19,8 +21,9 @@ import timber.log.Timber;
 @HiltViewModel
 public class PostViewModel extends ViewModel {
 
-    private final PostRepository postRepository;
-    private final CommentRepository commentRepository;
+    private final @NonNull LoginRepository loginRepository;
+    private final @NonNull PostRepository postRepository;
+    private final @NonNull CommentRepository commentRepository;
 
     private final MutableLiveData<Post> mPost = new MutableLiveData<>();
     private final MutableLiveData<List<Comment>> mComments = new MutableLiveData<>(List.of());
@@ -28,14 +31,18 @@ public class PostViewModel extends ViewModel {
             new MutableLiveData<>(LoadingState.IDLE);
 
     private final MutableLiveData<String> mComment = new MutableLiveData<>("");
-    // TODO: posting comment loading state
+    private volatile boolean postingComment = false;
+    private volatile boolean deletingComment = false;
 
     private boolean originalLikeState;
 
-    private volatile boolean postingComment = false;
-
     @Inject
-    public PostViewModel(PostRepository postRepository, CommentRepository commentRepository) {
+    public PostViewModel(
+            @NonNull LoginRepository loginRepository,
+            @NonNull PostRepository postRepository,
+            @NonNull CommentRepository commentRepository
+    ) {
+        this.loginRepository = loginRepository;
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
     }
@@ -58,6 +65,9 @@ public class PostViewModel extends ViewModel {
         return mCommentLoadingState;
     }
 
+    /**
+     * Returning the MutableLiveData because of two-way data binding.
+     */
     public MutableLiveData<String> getComment() {
         return mComment;
     }
@@ -119,9 +129,6 @@ public class PostViewModel extends ViewModel {
             return;
         }
 
-        //commentRepository.postComment(post.getId(), comment.trim());
-        // TODO: on post success, clear comment text and load comments
-
         postingComment = true;
 
         commentRepository.postComment(post.getId(), content)
@@ -131,6 +138,43 @@ public class PostViewModel extends ViewModel {
                 .addOnSuccessListener(ignore -> {
                     Timber.d("posted comment: %");
                     mComment.setValue("");
+                    loadComments();
+                });
+    }
+
+    /**
+     * Returns {@code true} if the current user can delete the comment.
+     * <p>
+     * They can delete it if they are the author of the comment or
+     * the author of the post.
+     */
+    public boolean canDeleteComment(Comment comment) {
+        String currentUserId = loginRepository.getCurrentUser().getUid();
+        String postAuthorId = mPost.getValue().getAuthor().getUid();
+
+        return currentUserId.equals(comment.getAuthorId())
+                || currentUserId.equals(postAuthorId);
+    }
+
+    public void tryDeleteComment(Comment comment) {
+        String postId = mPost.getValue().getId();
+
+        if (!canDeleteComment(comment))
+            return;
+
+        if (deletingComment) {
+            Timber.w("already deleting comment");
+            return;
+        }
+
+        deletingComment = true;
+
+        commentRepository.deleteComment(postId, comment.getId())
+                .addOnCompleteListener(ignore -> {
+                    deletingComment = false;
+                })
+                .addOnSuccessListener(ignore -> {
+                    Timber.d("deleted comment: %s", comment);
                     loadComments();
                 });
     }

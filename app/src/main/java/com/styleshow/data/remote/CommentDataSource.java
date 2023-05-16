@@ -124,7 +124,13 @@ public class CommentDataSource {
     }
 
     public Task<Void> deleteComment(@NonNull String postId, @NonNull String commentId) {
-        // TODO
-        return Tasks.forResult(null);
+        return mPostRef.document(postId).collection("comments").document(commentId)
+                .delete()
+                .addOnSuccessListener(ignore -> {
+                    Timber.d("Deleted comment %s from post %s", commentId, postId);
+                })
+                .addOnFailureListener(e -> {
+                    Timber.w(e, "Failed to delete comment %s from post %s", commentId, postId);
+                });
     }
 }

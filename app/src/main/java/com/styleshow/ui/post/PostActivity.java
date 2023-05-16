@@ -6,12 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
-import android.widget.Toast;
 import androidx.activity.result.contract.ActivityResultContract;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import com.styleshow.R;
 import com.styleshow.adapters.CommentAdapter;
 import com.styleshow.common.Constants;
 import com.styleshow.databinding.ActivityPostBinding;
@@ -22,8 +23,6 @@ import timber.log.Timber;
 // TODO: physical back button
 // TODO: display number of likes
 // TODO: on tablets, show image on left and actions,text,etc on right
-
-// TODO: investigate launchMode
 
 @AndroidEntryPoint
 public class PostActivity extends AppCompatActivity {
@@ -50,11 +49,29 @@ public class PostActivity extends AppCompatActivity {
 
         // Setup comments recycler view
         var commentAdapter = new CommentAdapter(List.of());
-        commentAdapter.setItemClickListener((index, comment) -> {
-            // TODO: confirm delete dialog if is my comment
-            Toast.makeText(this, comment.getContent(), Toast.LENGTH_SHORT).show();
 
-            // TODO: viewmodel delete comment
+        // Enable deleting comment on click if user has permission
+        commentAdapter.setItemLongClickListener((index, comment) -> {
+            // User doesn't have permission to delete comment
+            if (!viewModel.canDeleteComment(comment))
+                return;
+
+            var builder = new AlertDialog.Builder(this)
+                    .setTitle(R.string.delete_comment_dialog_title)
+                    .setMessage(R.string.delete_comment_dialog_message)
+                    // Add the buttons
+                    .setPositiveButton(R.string.delete_comment_dialog_ok, (dialog, id) -> {
+                        // User clicked OK button
+                        Timber.i("User clicked OK button");
+                        viewModel.tryDeleteComment(comment);
+                    })
+                    .setNegativeButton(R.string.delete_comment_dialog_cancel, (dialog, id) -> {
+                        // User cancelled the dialog
+                        Timber.i("User cancelled the dialog");
+                    });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
         });
 
         viewModel.getComments().observe(this, commentAdapter::setItems);
