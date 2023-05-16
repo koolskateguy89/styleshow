@@ -41,16 +41,6 @@
                         />
             </com.styleshow.components.SquareFrameLayout>
 
-            <!-- Actions -->
-            <com.styleshow.components.PostActionsView
-                    android:id="@+id/view_post_actions"
-                    app:liked="@{post.liked}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
-                    />
-
             <com.google.android.material.divider.MaterialDivider
                     android:id="@+id/divider"
                     android:layout_width="match_parent"
@@ -76,7 +66,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:constraint_referenced_ids="image_wrapper,view_post_actions,divider,view_post_caption"
+                    app:constraint_referenced_ids="image_wrapper,divider,view_post_caption"
                     android:orientation="vertical"
                     app:flow_horizontalAlign="start"
                     />
