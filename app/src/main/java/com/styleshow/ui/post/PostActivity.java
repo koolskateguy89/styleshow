@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import com.google.android.material.snackbar.Snackbar;
 import com.styleshow.R;
 import com.styleshow.adapters.CommentAdapter;
 import com.styleshow.common.Constants;
@@ -23,6 +24,8 @@ import timber.log.Timber;
 // TODO: physical back button
 // TODO: display number of likes
 // TODO: on tablets, show image on left and actions,text,etc on right
+
+// FIXME: when typing, comment et is not visible cos keyboard is covering it
 
 @AndroidEntryPoint
 public class PostActivity extends AppCompatActivity {
@@ -62,12 +65,14 @@ public class PostActivity extends AppCompatActivity {
                     // Add the buttons
                     .setPositiveButton(R.string.delete_comment_dialog_ok, (dialog, id) -> {
                         // User clicked OK button
-                        Timber.i("User clicked OK button");
-                        viewModel.tryDeleteComment(comment);
+                        viewModel.tryDeleteComment(comment).addOnSuccessListener(ignore -> {
+                            Snackbar.make(binding.getRoot(), R.string.delete_comment_success,
+                                            Snackbar.LENGTH_SHORT)
+                                    .show();
+                        });
                     })
                     .setNegativeButton(R.string.delete_comment_dialog_cancel, (dialog, id) -> {
-                        // User cancelled the dialog
-                        Timber.i("User cancelled the dialog");
+                        // User cancelled the dialog (do nothing)
                     });
 
             AlertDialog dialog = builder.create();

@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.styleshow.data.LoadingState;
 import com.styleshow.domain.model.Comment;
 import com.styleshow.domain.model.Post;
@@ -156,20 +158,20 @@ public class PostViewModel extends ViewModel {
                 || currentUserId.equals(postAuthorId);
     }
 
-    public void tryDeleteComment(Comment comment) {
+    public Task<Void> tryDeleteComment(Comment comment) {
         String postId = mPost.getValue().getId();
 
         if (!canDeleteComment(comment))
-            return;
+            return Tasks.forCanceled();
 
         if (deletingComment) {
             Timber.w("already deleting comment");
-            return;
+            return Tasks.forCanceled();
         }
 
         deletingComment = true;
 
-        commentRepository.deleteComment(postId, comment.getId())
+        return commentRepository.deleteComment(postId, comment.getId())
                 .addOnCompleteListener(ignore -> {
                     deletingComment = false;
                 })
