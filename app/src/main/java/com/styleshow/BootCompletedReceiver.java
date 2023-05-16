@@ -14,7 +14,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Timber.i("(boot) intent = %s", intent);
 
-        if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
+        if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
             var serviceIntent = new Intent(context, CommentNotificationService.class);
             context.startService(serviceIntent);
         }

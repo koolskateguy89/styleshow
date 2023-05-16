@@ -19,6 +19,8 @@ import com.styleshow.databinding.ActivityNewPostBinding;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
+// TODO?: let them upload 1 hour from now, use alarm manager
+
 /**
  * Activity for creating a new post. The user can select an image, enter a caption and a
  * shoe URL, and then post it.
