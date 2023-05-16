@@ -22,7 +22,7 @@ import com.styleshow.domain.model.Post;
  */
 public class PostCarouselAdapter extends ClickableRecyclerAdapter<PostCarouselAdapter.PostHolder, Post> {
 
-    private List<Post> posts;
+    private @NonNull List<Post> posts;
 
     public PostCarouselAdapter(@NonNull List<Post> posts) {
         this.posts = posts;

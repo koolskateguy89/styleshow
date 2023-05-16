@@ -1,6 +1,5 @@
 package com.styleshow.adapters;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.IntConsumer;
 
@@ -19,7 +18,7 @@ import com.styleshow.domain.model.Post;
  */
 public class PostPreviewAdapter extends ClickableRecyclerAdapter<PostPreviewAdapter.PostPreviewHolder, Post> {
 
-    private List<Post> posts;
+    private @NonNull List<Post> posts;
 
     public PostPreviewAdapter(List<Post> posts) {
         this.posts = posts;
@@ -34,13 +33,13 @@ public class PostPreviewAdapter extends ClickableRecyclerAdapter<PostPreviewAdap
     @NonNull
     @Override
     public PostPreviewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        var postPreviewBinding = ItemPostPreviewBinding.inflate(
+        var binding = ItemPostPreviewBinding.inflate(
                 LayoutInflater.from(parent.getContext()),
                 parent,
                 false
         );
 
-        return new PostPreviewHolder(postPreviewBinding, index -> {
+        return new PostPreviewHolder(binding, index -> {
             onItemClick(index, posts.get(index));
         });
     }

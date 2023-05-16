@@ -14,7 +14,7 @@ import com.styleshow.domain.model.Post;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
 
-    private List<Post> posts;
+    private @NonNull List<Post> posts;
     private @Nullable ItemClickListener<Post> imageClickListener;
     private @Nullable ItemClickListener<Post> captionClickListener;
 
@@ -29,13 +29,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
 
     @Override
     public @NonNull PostHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        var postPreviewBinding = ItemPostBinding.inflate(
+        var binding = ItemPostBinding.inflate(
                 LayoutInflater.from(parent.getContext()),
                 parent,
                 false
         );
 
-        return new PostHolder(postPreviewBinding, index -> {
+        return new PostHolder(binding, index -> {
             if (imageClickListener != null)
                 imageClickListener.onClick(index, posts.get(index));
         }, index -> {

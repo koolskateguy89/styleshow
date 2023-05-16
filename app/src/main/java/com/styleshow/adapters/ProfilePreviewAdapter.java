@@ -14,7 +14,7 @@ import com.styleshow.domain.model.UserProfile;
 public class ProfilePreviewAdapter extends
         ClickableRecyclerAdapter<ProfilePreviewAdapter.ProfilePreviewHolder, UserProfile> {
 
-    private List<UserProfile> profiles;
+    private @NonNull List<UserProfile> profiles;
 
     public ProfilePreviewAdapter(@NonNull List<UserProfile> profiles) {
         this.profiles = profiles;
@@ -29,13 +29,13 @@ public class ProfilePreviewAdapter extends
     @NonNull
     @Override
     public ProfilePreviewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        var profilePreviewBinding = ItemProfilePreviewBinding.inflate(
+        var binding = ItemProfilePreviewBinding.inflate(
                 LayoutInflater.from(parent.getContext()),
                 parent,
                 false
         );
 
-        return new ProfilePreviewHolder(profilePreviewBinding, index -> {
+        return new ProfilePreviewHolder(binding, index -> {
             onItemClick(index, profiles.get(index));
         });
     }
