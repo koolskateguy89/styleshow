@@ -4,6 +4,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         >
     <data>
+        <import type="com.styleshow.Converter" />
         <variable
                 name="comment"
                 type="com.styleshow.domain.model.Comment" />
@@ -47,10 +48,9 @@
                 android:textAppearance="?attr/textAppearanceTitleMedium"
                 />
 
-        <!-- TODO: format date -->
         <TextView
                 android:id="@+id/tv_date"
-                android:text='@{comment.postedAt.toLocaleString() ?? "No Date"}'
+                android:text='@{Converter.formatDate(comment.postedAt) ?? "No date"}'
                 tools:text="Date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
