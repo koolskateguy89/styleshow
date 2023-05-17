@@ -5,8 +5,12 @@
         tools:context=".components.PostActionsView"
         >
     <data>
+        <import type="android.view.View" />
         <variable
                 name="liked"
+                type="boolean" />
+        <variable
+                name="deletable"
                 type="boolean" />
     </data>
 
@@ -14,15 +18,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
-
-        <androidx.constraintlayout.helper.widget.Flow
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:constraint_referenced_ids="btn_like,btn_comment,btn_share"
-                />
 
         <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_like"
@@ -53,6 +48,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/share_picture_description"
+                />
+
+        <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_delete"
+                android:visibility="@{deletable ? View.VISIBLE : View.GONE}"
+                style="?attr/materialIconButtonOutlinedStyle"
+                app:icon="@drawable/ic_delete_24dp"
+                app:iconTint="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/delete_picture_description"
+                />
+
+        <androidx.constraintlayout.helper.widget.Flow
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:constraint_referenced_ids="btn_like,btn_comment,btn_share,btn_delete"
                 />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -39,6 +39,7 @@
         <com.styleshow.components.PostActionsView
                 android:id="@+id/view_post_actions"
                 app:liked="@{viewModel.post.liked}"
+                app:deletable="@{viewModel.deletable}"
                 app:onLikeClickListener="@{() -> viewModel.likeButtonClicked()}"
                 app:onCommentClickListener="@{() -> etComment.requestFocus()}"
                 android:layout_width="0dp"

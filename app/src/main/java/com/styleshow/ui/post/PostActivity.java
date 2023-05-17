@@ -54,6 +54,13 @@ public class PostActivity extends AppCompatActivity {
         binding.setLifecycleOwner(this);
         binding.setViewModel(viewModel);
 
+        binding.viewPostActions.setOnDeleteClickListener(v -> {
+            // TODO: confirm dialog then
+            viewModel.deleteButtonClicked();
+            // then finish() but with appropriate result - im not too sure what the result should be
+            // need to check fragments that use this activity
+        });
+
         // Setup comments recycler view
         var commentAdapter = new CommentAdapter(List.of());
 

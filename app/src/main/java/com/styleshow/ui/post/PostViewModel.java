@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.google.android.gms.tasks.Task;
@@ -28,11 +29,14 @@ public class PostViewModel extends ViewModel {
     private final @NonNull CommentRepository commentRepository;
 
     private final MutableLiveData<Post> mPost = new MutableLiveData<>();
+    private final MediatorLiveData<Boolean> mDeletable = new MediatorLiveData<>(false);
+
     private final MutableLiveData<List<Comment>> mComments = new MutableLiveData<>(List.of());
     private final MutableLiveData<LoadingState> mCommentLoadingState =
             new MutableLiveData<>(LoadingState.IDLE);
 
     private final MutableLiveData<String> mComment = new MutableLiveData<>("");
+
     private volatile boolean postingComment = false;
     private volatile boolean deletingComment = false;
 
@@ -47,6 +51,15 @@ public class PostViewModel extends ViewModel {
         this.loginRepository = loginRepository;
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
+
+        mDeletable.addSource(mPost, post -> {
+            if (post == null) {
+                mDeletable.setValue(false);
+            } else {
+                String currentUserId = loginRepository.getCurrentUser().getUid();
+                mDeletable.setValue(post.getAuthor().getUid().equals(currentUserId));
+            }
+        });
     }
 
     public LiveData<Post> getPost() {
@@ -57,6 +70,10 @@ public class PostViewModel extends ViewModel {
     public void setPost(Post post) {
         mPost.setValue(post);
         originalLikeState = post.isLiked();
+    }
+
+    public LiveData<Boolean> getDeletable() {
+        return mDeletable;
     }
 
     public LiveData<List<Comment>> getComments() {
@@ -113,6 +130,22 @@ public class PostViewModel extends ViewModel {
 
         // Update the post - optimistic update
         this.mPost.setValue(post.withLiked(!isLiked));
+    }
+
+    @MainThread
+    public void deleteButtonClicked() {
+        var post = mPost.getValue();
+        if (post == null) {
+            return;
+        }
+
+        boolean canDelete = mDeletable.getValue();
+        if (!canDelete) {
+            return;
+        }
+
+        // TODO: actually delete
+        Timber.d("deleting post: %s", post);
     }
 
     public void tryPostComment() {

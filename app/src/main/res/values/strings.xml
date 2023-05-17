@@ -69,4 +69,5 @@
     <string name="unlike_picture_description">Remove like</string>
     <string name="comment_picture_description">Comment</string>
     <string name="share_picture_description">Share</string>
+    <string name="delete_picture_description">Delete</string>
 </resources>

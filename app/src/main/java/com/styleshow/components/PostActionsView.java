@@ -10,6 +10,10 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.styleshow.R;
 import com.styleshow.databinding.ViewPostActionsBinding;
 
+// TODO: add delete button (and flag for canDelete)
+// and onDeleteButtonClicked listener
+// ic_delete_24dp
+
 /**
  * View that contains the actions for a post. Does not contain any logic, just UI.
  *
@@ -23,6 +27,7 @@ public class PostActionsView extends ConstraintLayout {
 
     private ViewPostActionsBinding binding;
     private boolean liked;
+    private boolean deletable;
 
     public PostActionsView(@NonNull Context context) {
         super(context);
@@ -58,6 +63,7 @@ public class PostActionsView extends ConstraintLayout {
 
         try {
             liked = a.getBoolean(R.styleable.PostActionsView_liked, false);
+            deletable = a.getBoolean(R.styleable.PostActionsView_deletable, false);
         } finally {
             a.recycle();
         }
@@ -74,6 +80,15 @@ public class PostActionsView extends ConstraintLayout {
         binding.setLiked(liked);
     }
 
+    public boolean isDeletable() {
+        return deletable;
+    }
+
+    public void setDeletable(boolean deletable) {
+        this.deletable = deletable;
+        binding.setDeletable(deletable);
+    }
+
     public void setOnLikeClickListener(OnClickListener listener) {
         binding.btnLike.setOnClickListener(listener);
     }
@@ -84,5 +99,9 @@ public class PostActionsView extends ConstraintLayout {
 
     public void setOnShareClickListener(OnClickListener listener) {
         binding.btnShare.setOnClickListener(listener);
+    }
+
+    public void setOnDeleteClickListener(OnClickListener listener) {
+        binding.btnDelete.setOnClickListener(listener);
     }
 }
