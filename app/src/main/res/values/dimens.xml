@@ -8,4 +8,7 @@
     <dimen name="profile_picture_size">160dp</dimen>
     <dimen name="profile_actions_gap">20dp</dimen>
     <dimen name="profile_info_gap">8dp</dimen>
+
+    <!-- Chat -->
+    <dimen name="chat_message_margin">8dp</dimen>
 </resources>

@@ -3,6 +3,7 @@ package com.styleshow.data.remote.dto;
 import androidx.annotation.NonNull;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.ServerTimestamp;
 import com.styleshow.domain.model.ChatMessage;
 
 /**
@@ -16,8 +17,12 @@ public class ChatMessageDto {
     public String id;
 
     public String senderUid;
+
     public String receiverUid;
+
     public String content;
+
+    @ServerTimestamp
     public Timestamp sentAt;
 
     public ChatMessage toChatMessage(@NonNull String currentUserId) {

@@ -1,6 +1,5 @@
 package com.styleshow.data.remote.dto;
 
-
 import androidx.annotation.NonNull;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentId;

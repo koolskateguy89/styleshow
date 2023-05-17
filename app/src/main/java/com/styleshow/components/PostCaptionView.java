@@ -23,6 +23,9 @@ import com.styleshow.domain.model.UserProfile;
  *     <li>Post postedAt timestamp</li>
  *     <li>Post caption</li>
  * </ul>
+ *
+ * @see R.styleable#PostCaptionView
+ * @see R.layout#view_post_caption
  */
 public class PostCaptionView extends ConstraintLayout {
 

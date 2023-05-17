@@ -11,6 +11,11 @@ import com.styleshow.common.ClickableRecyclerAdapter;
 import com.styleshow.databinding.ItemProfilePreviewBinding;
 import com.styleshow.domain.model.UserProfile;
 
+/**
+ * The adapter for the list of profile previews.
+ *
+ * @see com.styleshow.R.layout#item_profile_preview
+ */
 public class ProfilePreviewAdapter extends
         ClickableRecyclerAdapter<ProfilePreviewAdapter.ProfilePreviewHolder, UserProfile> {
 
@@ -52,9 +57,10 @@ public class ProfilePreviewAdapter extends
     }
 
     static class ProfilePreviewHolder extends RecyclerView.ViewHolder {
-        final ItemProfilePreviewBinding binding;
 
-        public ProfilePreviewHolder(ItemProfilePreviewBinding binding, @NonNull IntConsumer onItemClick) {
+        final @NonNull ItemProfilePreviewBinding binding;
+
+        public ProfilePreviewHolder(@NonNull ItemProfilePreviewBinding binding, @NonNull IntConsumer onItemClick) {
             super(binding.getRoot());
             this.binding = binding;
 

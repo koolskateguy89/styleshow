@@ -22,7 +22,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
  */
 public class MovableFloatingActionButton extends FloatingActionButton implements View.OnTouchListener {
 
-    private final static float CLICK_DRAG_TOLERANCE = 10; // Often, there will be a slight, unintentional, drag when the user taps the FAB, so we need to account for this.
+    /**
+     * Often, there will be a slight, unintentional, drag when the user taps the FAB, so we
+     * need to account for this.
+     */
+    private final static float CLICK_DRAG_TOLERANCE = 10;
 
     private float downRawX, downRawY;
     private float dX, dY;
@@ -51,7 +55,6 @@ public class MovableFloatingActionButton extends FloatingActionButton implements
      */
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-
         ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
 
         int action = motionEvent.getAction();

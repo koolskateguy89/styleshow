@@ -1,10 +1,18 @@
 package com.styleshow.ui.chat;
 
+import java.util.List;
+
 import android.os.Bundle;
+import android.view.inputmethod.EditorInfo;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import com.google.android.material.snackbar.Snackbar;
+import com.styleshow.R;
+import com.styleshow.adapters.ChatMessageAdapter;
 import com.styleshow.common.Constants;
 import com.styleshow.databinding.ActivityChatBinding;
+import com.styleshow.domain.model.ChatMessage;
 import com.styleshow.domain.model.UserProfile;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
@@ -25,11 +33,34 @@ public class ChatActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(ChatViewModel.class);
         viewModel.setReceiver(receiver);
         viewModel.loadMessages();
+        // TODO: listen to messages (if not already listening)
 
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        binding.setLifecycleOwner(this);
+        binding.setViewModel(viewModel);
 
-        // Handle loading state
+        // Send message on DONE
+        binding.etNewMessage.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                viewModel.trySendMessage();
+            }
+            return false;
+        });
+
+        // Setup message recycler view
+        var adapter = new ChatMessageAdapter(List.of());
+
+        // On long click on message, confirm message deletion
+        adapter.setItemLongClickListener((index, message) -> {
+            if (viewModel.canDeleteMessage(message))
+                confirmDeleteMessageWithDialog(message);
+        });
+
+        binding.rvMessages.setAdapter(adapter);
+        viewModel.getMessages().observe(this, adapter::setItems);
+
+        // Handle initial messages loading state
         viewModel.getLoadingState().observe(this, loadingState -> {
             switch (loadingState) {
                 case LOADING -> {
@@ -42,6 +73,28 @@ public class ChatActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
+    private void confirmDeleteMessageWithDialog(ChatMessage message) {
+        var builder = new AlertDialog.Builder(this)
+                .setTitle(R.string.delete_message_dialog_title)
+                .setMessage(R.string.delete_message_dialog_message)
+                // Add the buttons
+                .setPositiveButton(R.string.dialog_ok, (dialog, id) -> {
+                    // User clicked OK button
+                    // Delete the comment
+                    viewModel.deleteMessage(message).addOnSuccessListener(ignore -> {
+                        // Inform user of deletion
+                        Snackbar.make(binding.getRoot(), R.string.delete_message_success,
+                                        Snackbar.LENGTH_SHORT)
+                                .show();
+                    });
+                })
+                .setNegativeButton(R.string.dialog_cancel, (dialog, id) -> {
+                    // User cancelled the dialog (do nothing)
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

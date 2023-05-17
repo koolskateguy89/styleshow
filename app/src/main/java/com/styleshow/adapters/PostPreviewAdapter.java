@@ -16,11 +16,12 @@ import com.styleshow.domain.model.Post;
  *
  * @see com.styleshow.R.layout#item_post_preview
  */
-public class PostPreviewAdapter extends ClickableRecyclerAdapter<PostPreviewAdapter.PostPreviewHolder, Post> {
+public class PostPreviewAdapter extends
+        ClickableRecyclerAdapter<PostPreviewAdapter.PostPreviewHolder, Post> {
 
     private @NonNull List<Post> posts;
 
-    public PostPreviewAdapter(List<Post> posts) {
+    public PostPreviewAdapter(@NonNull List<Post> posts) {
         this.posts = posts;
     }
 

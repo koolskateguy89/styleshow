@@ -39,7 +39,10 @@ public class MessagesViewModel extends ViewModel {
         var handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(() -> {
             mLoadingState.setValue(LoadingState.SUCCESS_IDLE);
-        }, 1500);
+        },
+                1
+                //1500
+        );
     }
 
     // this is a test, it almost defo won't be in this viewmodel,

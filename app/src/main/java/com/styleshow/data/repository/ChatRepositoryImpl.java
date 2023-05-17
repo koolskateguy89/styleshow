@@ -25,4 +25,9 @@ public class ChatRepositoryImpl implements ChatRepository {
     public void sendMessage(@NonNull String receiverUid, @NonNull String content) {
         dataSource.sendMessage(receiverUid, content);
     }
+
+    @Override
+    public Task<Void> deleteMessage(@NonNull String messageId) {
+        return dataSource.deleteMessage(messageId);
+    }
 }

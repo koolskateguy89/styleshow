@@ -12,6 +12,11 @@ import com.styleshow.common.ItemClickListener;
 import com.styleshow.databinding.ItemPostBinding;
 import com.styleshow.domain.model.Post;
 
+/**
+ * The adapter for the list of posts.
+ *
+ * @see com.styleshow.R.layout#item_post
+ */
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
 
     private @NonNull List<Post> posts;

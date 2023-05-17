@@ -15,9 +15,6 @@ import jp.wasabeef.transformers.picasso.CropCircleTransformation;
 import jp.wasabeef.transformers.picasso.CropSquareTransformation;
 import jp.wasabeef.transformers.picasso.GrayscaleTransformation;
 
-// TODO: convert transformation type to ints
-// see https://medium.com/trade-me/android-then-and-now-intro-intdef-enums-bca22d5cca56
-
 /**
  * A custom ImageView that uses Picasso to load images.
  * <p>
@@ -25,6 +22,7 @@ import jp.wasabeef.transformers.picasso.GrayscaleTransformation;
  * see {@link TransformationEnum}.
  *
  * @apiNote Do NOT instantiate this in code, use it in XML only.
+ * @see R.styleable#PicassoImageView
  * @see <a href="https://github.com/square/picasso">Picasso</a>
  */
 public class PicassoImageView extends androidx.appcompat.widget.AppCompatImageView {
@@ -76,11 +74,11 @@ public class PicassoImageView extends androidx.appcompat.widget.AppCompatImageVi
                 0, 0);
 
         try {
-            this.noPlaceholder = a.getBoolean(R.styleable.PicassoImageView_noPlaceholder, false);
-            this.placeholderResId = a.getResourceId(R.styleable.PicassoImageView_placeholder, R.drawable.img_placeholder);
+            noPlaceholder = a.getBoolean(R.styleable.PicassoImageView_noPlaceholder, false);
+            placeholderResId = a.getResourceId(R.styleable.PicassoImageView_placeholder, R.drawable.img_placeholder);
 
             int transformationIndex = a.getInteger(R.styleable.PicassoImageView_transform, TransformationEnum.getDefault().ordinal());
-            this.transformation = TransformationEnum.values()[transformationIndex].transformation;
+            transformation = TransformationEnum.values()[transformationIndex].transformation;
         } finally {
             a.recycle();
         }

@@ -12,4 +12,6 @@ public interface ChatRepository {
     // TODO: listen for new messages
 
     void sendMessage(@NonNull String receiverUid, @NonNull String content);
+
+    Task<Void> deleteMessage(@NonNull String messageId);
 }

@@ -1,54 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ViewSwitcher
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/view_switcher"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         tools:context=".ui.chat.ChatActivity"
         >
+    <data>
+        <variable
+                name="viewModel"
+                type="com.styleshow.ui.chat.ChatViewModel" />
+    </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ViewSwitcher
+            android:id="@+id/view_switcher"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            >
 
-        <!--
-        TODO: receiver image at top
-        TODO: receiver name at top
-        TODO: et message at bottom with send button (end icon)
-        -->
-
-        <TextView
-                android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="MESSAGE THIS USER"
-                android:textStyle="bold"
-                android:textAllCaps="false"
-                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-                />
-
-        <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_messages"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                />
+                android:layout_height="match_parent"
+                >
 
-        <androidx.constraintlayout.helper.widget.Flow
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:constraint_referenced_ids="tv_title,rv_messages"
-                android:orientation="vertical"
-                />
+            <com.styleshow.components.SquareFrameLayout
+                    android:id="@+id/view_image_wrapper"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    >
+                <com.styleshow.components.PicassoImageView
+                        android:id="@+id/iv_image"
+                        android:src="@{viewModel.receiver.profilePictureUrl}"
+                        tools:src="@drawable/ic_launcher_background"
+                        app:transform="cropCircle"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="@string/profile_picture_description"
+                        />
+            </com.styleshow.components.SquareFrameLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                    android:id="@+id/tv_receiver_name"
+                    android:text="@{viewModel.receiver.username, default=username}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textAllCaps="false"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    />
 
-    <include layout="@layout/view_progress" />
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_messages"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    />
 
-</ViewSwitcher>
+            <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layout_new_message"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_message"
+                    app:endIconMode="custom"
+                    app:endIconDrawable="@drawable/ic_send_24dp"
+                    app:endIconContentDescription="@string/action_send_message"
+                    app:endIconOnClickListener="@{() -> viewModel.trySendMessage()}"
+                    >
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_new_message"
+                        android:text="@={viewModel.newMessage}"
+                        android:imeOptions="actionDone"
+                        android:inputType="text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.constraintlayout.helper.widget.Flow
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:constraint_referenced_ids="view_image_wrapper,tv_receiver_name,rv_messages,layout_new_message"
+                    android:orientation="vertical"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include layout="@layout/view_progress" />
+
+    </ViewSwitcher>
+</layout>

@@ -20,6 +20,9 @@ import com.styleshow.databinding.ViewPostActionsBinding;
  *     <li>Open in browser</li>
  *     <li>Delete (if deletable)</li>
  * </ul>
+ *
+ * @see R.styleable#PostActionsView
+ * @see R.layout#view_post_actions
  */
 public class PostActionsView extends ConstraintLayout {
 

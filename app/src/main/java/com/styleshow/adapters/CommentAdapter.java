@@ -11,7 +11,8 @@ import com.styleshow.common.LongClickableRecyclerAdapter;
 import com.styleshow.databinding.ItemCommentBinding;
 import com.styleshow.domain.model.Comment;
 
-public class CommentAdapter extends LongClickableRecyclerAdapter<CommentAdapter.CommentHolder, Comment> {
+public class CommentAdapter extends
+        LongClickableRecyclerAdapter<CommentAdapter.CommentHolder, Comment> {
 
     private @NonNull List<Comment> comments;
 
@@ -52,9 +53,9 @@ public class CommentAdapter extends LongClickableRecyclerAdapter<CommentAdapter.
 
 
     static class CommentHolder extends RecyclerView.ViewHolder {
-        final ItemCommentBinding binding;
+        final @NonNull ItemCommentBinding binding;
 
-        public CommentHolder(ItemCommentBinding binding, @NonNull IntConsumer onItemLongClick) {
+        public CommentHolder(@NonNull ItemCommentBinding binding, @NonNull IntConsumer onItemLongClick) {
             super(binding.getRoot());
             this.binding = binding;
 

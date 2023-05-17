@@ -55,6 +55,13 @@
     <!-- Select user activity -->
     <string name="title_select_user">Select User to Message</string>
 
+    <!-- Chat activity -->
+    <string name="hint_message">Message</string>
+    <string name="action_send_message">Send message</string>
+    <string name="delete_message_dialog_title">Delete message</string>
+    <string name="delete_message_dialog_message">Are you sure you want to delete this message?</string>
+    <string name="delete_message_success">Message deleted.</string>
+
     <!-- UserProfile -->
     <string name="profile_picture_description">Profile picture</string>
 

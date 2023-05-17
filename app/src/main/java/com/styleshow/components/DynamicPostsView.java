@@ -37,12 +37,16 @@ import timber.log.Timber;
 
 // FIXME: for some reason sometimes the top row of the grid isn't sized correctly
 // i have no idea why
+// and now it seems multiple rows of remote images are like that
 
 /**
  * Custom view to display either a grid or carousel of posts.
  * It contains controls to switch between the two layouts.
  * <p>
- * Using SharedPreferences to store the layout type.
+ * Using {@code SharedPreferences} to persist the layout type.
+ *
+ * @see R.styleable#DynamicPostsView
+ * @see R.layout#view_dynamic_posts
  */
 public class DynamicPostsView extends ConstraintLayout {
 
