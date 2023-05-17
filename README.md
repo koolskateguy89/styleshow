@@ -2,30 +2,24 @@
 
 ## Requirements
 
-m = guaranteed to do
-n = i think will do
-p = perhaps, not really sure what it is/how to do/where to do
-
-- [m] (4%) Minimum 2 distinct screens (excluding guide & login screen)
-- [m] (3%) Work properly with the app lifecycle (including rotate screen changes).
-- [m] (2%) Use permissions and use them responsibly.
-- [m] (2%) Use intents to move inside your app.
-- [m] (2%) Use intents to move to an outside app.
+- [x] (4%) Minimum 2 distinct screens (excluding guide & login screen)
+- [x] (3%) Work properly with the app lifecycle (including rotate screen changes).
+- [x] (2%) Use permissions and use them responsibly.
+- [x] (2%) Use intents to move inside your app.
+- [x] (2%) Use intents to move to an outside app.
 - [ ] (6%) Create and use your own content provider.
-- [m] (2%) Use SharedPreferences.
+- [x] (2%) Use SharedPreferences.
 - [ ] (4%) Create and use a local database.
-- [m] (4%) Use firebase for storing and retrieving data.
-- [m] (2%) Receive Broadcast events and make use of them in meaningful ways.
-- [m] (2%) Extend and use an existing View class.
-- [m] (2%) Implement and use a ShareActionProvider.
-- [m] (6%) Implement and use your own service.
-- [m] (2%) Use the AlarmManager.
-- [m] (4%) Use Notifications.
-- [m] (3%) Capture touch gestures and make reasonable use of them
+- [x] (4%) Use firebase for storing and retrieving data.
+- [x] (2%) Receive Broadcast events and make use of them in meaningful ways.
+- [x] (2%) Extend and use an existing View class.
+- [x] (2%) Implement and use a ShareActionProvider.
+- [x] (6%) Implement and use your own service.
+- [x] (2%) Use the AlarmManager.
+- [x] (4%) Use Notifications.
+- [x] (3%) Capture touch gestures and make reasonable use of them
 
 Max 40
-
-TODO: for content provider cos async firestore calls https://stackoverflow.com/a/24718264
 
 ## Useful links
 
