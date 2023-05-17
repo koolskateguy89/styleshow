@@ -30,7 +30,7 @@ Did you manually edit the gradle file of your Android project?
 Yes
 
 If you edited the gradle file, please give a short description of the changes.
-Added libraries, fixed dependency conflicts.
+Added libraries, fixed dependency conflicts, enable view & data binding.
 
 Use at most 100 characters to describe the kind of app you implemented (e.g., "todo list" or "fitness tracker").
 Social media app for shoes.
@@ -177,7 +177,7 @@ Base package: com.styleshow
 .ui.profile.ProfileFragment#launchPostActivity - activity launcher
 
 (d) Which APIs, libraries or third party code did you use when implementing feature d (list one per line)?
-NONE except ActivityResultLaunchers which are built into Android.
+NONE
 
 Does your app use intents to move to an outside app?
 - [x] Yes
@@ -214,7 +214,7 @@ Base package: com.styleshow
 .components.DynamicPostsView#saveLayoutToSharedPrefs
 
 (g) Which APIs, libraries or third party code did you use when implementing feature g (list one per line)?
-SharedPreferences
+NONE
 
 Did you create and use a local database in your app?
 - [ ] Yes
@@ -305,7 +305,7 @@ Base package: com.styleshow
 .ui.post.PostActivity#showSharePopupMenu
 
 (l) What kind of information are you sharing via the ShareActionProvider? Keywords are sufficient in your answer.
-Webpage like to a shoe.
+Shoe webpage link.
 
 (l) Which APIs, libraries or third party code did you use when implementing feature l (i.e., feature "ell"; list one per line)?
 NONE
@@ -323,7 +323,6 @@ Service to listen for new messages and send notifications upon receiving them. A
 
 (m) Which APIs, libraries or third party code did you use when implementing feature m (list one per line)?
 Firebase Firestore
-AlarmManager
 
 Does your app use the AlarmManager?
 - [x] Yes
@@ -381,7 +380,7 @@ com.styleshow.ui.guide.GuideActivity#onCreate
 List up to 6 features of your user guide which make it responsive (keywords are sufficient; one per line).
 Viewport units
 Relative units
-Simple layout
+Simple 1D layout
 Media queries
 
 Apart from the ones mentioned above, which other APIs, libraries or third party code did you use in your app (write "none" or list one per line)?
@@ -395,7 +394,6 @@ AndroidX Lifecycle Viewmodel
 RxJava
 RxAndroid
 Timber
-Picasso
 Transformers
 Dagger Hilt
 Dagger Hilt Compiler
