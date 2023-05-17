@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 import com.styleshow.R;
@@ -25,7 +26,7 @@ import jp.wasabeef.transformers.picasso.GrayscaleTransformation;
  * @see R.styleable#PicassoImageView
  * @see <a href="https://github.com/square/picasso">Picasso</a>
  */
-public class PicassoImageView extends androidx.appcompat.widget.AppCompatImageView {
+public class PicassoImageView extends AppCompatImageView {
 
     /**
      * Whether to display a placeholder image while the image is loading.

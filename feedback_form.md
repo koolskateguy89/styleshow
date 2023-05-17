@@ -263,76 +263,124 @@ Base package: com.styleshow
 .BootCompletedReceiver - BOOT_COMPLETED
 
 (j) Which APIs, libraries or third party code did you use when implementing feature j (list one per line)?
+NONE
+
 Did you extend and use an existing View class in your app?
 - [x] Yes
 - [ ] No
 
 (k) List the names of all your class files which extend an existing View class; also list the name of the View class it extends (one per line).
+Base package: com.styleshow
+.components.DynamicPostsView - ConstraintLayout
+.components.MovableFloatingActionButton - FloatingActionButton
+.components.PicassoImageView - AppCompatImageView
+.components.PostActionsView - ConstraintLayout
+.components.PostCaptionView - ConstraintLayout
+.components.SquareFrameLayout - FrameLayout
 
 (k) Which APIs, libraries or third party code did you use when implementing feature k (list one per line)?
 Picasso https://github.com/square/picasso
+ConstraintLayout
+MovableFloatingActionButton https://stackoverflow.com/a/46373935
+SquareFrameLayout https://stackoverflow.com/a/24416992
 
 Did you use a ShareActionProvider in your app?
 - [x] Yes
 - [ ] No
 
 (l) List the names of all methods (including their class name) which using a ShareActionProvider (one per line).
+Base package: com.styleshow
+.ui.post.PostActivity#showSharePopupMenu
+
 (l) What kind of information are you sharing via the ShareActionProvider? Keywords are sufficient in your answer.
+Webpage like to a shoe.
+
 (l) Which APIs, libraries or third party code did you use when implementing feature l (i.e., feature "ell"; list one per line)?
+NONE
+
 Did you implement and use your own service in your app?
-
-Did you implement and use your own service in your app?<i class="icon fa fa-exclamation-circle text-danger fa-fw " title="Required field" aria-label="Required field"></i>
-
-Yes
-
-No
+- [x] Yes
+- [ ] No
 
 (m) List the names of all your class files implementing a service (one per line).
+Base package: com.styleshow
+.service.MessageNotificationService
+
 (m) Give a quick description of the purpose of your own services and their use.
+Service to listen for new messages and send notifications upon receiving them. Also cancels notifications when the message is deleted.
+
 (m) Which APIs, libraries or third party code did you use when implementing feature m (list one per line)?
+Firebase Firestore
+AlarmManager
+
 Does your app use the AlarmManager?
-
-Does your app use the AlarmManager?<i class="icon fa fa-exclamation-circle text-danger fa-fw " title="Required field" aria-label="Required field"></i>
-
-Yes
-
-No
+- [x] Yes
+- [ ] No
 
 (n) List the names of all methods (including their class name) which use the AlarmManager (one per line).
+Base package: com.styleshow
+.service.MessageNotificationService#scheduleNotification
+
 (n) Which APIs, libraries or third party code did you use when implementing feature n (list one per line)?
+NONE
+
 Does your app use Notifications?
-
-Does your app use Notifications?<i class="icon fa fa-exclamation-circle text-danger fa-fw " title="Required field" aria-label="Required field"></i>
-
-Yes
-
-No
+- [x] Yes
+- [ ] No
 
 (o) List the names of all methods (including their class name) which use Notifications (one per line).
+Base package: com.styleshow
+.service.MessageNotificationService#scheduleNotification
+.service.MessageNotificationService#cancelNotification
+
 (o) Give a quick description of the kind of information given in the notifications. Also say when the notifications are sent out (e.g., "when button XYZ is pressed" or "weekly, at a time set by the user").
+When a new message is received, the sender's name and message are displayed in the notification.
+
 (o) Which APIs, libraries or third party code did you use when implementing feature o (list one per line)?
+Firebase Firestore
+
 Does your app capture touch gestures and make reasonable use of them?
-
-Does your app capture touch gestures and make reasonable use of them?<i class="icon fa fa-exclamation-circle text-danger fa-fw " title="Required field" aria-label="Required field"></i>
-
-Yes
-
-No
+- [x] Yes
+- [ ] No
 
 (p) List the names of all your own methods and classes which capture touch gestures. Which kind of touch gesture are they capturing and what is the action performed?
+Base package: com.styleshow
+.components.MovableFloatingActionButton#onTouch - captures touch events to move the FAB around the screen
+TODO: onclicks & onlonglclicks in custom adapters
+
 (p) Which APIs, libraries or third party code did you use when implementing feature p (list one per line)?
+NONE
+
+TODO:
 Did you create a user guide and upload it in the assets folder of your app?
-
-Did you create a user guide and upload it in the assets folder of your app?<i class="icon fa fa-exclamation-circle text-danger fa-fw " title="Required field" aria-label="Required field"></i>
-
-Yes
-
-No
+- [ ] Yes
+- [ ] No
 
 How many different pages (e.g., html files) does you user guide consist of?
 What is the name of the method (including its class name) which starts the WebView containing the user guide?
 List up to 6 features of your user guide which make it responsive (keywords are sufficient; one per line).
+
 Apart from the ones mentioned above, which other APIs, libraries or third party code did you use in your app (write "none" or list one per line)?
+Material Components for Android
+AndroidX Navigation UI
+AndroidX Navigation Fragment
+AndroidX Activity
+AndroidX Preference
+AndroidX Lifecycle Livedata
+AndroidX Lifecycle Viewmodel
+RxJava
+RxAndroid
+Timber
+Picasso
+Transformers
+Dagger Hilt
+Dagger Hilt Compiler
+
 What kind of systematic testing did you do (e.g., none, unit testing of all methods, unit testing of some methods, integration testing, system testing, etc.)?
+System testing
+
 Did you use any frameworks for testing (e.g., JUnit, TestNG, Mockito, etc.)? If yes, which ones?
+None
+
 This is the place for providing any additional information which is necessary for testing and marking your app.
+TODO: None?

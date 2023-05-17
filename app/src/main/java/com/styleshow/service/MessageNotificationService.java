@@ -13,8 +13,6 @@ import android.os.Build;
 import android.os.IBinder;
 import android.os.PowerManager;
 import androidx.annotation.Nullable;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.styleshow.CancelNotificationReceiver;
 import com.styleshow.NotificationReceiver;
 import com.styleshow.R;
@@ -40,16 +38,10 @@ public class MessageNotificationService extends Service {
     private static final int ALARM_TRIGGER = 1000; // 1 second
 
     @Inject
-    FirebaseAuth auth;
-
-    @Inject
     LoginRepository loginRepository;
 
     @Inject
     UserProfileRepository userProfileRepository;
-
-    @Inject
-    FirebaseFirestore firestore;
 
     @Inject
     ChatRepository chatRepository;
