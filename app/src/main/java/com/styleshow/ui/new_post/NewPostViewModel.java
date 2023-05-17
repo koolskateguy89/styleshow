@@ -65,7 +65,7 @@ public class NewPostViewModel extends ViewModel {
         if (imageUri == null || caption == null || shoeUrl == null)
             return false;
 
-        if (caption.isBlank() || validShoeUrl) {
+        if (caption.isBlank() || !validShoeUrl) {
             return false;
         }
 
