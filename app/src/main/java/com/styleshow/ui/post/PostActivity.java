@@ -29,8 +29,6 @@ import com.styleshow.domain.model.Post;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
-// TODO: on tablets, show image on left and actions,text,etc on right
-
 // FIXME: when typing, comment et is not visible cos keyboard is covering it
 
 @AndroidEntryPoint
