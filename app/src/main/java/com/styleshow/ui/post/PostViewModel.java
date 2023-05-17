@@ -132,7 +132,7 @@ public class PostViewModel extends ViewModel {
     }
 
     @MainThread
-    public void deleteButtonClicked() {
+    public void deletePost() {
         var post = mPost.getValue();
         if (post == null) {
             return;

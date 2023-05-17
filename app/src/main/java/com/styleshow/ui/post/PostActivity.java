@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Pair;
 import androidx.activity.result.contract.ActivityResultContract;
@@ -18,6 +19,7 @@ import com.styleshow.R;
 import com.styleshow.adapters.CommentAdapter;
 import com.styleshow.common.Constants;
 import com.styleshow.databinding.ActivityPostBinding;
+import com.styleshow.domain.model.Comment;
 import com.styleshow.domain.model.Post;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
@@ -29,8 +31,6 @@ import timber.log.Timber;
 // FIXME: when typing, comment et is not visible cos keyboard is covering it
 
 // TODO: comment et action DONE
-
-// TODO: btn to open shoe url in browser (post actions)
 
 @AndroidEntryPoint
 public class PostActivity extends AppCompatActivity {
@@ -56,18 +56,14 @@ public class PostActivity extends AppCompatActivity {
         binding.setViewModel(viewModel);
 
         binding.viewPostActions.setOnDeleteClickListener(v -> {
-            // TODO: confirm dialog then
-            viewModel.deleteButtonClicked();
-            // then finish() but with appropriate result - im not too sure what the result should be
-            // need to check fragments that use this activity
+            confirmDeletePostWithDialog();
+        });
 
-            var data = new Intent();
-            data.putExtra(Constants.POST_NAME, (Serializable) null);
-            data.putExtra(Constants.POST_INDEX_NAME,
-                    getIntent().getIntExtra(Constants.POST_INDEX_NAME, -1));
-
-            setResult(RESULT_OK, data);
-            finish();
+        // Open shoe url in browser
+        binding.viewPostActions.setOnOpenInBrowserClickListener(v -> {
+            String shoeUrl = post.getShoeUrl();
+            var intent = new Intent(Intent.ACTION_VIEW, Uri.parse(shoeUrl));
+            startActivity(intent);
         });
 
         // Setup comments recycler view
@@ -79,24 +75,7 @@ public class PostActivity extends AppCompatActivity {
             if (!viewModel.canDeleteComment(comment))
                 return;
 
-            var builder = new AlertDialog.Builder(this)
-                    .setTitle(R.string.delete_comment_dialog_title)
-                    .setMessage(R.string.delete_comment_dialog_message)
-                    // Add the buttons
-                    .setPositiveButton(R.string.delete_comment_dialog_ok, (dialog, id) -> {
-                        // User clicked OK button
-                        viewModel.tryDeleteComment(comment).addOnSuccessListener(ignore -> {
-                            Snackbar.make(binding.getRoot(), R.string.delete_comment_success,
-                                            Snackbar.LENGTH_SHORT)
-                                    .show();
-                        });
-                    })
-                    .setNegativeButton(R.string.delete_comment_dialog_cancel, (dialog, id) -> {
-                        // User cancelled the dialog (do nothing)
-                    });
-
-            AlertDialog dialog = builder.create();
-            dialog.show();
+            confirmDeleteCommentWithDialog(comment);
         });
 
         viewModel.getComments().observe(this, commentAdapter::setItems);
@@ -132,6 +111,62 @@ public class PostActivity extends AppCompatActivity {
 
         setResult(RESULT_OK, data);
         finish();
+    }
+
+    private void confirmDeletePostWithDialog() {
+        var builder = new AlertDialog.Builder(this)
+                .setTitle(R.string.delete_post_dialog_title)
+                .setMessage(R.string.delete_post_dialog_message)
+                // Add the buttons
+                .setPositiveButton(R.string.dialog_ok, (dialog, id) -> {
+                    // User clicked OK button
+
+                    // Delete the post
+                    viewModel.deletePost();
+
+                    // Inform user of deletion
+                    Snackbar.make(binding.getRoot(), R.string.delete_post_success,
+                                    Snackbar.LENGTH_SHORT)
+                            .show();
+
+                    // Return to previous activity
+                    var data = new Intent();
+                    data.putExtra(Constants.POST_NAME, (Serializable) null);
+                    data.putExtra(Constants.POST_INDEX_NAME,
+                            getIntent().getIntExtra(Constants.POST_INDEX_NAME, -1));
+
+                    setResult(RESULT_OK, data);
+                    finish();
+                })
+                .setNegativeButton(R.string.dialog_cancel, (dialog, id) -> {
+                    // User cancelled the dialog (do nothing)
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void confirmDeleteCommentWithDialog(@NonNull Comment comment) {
+        var builder = new AlertDialog.Builder(this)
+                .setTitle(R.string.delete_comment_dialog_title)
+                .setMessage(R.string.delete_comment_dialog_message)
+                // Add the buttons
+                .setPositiveButton(R.string.dialog_ok, (dialog, id) -> {
+                    // User clicked OK button
+                    // Delete the comment
+                    viewModel.tryDeleteComment(comment).addOnSuccessListener(ignore -> {
+                        // Inform user of deletion
+                        Snackbar.make(binding.getRoot(), R.string.delete_comment_success,
+                                        Snackbar.LENGTH_SHORT)
+                                .show();
+                    });
+                })
+                .setNegativeButton(R.string.dialog_cancel, (dialog, id) -> {
+                    // User cancelled the dialog (do nothing)
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     public static sealed abstract class PostResult permits PostResult.LikeChanged, PostResult.PostDeleted {
