@@ -11,6 +11,7 @@ import com.styleshow.R;
 import com.styleshow.common.ConnectivityObserver;
 import com.styleshow.common.NetworkConnectivityObserver;
 import com.styleshow.databinding.ActivityMainNavigationBinding;
+import com.styleshow.no_network.NoNetworkActivity;
 import dagger.hilt.android.AndroidEntryPoint;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import timber.log.Timber;
@@ -39,28 +40,24 @@ public class MainNavigationActivity extends AppCompatActivity {
 
         compositeDisposable = new CompositeDisposable();
 
-        // TODO?: inject NetworkConnectivityObserver
         connectivityObserver = new NetworkConnectivityObserver(this);
         compositeDisposable.add(connectivityObserver.observe().subscribe(status -> {
-            // TODO: no network activity
-            // in there, will need to not allow them to exit until they have network
-            // and when they do, auto finish that activity
             switch (status) {
-                case AVAILABLE -> {
-                    Timber.d("Network available");
-                }
-                case UNAVAILABLE -> {
-                    Timber.d("Network unavailable");
-                }
                 case LOSING -> {
                     Timber.d("Network losing");
+                    Toast.makeText(this, R.string.network_losing, Toast.LENGTH_LONG).show();
                 }
                 case LOST -> {
                     Timber.d("Network lost");
-                    Toast.makeText(this, "Network lost", Toast.LENGTH_LONG).show();
+                    openNoNetworkActivity();
                 }
             }
         }));
+    }
+
+    private void openNoNetworkActivity() {
+        var intent = new Intent(this, NoNetworkActivity.class);
+        startActivity(intent);
     }
 
     // This being invoked means the user clicked on share from another app

@@ -39,4 +39,9 @@ public class LoginRepositoryImpl implements LoginRepository {
     public Task<AuthResult> login(@Nullable String email, @Nullable String password) {
         return dataSource.login(email, password);
     }
+
+    @Override
+    public Task<AuthResult> register(@NonNull String email, @NonNull String password) {
+        return dataSource.register(email, password);
+    }
 }

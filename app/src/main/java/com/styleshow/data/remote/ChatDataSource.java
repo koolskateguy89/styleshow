@@ -62,13 +62,6 @@ public class ChatDataSource {
                 .addOnFailureListener(e -> {
                     Timber.w(e, "Failed to send message to '%s'", receiverUid);
                 });
-
-        // TODO?
-        //messaging.send(new RemoteMessage.Builder(SENDER_ID + "@fcm.googleapis.com")
-        //        .setMessageId(Integer.toString(messageId))
-        //        .addData("my_message", "Hello World")
-        //        .addData("my_action","SAY_HELLO")
-        //        .build());
     }
 
     public Task<Void> deleteMessage(@NonNull String messageId) {

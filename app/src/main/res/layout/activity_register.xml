@@ -4,7 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.login.LoginActivity"
+        tools:context=".ui.register.RegisterActivity"
         >
 
     <ImageView
@@ -56,26 +56,26 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-            android:id="@+id/btn_login"
+            android:id="@+id/btn_register"
             android:enabled="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/action_sign_in"
+            android:text="@string/action_register"
             />
 
     <Button
-            android:id="@+id/btn_register"
+            android:id="@+id/btn_login"
             style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/action_register"
+            android:text="@string/action_sign_in"
             />
 
     <androidx.constraintlayout.helper.widget.Flow
             android:id="@+id/flow_btns"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="btn_login,btn_register"
+            app:constraint_referenced_ids="btn_register,btn_login"
             />
 
     <androidx.constraintlayout.helper.widget.Flow

@@ -76,6 +76,7 @@ Does your app have a minimum of two distinct screens (excluding the user guide a
 activity_chat.xml
 activity_chat.xml  (land)
 activity_login.xml
+activity_register.xml
 activity_main.xml
 activity_main_navigation.xml
 activity_new_post.xml
@@ -83,6 +84,7 @@ activity_new_post.xml (land)
 activity_post.xml
 activity_post.xml (land)
 activity_user_profile.xml
+activity_guide.xml
 fragment_home.xml
 fragment_home.xml (land)
 fragment_messages.xml
@@ -93,6 +95,7 @@ fragment_profile.xml
 Base package: com.styleshow
 .MainActivity, activity, activity_main.xml
 .ui.login.LoginActivity, activity, activity_login.xml
+.ui.register.RegisterActivity, activity, activity_register.xml
 .ui.MainNavigationActivity, activity, activity_main_navigation.xml
 .ui.home.HomeFragment, fragment, fragment_home.xml
 .ui.messages.MessagesFragment, fragment, fragment_messages.xml
@@ -101,6 +104,7 @@ Base package: com.styleshow
 .ui.new_post.NewPostActivity, activity, activity_new_post.xml
 .ui.user_profile.UserProfileActivity, activity, activity_user_profile.xml
 .ui.chat.ChatActivity, activity, activity_chat.xml
+.ui.guide.GuideActivity, activity, activity_guide.xml
 
 (a) Which APIs, libraries or third party code did you use when implementing feature a (list one per line)?
 RecyclerView
@@ -114,7 +118,8 @@ Does your app work properly with the lifecycle (including rotate screen changes)
 Base package: com.styleshow
 .MainActivity
 .ui.login.LoginActivity
-.ui.MainNavigationActivity,
+.ui.register.RegisterActivity
+.ui.MainNavigationActivity
 .ui.home.HomeFragment
 .ui.messages.MessagesFragment
 .ui.profile.ProfileFragment
@@ -122,6 +127,7 @@ Base package: com.styleshow
 .ui.new_post.NewPostActivity
 .ui.user_profile.UserProfileActivity
 .ui.chat.ChatActivity
+.ui.guide.GuideActivity
 
 (b) Which APIs, libraries or third party code did you use when implementing feature b (list one per line)?
 
@@ -157,12 +163,18 @@ Does your app use intents to move inside your app?
 started by it (one per line).
 Base package: com.styleshow
 .MainActivity#onCreate - explicit intent
-.ui.login.LoginActivity#openMainActivity - activity launcher
-.ui.home.HomeFragment#updateUiWithUser - explicit intent
+.ui.login.LoginActivity#updateUiWithUser - explicit intent
+.ui.login.LoginActivity#openRegisterActivity - explicit intent
+.ui.MainNavigationActivity#openNoNetworkActivity - explicit intent
+.ui.home.HomeFragment#launchPostActivity - activity launcher
+.ui.home.HomeFragment#openNewPostActivity - activity launcher
+.ui.home.HomeFragment#openProfileActivityForAuthor - explicit intent
 .ui.messages.MessagesFragment#openChat - explicit intent
 .ui.new_post.NewPostActivity.NewPostContract#createIntent - explicit intent (activity launcher result)
 .ui.post.PostActivity.OpenPostContract#createIntent - explicit intent (activity launcher result)
 .ui.post.user_profile.UserProfileActivity#launchPostActivity - activity launcher
+.ui.profile.ProfileFragment#openUserGuideActivity - explicit intent
+.ui.profile.ProfileFragment#launchPostActivity - activity launcher
 
 (d) Which APIs, libraries or third party code did you use when implementing feature d (list one per line)?
 NONE except ActivityResultLaunchers which are built into Android.

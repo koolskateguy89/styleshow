@@ -13,6 +13,7 @@ import com.styleshow.common.AfterTextChangedTextWatcher;
 import com.styleshow.databinding.ActivityLoginBinding;
 import com.styleshow.domain.model.UserProfile;
 import com.styleshow.ui.MainNavigationActivity;
+import com.styleshow.ui.register.RegisterActivity;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
@@ -44,6 +45,10 @@ public class LoginActivity extends AppCompatActivity {
         var loginButton = binding.btnLogin;
         //final ProgressBar loadingProgressBar = binding.loading;
 
+        binding.btnRegister.setOnClickListener(v -> {
+            openRegisterActivity();
+        });
+
         loginViewModel.getLoginFormState().observe(this, loginFormState -> {
             if (loginFormState == null)
                 return;
@@ -69,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
                 return;
 
             if (loginResult.getError() != null) {
-                Timber.d("login failed: %s", loginResult.getError());
+                Timber.i("login failed: %d", loginResult.getError());
                 showLoginFailed(loginResult.getError());
 
                 // re-enable button if login failed
@@ -106,6 +111,11 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         loginButton.setOnClickListener(v -> login.run());
+    }
+
+    private void openRegisterActivity() {
+        var intent = new Intent(this, RegisterActivity.class);
+        startActivity(intent);
     }
 
     private void updateUiWithUser(UserProfile user) {

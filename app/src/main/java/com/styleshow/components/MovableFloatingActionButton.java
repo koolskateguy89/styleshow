@@ -9,12 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-// TODO: save position to shared preferences, with a key specific to this
-// instance of the FAB, so that we can have multiple FABs with different
-// positions.
-// maybe provide the sharedprefs key as an attribute in the xml
-// - do it in ACTION_MOVE
-
 /**
  * FloatingActionButton that can be moved around by the user.
  *

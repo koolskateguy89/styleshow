@@ -1,6 +1,7 @@
 package com.styleshow.data.remote;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,5 +41,9 @@ public class LoginDataSource {
         if (getCurrentUser() != null) {
             mAuth.signOut();
         }
+    }
+
+    public Task<AuthResult> register(@NonNull String email, @NonNull String password) {
+        return mAuth.createUserWithEmailAndPassword(email, password);
     }
 }

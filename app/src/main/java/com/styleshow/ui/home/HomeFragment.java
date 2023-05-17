@@ -22,6 +22,7 @@ import com.styleshow.common.AfterTextChangedTextWatcher;
 import com.styleshow.common.Constants;
 import com.styleshow.databinding.FragmentHomeBinding;
 import com.styleshow.domain.model.Post;
+import com.styleshow.domain.model.UserProfile;
 import com.styleshow.ui.new_post.NewPostActivity;
 import com.styleshow.ui.post.PostActivity;
 import com.styleshow.ui.user_profile.UserProfileActivity;
@@ -40,8 +41,6 @@ TODO:
 // maybe not cos the 3 top-level screens using the same loading is nice
 // see https://medium.com/android-dev-nation/android-skeleton-loaders-1ae979a9d8c9
 
-// TODO: pin search bar at top, not yet sure how to tho
-
 // TODO: only get like 10 images initially, then on reached bottom and swipe down, get more
 
 /**
@@ -54,18 +53,43 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private HomeViewModel viewModel;
 
-    private final ActivityResultLauncher<Uri> makeNewPost = registerForActivityResult(new NewPostActivity.NewPostContract(), resultCode -> {
-        switch (resultCode) {
-            case NewPostActivity.RESULT_POST_CREATED -> {
-                // reload posts
-                viewModel.loadPosts();
-            }
-            case NewPostActivity.RESULT_POST_NOT_CREATED -> {
-                // do nothing
-                Timber.d("Post not created");
-            }
-        }
-    });
+    private final ActivityResultLauncher<Uri> makeNewPost =
+            registerForActivityResult(new NewPostActivity.NewPostContract(), resultCode -> {
+                switch (resultCode) {
+                    case NewPostActivity.RESULT_POST_CREATED -> {
+                        // reload posts
+                        viewModel.loadPosts();
+                    }
+                    case NewPostActivity.RESULT_POST_NOT_CREATED -> {
+                        // do nothing
+                        Timber.d("Post not created");
+                    }
+                }
+            });
+
+    private final ActivityResultLauncher<Pair<Integer, Post>> openPost =
+            registerForActivityResult(new PostActivity.OpenPostContract(), result -> {
+                if (result == null)
+                    return;
+
+                if (result instanceof PostActivity.PostResult.LikeChanged likeChanged) {
+                    int index = likeChanged.index;
+                    Post post = likeChanged.post;
+
+                    viewModel.postUpdated(index, post);
+                    binding.rvPosts.getAdapter().notifyItemChanged(index, post);
+                } else if (result instanceof PostActivity.PostResult.PostDeleted postDeleted) {
+                    // Inform user of deletion
+                    Snackbar.make(binding.getRoot(), R.string.delete_post_success,
+                                    Snackbar.LENGTH_SHORT)
+                            .show();
+
+                    int index = postDeleted.index;
+
+                    viewModel.postDeleted(index);
+                    binding.rvPosts.getAdapter().notifyItemRemoved(index);
+                }
+            });
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -78,29 +102,6 @@ public class HomeFragment extends Fragment {
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(viewModel);
 
-        var openPost = registerForActivityResult(new PostActivity.OpenPostContract(), result -> {
-            if (result == null)
-                return;
-
-            if (result instanceof PostActivity.PostResult.LikeChanged likeChanged) {
-                int index = likeChanged.index;
-                Post post = likeChanged.post;
-
-                viewModel.postUpdated(index, post);
-                binding.rvPosts.getAdapter().notifyItemChanged(index, post);
-            } else if (result instanceof PostActivity.PostResult.PostDeleted postDeleted) {
-                // Inform user of deletion
-                Snackbar.make(binding.getRoot(), R.string.delete_post_success,
-                                Snackbar.LENGTH_SHORT)
-                        .show();
-
-                int index = postDeleted.index;
-
-                viewModel.postDeleted(index);
-                binding.rvPosts.getAdapter().notifyItemRemoved(index);
-            }
-        });
-
         binding.fabNewPost.setOnClickListener(v -> {
             openNewPostActivity();
         });
@@ -108,14 +109,10 @@ public class HomeFragment extends Fragment {
         // Setup post recycler view
         var postAdapter = new PostAdapter(List.of());
         // Open post on image click
-        postAdapter.setImageClickListener((index, post) -> {
-            openPost.launch(new Pair<>(index, post));
-        });
+        postAdapter.setImageClickListener(this::launchPostActivity);
         // Open profile on caption click
         postAdapter.setCaptionClickListener((index, post) -> {
-            var intent = new Intent(requireContext(), UserProfileActivity.class)
-                    .putExtra(Constants.NAME_PROFILE, post.getAuthor());
-            startActivity(intent);
+            openProfileActivityForAuthor(post.getAuthor());
         });
 
         binding.rvPosts.setAdapter(postAdapter);
@@ -178,8 +175,18 @@ public class HomeFragment extends Fragment {
         return binding.getRoot();
     }
 
+    private void launchPostActivity(int index, @NonNull Post post) {
+        openPost.launch(new Pair<>(index, post));
+    }
+
     private void openNewPostActivity() {
         makeNewPost.launch(null);
+    }
+
+    private void openProfileActivityForAuthor(@NonNull UserProfile author) {
+        var intent = new Intent(requireContext(), UserProfileActivity.class)
+                .putExtra(Constants.NAME_PROFILE, author);
+        startActivity(intent);
     }
 
     @Override
