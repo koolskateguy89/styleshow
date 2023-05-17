@@ -1,5 +1,6 @@
 package com.styleshow.ui.post;
 
+import java.io.Serializable;
 import java.util.List;
 
 import android.content.Context;
@@ -59,6 +60,14 @@ public class PostActivity extends AppCompatActivity {
             viewModel.deleteButtonClicked();
             // then finish() but with appropriate result - im not too sure what the result should be
             // need to check fragments that use this activity
+
+            var data = new Intent();
+            data.putExtra(Constants.POST_NAME, (Serializable) null);
+            data.putExtra(Constants.POST_INDEX_NAME,
+                    getIntent().getIntExtra(Constants.POST_INDEX_NAME, -1));
+
+            setResult(RESULT_OK, data);
+            finish();
         });
 
         // Setup comments recycler view
@@ -125,7 +134,27 @@ public class PostActivity extends AppCompatActivity {
         finish();
     }
 
-    public static class OpenPostContract extends ActivityResultContract<Pair<Integer, Post>, Pair<Integer, Post>> {
+    public static sealed abstract class PostResult permits PostResult.LikeChanged, PostResult.PostDeleted {
+        public static final class LikeChanged extends PostResult {
+            public final int index;
+            public final @NonNull Post post;
+
+            public LikeChanged(int index, @NonNull Post post) {
+                this.index = index;
+                this.post = post;
+            }
+        }
+
+        public static final class PostDeleted extends PostResult {
+            public final int index;
+
+            public PostDeleted(int index) {
+                this.index = index;
+            }
+        }
+    }
+
+    public static class OpenPostContract extends ActivityResultContract<Pair<Integer, Post>, PostResult> {
 
         @Override
         public @NonNull Intent createIntent(@NonNull Context context, Pair<Integer, Post> pair) {
@@ -135,12 +164,16 @@ public class PostActivity extends AppCompatActivity {
         }
 
         @Override
-        public Pair<Integer, Post> parseResult(int resultCode, @Nullable Intent intent) {
+        public PostResult parseResult(int resultCode, @Nullable Intent intent) {
             if (resultCode == RESULT_OK && intent != null) {
                 int index = intent.getIntExtra(Constants.POST_INDEX_NAME, -1);
                 Post post = (Post) intent.getSerializableExtra(Constants.POST_NAME);
 
-                return new Pair<>(index, post);
+                if (post == null) {
+                    return new PostResult.PostDeleted(index);
+                } else {
+                    return new PostResult.LikeChanged(index, post);
+                }
             }
 
             return null;

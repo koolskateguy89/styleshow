@@ -53,9 +53,17 @@ public class UserProfileViewModel extends ViewModel {
 
     public void postUpdated(int index, Post post) {
         var posts = mPosts.getValue();
-        // This should never happen
+        // This should never not happen
         if (posts != null)
             posts.set(index, post);
+        // Updating the recycler view is handled by the view
+    }
+
+    public void postDeleted(int index) {
+        var posts = mPosts.getValue();
+        // This should never not happen
+        if (posts != null)
+            posts.remove(index);
         // Updating the recycler view is handled by the view
     }
 }

@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.styleshow.R;
 import com.styleshow.databinding.FragmentProfileBinding;
+import com.styleshow.domain.model.Post;
 import com.styleshow.ui.login.LoginActivity;
 import com.styleshow.ui.post.PostActivity;
 import dagger.hilt.android.AndroidEntryPoint;
@@ -35,16 +36,21 @@ public class ProfileFragment extends Fragment {
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(viewModel);
 
-        var openPost = registerForActivityResult(new PostActivity.OpenPostContract(), pair -> {
-            // if post did not change, do nothing
-            if (pair == null)
+        var openPost = registerForActivityResult(new PostActivity.OpenPostContract(), result -> {
+            if (result == null)
                 return;
 
-            int index = pair.first;
-            var post = pair.second;
+            if (result instanceof PostActivity.PostResult.LikeChanged likeChanged) {
+                int index = likeChanged.index;
+                Post post = likeChanged.post;
 
-            viewModel.postUpdated(index, post);
-            binding.viewDynamicPosts.getAdapter().notifyItemChanged(index, post);
+                viewModel.postUpdated(index, post);
+                binding.viewDynamicPosts.getAdapter().notifyItemChanged(index, post);
+            } else if (result instanceof PostActivity.PostResult.PostDeleted postDeleted) {
+                int index = postDeleted.index;
+                viewModel.postDeleted(index);
+                binding.viewDynamicPosts.getAdapter().notifyItemRemoved(index);
+            }
         });
 
         binding.btnSignOut.setOnClickListener(v -> {

@@ -18,6 +18,7 @@ import com.styleshow.adapters.ProfilePreviewAdapter;
 import com.styleshow.common.AfterTextChangedTextWatcher;
 import com.styleshow.common.Constants;
 import com.styleshow.databinding.FragmentHomeBinding;
+import com.styleshow.domain.model.Post;
 import com.styleshow.ui.new_post.NewPostActivity;
 import com.styleshow.ui.post.PostActivity;
 import com.styleshow.ui.user_profile.UserProfileActivity;
@@ -61,16 +62,21 @@ public class HomeFragment extends Fragment {
         binding.setLifecycleOwner(getViewLifecycleOwner());
         binding.setViewModel(viewModel);
 
-        var openPost = registerForActivityResult(new PostActivity.OpenPostContract(), pair -> {
-            // if post did not change, do nothing
-            if (pair == null)
+        var openPost = registerForActivityResult(new PostActivity.OpenPostContract(), result -> {
+            if (result == null)
                 return;
 
-            int index = pair.first;
-            var post = pair.second;
+            if (result instanceof PostActivity.PostResult.LikeChanged likeChanged) {
+                int index = likeChanged.index;
+                Post post = likeChanged.post;
 
-            viewModel.postUpdated(index, post);
-            binding.rvPosts.getAdapter().notifyItemChanged(index, post);
+                viewModel.postUpdated(index, post);
+                binding.rvPosts.getAdapter().notifyItemChanged(index, post);
+            } else if (result instanceof PostActivity.PostResult.PostDeleted postDeleted) {
+                int index = postDeleted.index;
+                viewModel.postDeleted(index);
+                binding.rvPosts.getAdapter().notifyItemRemoved(index);
+            }
         });
 
         var makeNewPost = registerForActivityResult(new NewPostActivity.NewPostContract(), resultCode -> {
