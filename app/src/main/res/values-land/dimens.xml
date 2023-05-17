@@ -1,6 +1,9 @@
 <resources>
     <dimen name="fab_margin">48dp</dimen>
 
+    <!-- Login -->
+    <dimen name="login_form_vgap">16dp</dimen>
+
     <!-- Profile -->
     <dimen name="profile_picture_size">100dp</dimen>
 
