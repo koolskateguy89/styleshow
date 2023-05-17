@@ -5,7 +5,6 @@ import javax.inject.Singleton;
 import androidx.annotation.NonNull;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.styleshow.data.remote.ChatDataSource;
 import com.styleshow.data.remote.CommentDataSource;
@@ -47,12 +46,6 @@ public class AppModule {
     @Singleton
     FirebaseStorage provideFirebaseStorage() {
         return FirebaseStorage.getInstance();
-    }
-
-    @Provides
-    @Singleton
-    FirebaseMessaging provideFirebaseMessaging() {
-        return FirebaseMessaging.getInstance();
     }
 
     @Provides
@@ -123,10 +116,9 @@ public class AppModule {
     @Singleton
     ChatDataSource provideChatDataSource(
             @NonNull FirebaseFirestore firestore,
-            @NonNull FirebaseMessaging messaging,
             @NonNull LoginDataSource loginDataSource
     ) {
-        return new ChatDataSource(firestore, messaging, loginDataSource);
+        return new ChatDataSource(firestore, loginDataSource);
     }
 
     @Provides

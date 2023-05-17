@@ -108,6 +108,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_comment"
                             android:text="@={viewModel.comment}"
+                            android:imeOptions="actionDone"
                             android:inputType="text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

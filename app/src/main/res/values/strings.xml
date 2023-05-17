@@ -61,6 +61,12 @@
     <string name="delete_message_dialog_title">Delete message</string>
     <string name="delete_message_dialog_message">Are you sure you want to delete this message?</string>
     <string name="delete_message_success">Message deleted.</string>
+    <string name="no_notifications">No notifications will be shown.</string>
+    <string name="notifications_dialog_title">Enable notifications (please)</string>
+    <string name="notifications_dialog_message">Notifications will be sent whenever a user messages you. They
+    are great way to keep on top of your conversations.</string>
+    <string name="notifications_dialog_ok">OK</string>
+    <string name="notifications_dialog_cancel">No thanks</string>
 
     <!-- UserProfile -->
     <string name="profile_picture_description">Profile picture</string>
@@ -83,4 +89,9 @@
     <string name="share_picture_description">Share</string>
     <string name="open_in_browser_picture_description">Open in browser</string>
     <string name="delete_picture_description">Delete</string>
+
+    <!-- Message notification service -->
+    <string name="message_notification_channel_id">Messages</string>
+    <string name="message_notification_channel_name">Message Notifications</string>
+    <string name="message_notification_channel_description">Notifications for new messages</string>
 </resources>

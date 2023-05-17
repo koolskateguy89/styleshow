@@ -11,6 +11,8 @@ public class ChatMessage {
 
     private final @NonNull String id;
 
+    public final @NonNull String senderUid;
+
     private final @NonNull String content;
 
     private final @NonNull Date sentAt;
@@ -19,11 +21,13 @@ public class ChatMessage {
 
     public ChatMessage(
             @NonNull String id,
+            @NonNull String senderUid,
             @NonNull String content,
             @NonNull Date sentAt,
             boolean isMyMessage
     ) {
         this.id = id;
+        this.senderUid = senderUid;
         this.content = content;
         this.sentAt = sentAt;
         this.isMyMessage = isMyMessage;
@@ -31,6 +35,10 @@ public class ChatMessage {
 
     public @NonNull String getId() {
         return id;
+    }
+
+    public @NonNull String getSenderUid() {
+        return senderUid;
     }
 
     public @NonNull String getContent() {
@@ -65,6 +73,7 @@ public class ChatMessage {
     public @NonNull String toString() {
         return "ChatMessage{" +
                 "id='" + id + '\'' +
+                ", senderUid='" + senderUid + '\'' +
                 ", content='" + content + '\'' +
                 ", sentAt=" + sentAt +
                 ", isMyMessage=" + isMyMessage +

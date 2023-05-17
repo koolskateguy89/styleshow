@@ -9,6 +9,11 @@ public class Constants {
     public static final String NAME_POST = "post";
     public static final String NAME_POST_INDEX = "post_index";
 
+    public static final String NAME_NOTIFICATION_CHANNEL_ID = "channel_id";
+    public static final String NAME_NOTIFICATION_ID = "notification_id";
+    public static final String NAME_NOTIFICATION_TITLE = "title";
+    public static final String NAME_NOTIFICATION_CONTENT = "content";
+
     /**
      * @see com.styleshow.data.remote.UserProfileDataSource
      */

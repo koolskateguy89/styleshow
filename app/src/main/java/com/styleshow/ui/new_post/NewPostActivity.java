@@ -66,6 +66,8 @@ public class NewPostActivity extends AppCompatActivity {
         });
 
         binding.ivImage.setOnClickListener(v -> {
+            // TODO?: runtime ask for permission to read external storage/images
+
             // Launch the photo picker and let the user choose only images.
             pickMedia.launch(new PickVisualMediaRequest.Builder()
                     .setMediaType(PickVisualMedia.ImageOnly.INSTANCE)

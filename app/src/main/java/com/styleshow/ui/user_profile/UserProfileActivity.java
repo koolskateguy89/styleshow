@@ -1,5 +1,6 @@
 package com.styleshow.ui.user_profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,13 +11,10 @@ import com.styleshow.common.Constants;
 import com.styleshow.databinding.ActivityUserProfileBinding;
 import com.styleshow.domain.model.Post;
 import com.styleshow.domain.model.UserProfile;
+import com.styleshow.ui.chat.ChatActivity;
 import com.styleshow.ui.post.PostActivity;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
-
-// TODO: back button
-
-// TODO: if not me, message button
 
 /**
  * To be honest this is basically the same as {@link com.styleshow.ui.profile.ProfileFragment}.
@@ -45,6 +43,7 @@ public class UserProfileActivity extends AppCompatActivity {
         binding.setLifecycleOwner(this);
         binding.setProfile(userProfile);
         binding.setViewModel(viewModel);
+        binding.setCanMessage(viewModel.canMessage(userProfile.getUid()));
 
         var openPost = registerForActivityResult(new PostActivity.OpenPostContract(), result -> {
             if (result == null)
@@ -69,6 +68,7 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         });
 
+        // Manage post loading state
         viewModel.getLoadingState().observe(this, loadingState -> {
             if (loadingState == null)
                 return;
@@ -90,9 +90,11 @@ public class UserProfileActivity extends AppCompatActivity {
             openPost.launch(new Pair<>(index, post));
         });
 
-        // TODO: only show the button if the user is not me
+        // Message user on click
         binding.btnMessage.setOnClickListener(v -> {
-            // TODO: open user-specific message (coversation) activity
+            var intent = new Intent(this, ChatActivity.class)
+                    .putExtra(Constants.NAME_PROFILE, userProfile);
+            startActivity(intent);
         });
     }
 }

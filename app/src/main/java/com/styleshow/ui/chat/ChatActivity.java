@@ -33,8 +33,6 @@ public class ChatActivity extends AppCompatActivity {
         var receiver = (UserProfile) getIntent().getSerializableExtra(Constants.NAME_PROFILE);
         Timber.i("receiver = %s", receiver);
         
-        // TODO?: click on image to open profile screen
-
         viewModel = new ViewModelProvider(this).get(ChatViewModel.class);
         viewModel.setReceiver(receiver);
 

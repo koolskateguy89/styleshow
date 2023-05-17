@@ -5,6 +5,10 @@
         tools:context=".ui.user_profile.UserProfileActivity"
         >
     <data>
+        <import type="android.view.View" />
+        <variable
+                name="canMessage"
+                type="boolean" />
         <variable
                 name="profile"
                 type="com.styleshow.domain.model.UserProfile" />
@@ -53,6 +57,7 @@
 
         <Button
                 android:id="@+id/btn_message"
+                android:visibility="@{canMessage ? View.VISIBLE : View.GONE}"
                 android:text="@string/action_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

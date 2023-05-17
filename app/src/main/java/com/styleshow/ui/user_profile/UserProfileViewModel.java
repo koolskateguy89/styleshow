@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.styleshow.data.LoadingState;
 import com.styleshow.domain.model.Post;
+import com.styleshow.domain.repository.LoginRepository;
 import com.styleshow.domain.repository.PostRepository;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import timber.log.Timber;
@@ -16,13 +17,15 @@ import timber.log.Timber;
 @HiltViewModel
 public class UserProfileViewModel extends ViewModel {
 
+    private final LoginRepository loginRepository;
     private final PostRepository postRepository;
 
     private final MutableLiveData<List<Post>> mPosts = new MutableLiveData<>(List.of());
     private final MutableLiveData<LoadingState> mLoadingState = new MutableLiveData<>(LoadingState.IDLE);
 
     @Inject
-    public UserProfileViewModel(PostRepository postRepository) {
+    public UserProfileViewModel(LoginRepository loginRepository, PostRepository postRepository) {
+        this.loginRepository = loginRepository;
         this.postRepository = postRepository;
     }
 
@@ -32,6 +35,10 @@ public class UserProfileViewModel extends ViewModel {
 
     public LiveData<List<Post>> getPosts() {
         return mPosts;
+    }
+
+    public boolean canMessage(String uid) {
+        return !loginRepository.getCurrentUser().getUid().equals(uid);
     }
 
     public void loadPosts(String uid) {

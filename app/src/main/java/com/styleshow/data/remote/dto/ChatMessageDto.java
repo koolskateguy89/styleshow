@@ -33,7 +33,7 @@ public class ChatMessageDto {
     public ChatMessage toChatMessage(@NonNull String currentUserId) {
         boolean isMyMessage = currentUserId.equals(senderUid);
 
-        return new ChatMessage(id, content, sentAt, isMyMessage);
+        return new ChatMessage(id, senderUid, content, sentAt, isMyMessage);
     }
 
     @Override

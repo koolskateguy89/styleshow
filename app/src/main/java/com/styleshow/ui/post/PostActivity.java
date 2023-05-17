@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Pair;
+import android.view.inputmethod.EditorInfo;
 import androidx.activity.result.contract.ActivityResultContract;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,12 +25,9 @@ import com.styleshow.domain.model.Post;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
-// TODO: physical back button
 // TODO: on tablets, show image on left and actions,text,etc on right
 
 // FIXME: when typing, comment et is not visible cos keyboard is covering it
-
-// TODO: comment et action DONE
 
 @AndroidEntryPoint
 public class PostActivity extends AppCompatActivity {
@@ -60,6 +58,13 @@ public class PostActivity extends AppCompatActivity {
 
         binding.viewPostActions.setOnOpenInBrowserClickListener(v -> {
             openShoeUrlInBrowser(post);
+        });
+
+        binding.etComment.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                viewModel.tryPostComment();
+            }
+            return false;
         });
 
         // Setup comments recycler view

@@ -10,7 +10,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.Filter;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.styleshow.common.Constants;
 import com.styleshow.data.remote.dto.ChatMessageDto;
 import com.styleshow.domain.model.ChatMessage;
@@ -21,19 +20,15 @@ import timber.log.Timber;
 
 public class ChatDataSource {
 
-    private final @NonNull FirebaseMessaging messaging; // may not use
-
     private final @NonNull LoginDataSource loginDataSource;
 
     private final @NonNull CollectionReference mChatsRef;
 
     public ChatDataSource(
             @NonNull FirebaseFirestore firestore,
-            @NonNull FirebaseMessaging messaging,
             @NonNull LoginDataSource loginDataSource
     ) {
         mChatsRef = firestore.collection(Constants.Chat.COLLECTION_NAME);
-        this.messaging = messaging; // may not use
         this.loginDataSource = loginDataSource;
     }
 
