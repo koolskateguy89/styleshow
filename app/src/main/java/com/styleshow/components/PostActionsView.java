@@ -10,16 +10,12 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.styleshow.R;
 import com.styleshow.databinding.ViewPostActionsBinding;
 
-// TODO: add delete button (and flag for canDelete)
-// and onDeleteButtonClicked listener
-// ic_delete_24dp
-
 /**
  * View that contains the actions for a post. Does not contain any logic, just UI.
  *
  * <ul>
- *     <li>Like</li>
- *     <li>Comment</li>
+ *     <li>Like (with counter)</li>
+ *     <li>Comment (with counter)</li>
  *     <li>Share</li>
  *     <li>Open in browser</li>
  *     <li>Delete (if deletable)</li>
@@ -29,6 +25,8 @@ public class PostActionsView extends ConstraintLayout {
 
     private ViewPostActionsBinding binding;
     private boolean liked;
+    private int numLikes;
+    private int numComments;
     private boolean deletable;
 
     public PostActionsView(@NonNull Context context) {
@@ -65,6 +63,8 @@ public class PostActionsView extends ConstraintLayout {
 
         try {
             liked = a.getBoolean(R.styleable.PostActionsView_liked, false);
+            numLikes = a.getInt(R.styleable.PostActionsView_numLikes, 0);
+            numComments = a.getInt(R.styleable.PostActionsView_numComments, 0);
             deletable = a.getBoolean(R.styleable.PostActionsView_deletable, false);
         } finally {
             a.recycle();
@@ -80,6 +80,24 @@ public class PostActionsView extends ConstraintLayout {
     public void setLiked(boolean liked) {
         this.liked = liked;
         binding.setLiked(liked);
+    }
+
+    public int getNumLikes() {
+        return numLikes;
+    }
+
+    public void setNumLikes(int numLikes) {
+        this.numLikes = numLikes;
+        binding.setNumLikes(numLikes);
+    }
+
+    public int getNumComments() {
+        return numComments;
+    }
+
+    public void setNumComments(int numComments) {
+        this.numComments = numComments;
+        binding.setNumComments(numComments);
     }
 
     public boolean isDeletable() {

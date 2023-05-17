@@ -10,6 +10,12 @@
                 name="liked"
                 type="boolean" />
         <variable
+                name="numLikes"
+                type="int" />
+        <variable
+                name="numComments"
+                type="int" />
+        <variable
                 name="deletable"
                 type="boolean" />
     </data>
@@ -30,6 +36,13 @@
                 android:contentDescription="@{liked ? @string/unlike_picture_description : @string/like_picture_description}"
                 />
 
+        <TextView
+                android:id="@+id/tv_numlikes"
+                android:text="@{String.valueOf(numLikes), default=30}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
         <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_comment"
                 style="?attr/materialIconButtonOutlinedStyle"
@@ -38,6 +51,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/comment_picture_description"
+                />
+
+        <TextView
+                android:id="@+id/tv_numcomments"
+                android:text="@{String.valueOf(numComments), default=5}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 />
 
         <com.google.android.material.button.MaterialButton
@@ -72,12 +92,29 @@
                 />
 
         <androidx.constraintlayout.helper.widget.Flow
+                android:id="@+id/flow_like"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="btn_like,tv_numlikes"
+                android:orientation="vertical"
+                />
+
+        <androidx.constraintlayout.helper.widget.Flow
+                android:id="@+id/flow_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="btn_comment,tv_numcomments"
+                android:orientation="vertical"
+                />
+
+        <androidx.constraintlayout.helper.widget.Flow
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:constraint_referenced_ids="btn_like,btn_comment,btn_share,btn_open_in_browser,btn_delete"
+                app:constraint_referenced_ids="flow_like,flow_comment,btn_share,btn_open_in_browser,btn_delete"
+                app:flow_verticalAlign="top"
                 />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

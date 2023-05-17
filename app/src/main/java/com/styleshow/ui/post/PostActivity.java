@@ -25,7 +25,6 @@ import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
 // TODO: physical back button
-// TODO: display number of likes
 // TODO: on tablets, show image on left and actions,text,etc on right
 
 // FIXME: when typing, comment et is not visible cos keyboard is covering it

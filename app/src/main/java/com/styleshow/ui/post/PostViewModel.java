@@ -119,16 +119,19 @@ public class PostViewModel extends ViewModel {
         var post = mPost.getValue();
         boolean isLiked = post.isLiked();
 
+        Post updatedPost;
         if (isLiked) {
             // Unlike
             postRepository.unlikePost(post.getId());
+            updatedPost = post.asUnliked();
         } else {
             // Like
             postRepository.likePost(post.getId());
+            updatedPost = post.asLiked();
         }
 
         // Update the post - optimistic update
-        this.mPost.setValue(post.withLiked(!isLiked));
+        this.mPost.setValue(updatedPost);
     }
 
     @MainThread

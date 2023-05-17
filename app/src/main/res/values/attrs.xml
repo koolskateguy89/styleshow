@@ -24,6 +24,8 @@
 
     <declare-styleable name="PostActionsView">
         <attr name="liked" format="boolean" />
+        <attr name="numLikes" format="integer" />
+        <attr name="numComments" format="integer" />
         <attr name="deletable" format="boolean" />
     </declare-styleable>
 </resources>

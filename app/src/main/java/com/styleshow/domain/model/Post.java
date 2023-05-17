@@ -130,7 +130,39 @@ public class Post implements Serializable {
                 '}';
     }
 
-    public Post withLiked(boolean liked) {
-        return new Post(id, author, imageUrl, imageId, caption, shoeUrl, postedAt, numLikes, liked);
+    /**
+     * Returns a new Post instance with the number of likes incremented by 1 and
+     * liked set to {@code true}. Checks that the post was not already liked.
+     */
+    public Post asLiked() {
+        return new Post(
+                id,
+                author,
+                imageUrl,
+                imageId,
+                caption,
+                shoeUrl,
+                postedAt,
+                numLikes + (liked ? 0 : 1),
+                true
+        );
+    }
+
+    /**
+     * Returns a new Post instance with the number of likes decremented by 1 and
+     * liked set to {@code false}. Checks that the post was not already unliked.
+     */
+    public Post asUnliked() {
+        return new Post(
+                id,
+                author,
+                imageUrl,
+                imageId,
+                caption,
+                shoeUrl,
+                postedAt,
+                numLikes - (liked ? 1 : 0),
+                false
+        );
     }
 }
