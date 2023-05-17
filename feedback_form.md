@@ -368,9 +368,8 @@ Base package: com.styleshow
 (p) Which APIs, libraries or third party code did you use when implementing feature p (list one per line)?
 NONE
 
-TODO:
 Did you create a user guide and upload it in the assets folder of your app?
-- [ ] Yes
+- [x] Yes
 - [ ] No
 
 How many different pages (e.g., html files) does you user guide consist of?
@@ -381,6 +380,9 @@ com.styleshow.ui.guide.GuideActivity#onCreate
 
 List up to 6 features of your user guide which make it responsive (keywords are sufficient; one per line).
 Viewport units
+Relative units
+Simple layout
+Media queries
 
 Apart from the ones mentioned above, which other APIs, libraries or third party code did you use in your app (write "none" or list one per line)?
 Material Components for Android
