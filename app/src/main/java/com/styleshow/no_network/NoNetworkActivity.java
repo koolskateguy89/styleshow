@@ -1,9 +1,9 @@
 package com.styleshow.no_network;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
 import com.styleshow.R;
 import com.styleshow.common.ConnectivityObserver;
 import com.styleshow.common.NetworkConnectivityObserver;
@@ -11,6 +11,9 @@ import com.styleshow.databinding.ActivityNoNetworkBinding;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import timber.log.Timber;
 
+/**
+ * Displays an error message while the user is not connected to a network.
+ */
 public class NoNetworkActivity extends AppCompatActivity {
 
     private ActivityNoNetworkBinding binding;
@@ -30,16 +33,12 @@ public class NoNetworkActivity extends AppCompatActivity {
         compositeDisposable.add(connectivityObserver.observe().subscribe(status -> {
             if (status == ConnectivityObserver.Status.AVAILABLE) {
                 Timber.d("Network available");
+                Toast.makeText(this, R.string.network_available, Toast.LENGTH_LONG).show();
                 finish();
             } else {
                 Timber.d("Network unavailable");
             }
         }));
-    }
-
-    private void openNoNetworkActivity() {
-        var intent = new Intent(this, NoNetworkActivity.class);
-        startActivity(intent);
     }
 
     @Override

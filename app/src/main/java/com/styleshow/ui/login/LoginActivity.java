@@ -23,6 +23,9 @@ import timber.log.Timber;
 
 // TODO: don't allow them to login if they dont have network
 
+/**
+ * The login screen, allowing the user to login with an existing account.
+ */
 @AndroidEntryPoint
 public class LoginActivity extends AppCompatActivity {
 

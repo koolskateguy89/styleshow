@@ -15,6 +15,9 @@ import com.styleshow.ui.login.LoginActivity;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
+/**
+ * The register screen, allowing the user to register a new account.
+ */
 @AndroidEntryPoint
 public class RegisterActivity extends AppCompatActivity {
 

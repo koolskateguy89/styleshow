@@ -47,7 +47,7 @@ If you were allowed to change your specification, did you submit a new specifica
 - [ ] No
 
 If your app does not implement all aspects of the specification in week 5 (or week 8), give a short reason why.
-Features including creating user accounts and updating user profiles are not implemented. They are not key features of the app and I did not have time to implement it.
+Features including updating user profiles and posts are not implemented. They are not key features of the app and I did not have sufficient time to implement it.
 
 If you added features to the specification in week 5 (or week 8), give a short description:
 NONE

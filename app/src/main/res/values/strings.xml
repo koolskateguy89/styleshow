@@ -24,8 +24,9 @@
     <string name="register_failed">Register failed</string>
     <string name="action_register">Register</string>
 
-    <!-- Main navigation activity -->
+    <!-- Network -->
     <string name="network_losing">Your network connection is fading.</string>
+    <string name="network_available">Your network connection is back.</string>
 
     <!-- No network activity -->
     <string name="no_network">There is a problem with your network connection. The app will not work without a proper network connection</string>

@@ -50,8 +50,9 @@ public class AppModule {
 
     @Provides
     @Singleton
-    LoginDataSource provideLoginDataSource(FirebaseAuth auth) {
-        return new LoginDataSource(auth);
+    LoginDataSource provideLoginDataSource(@NonNull FirebaseAuth auth,
+                                           @NonNull FirebaseFirestore firestore) {
+        return new LoginDataSource(auth, firestore);
     }
 
     @Provides

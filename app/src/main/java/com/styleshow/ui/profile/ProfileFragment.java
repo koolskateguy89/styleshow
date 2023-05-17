@@ -15,7 +15,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.styleshow.R;
 import com.styleshow.databinding.FragmentProfileBinding;
 import com.styleshow.domain.model.Post;
-import com.styleshow.guide.GuideActivity;
+import com.styleshow.ui.guide.GuideActivity;
 import com.styleshow.ui.login.LoginActivity;
 import com.styleshow.ui.post.PostActivity;
 import dagger.hilt.android.AndroidEntryPoint;

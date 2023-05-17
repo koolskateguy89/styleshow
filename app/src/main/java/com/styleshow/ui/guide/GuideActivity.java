@@ -1,20 +1,23 @@
-package com.styleshow.guide;
+package com.styleshow.ui.guide;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import com.styleshow.databinding.ActivityGuideBinding;
 import com.styleshow.databinding.ActivityRegisterBinding;
 
 // TODO
 
 public class GuideActivity extends AppCompatActivity {
 
-    private ActivityRegisterBinding binding;
+    private ActivityGuideBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityRegisterBinding.inflate(getLayoutInflater());
+        binding = ActivityGuideBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        binding.wv;
     }
 }
