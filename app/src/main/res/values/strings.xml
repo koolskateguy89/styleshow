@@ -89,6 +89,7 @@
     <string name="share_picture_description">Share</string>
     <string name="open_in_browser_picture_description">Open in browser</string>
     <string name="delete_picture_description">Delete</string>
+    <string name="title_open_in_browser">Open in browser</string>
 
     <!-- Message notification service -->
     <string name="message_notification_channel_id">Messages</string>

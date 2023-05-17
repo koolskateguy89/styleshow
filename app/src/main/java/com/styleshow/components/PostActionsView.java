@@ -17,7 +17,6 @@ import com.styleshow.databinding.ViewPostActionsBinding;
  *     <li>Like (with counter)</li>
  *     <li>Comment (with counter)</li>
  *     <li>Share</li>
- *     <li>Open in browser</li>
  *     <li>Delete (if deletable)</li>
  * </ul>
  *
@@ -122,10 +121,6 @@ public class PostActionsView extends ConstraintLayout {
 
     public void setOnShareClickListener(OnClickListener listener) {
         binding.btnShare.setOnClickListener(listener);
-    }
-
-    public void setOnOpenInBrowserClickListener(OnClickListener listener) {
-        binding.btnOpenInBrowser.setOnClickListener(listener);
     }
 
     public void setOnDeleteClickListener(OnClickListener listener) {

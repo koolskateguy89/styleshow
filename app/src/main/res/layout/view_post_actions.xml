@@ -68,16 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/share_picture_description"
-                />
-
-        <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_open_in_browser"
-                style="?attr/materialIconButtonOutlinedStyle"
-                app:icon="@drawable/ic_open_in_browser_24dp"
-                app:iconTint="@color/black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/open_in_browser_picture_description"
+                app:menu="@menu/post_share_menu"
                 />
 
         <com.google.android.material.button.MaterialButton
@@ -113,7 +104,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:constraint_referenced_ids="flow_like,flow_comment,btn_share,btn_open_in_browser,btn_delete"
+                app:constraint_referenced_ids="flow_like,flow_comment,btn_share,btn_delete"
                 app:flow_verticalAlign="top"
                 />
 

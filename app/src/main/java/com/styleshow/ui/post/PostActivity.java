@@ -8,7 +8,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Pair;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.PopupMenu;
+import android.widget.ShareActionProvider;
 import androidx.activity.result.contract.ActivityResultContract;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,9 +60,7 @@ public class PostActivity extends AppCompatActivity {
             confirmDeletePostWithDialog();
         });
 
-        binding.viewPostActions.setOnOpenInBrowserClickListener(v -> {
-            openShoeUrlInBrowser(post);
-        });
+        binding.viewPostActions.setOnShareClickListener(this::showSharePopupMenu);
 
         binding.etComment.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -115,12 +117,42 @@ public class PostActivity extends AppCompatActivity {
     }
 
     /**
-     * Use intents to open the shoe url in the browser.
+     * Use intents and a share action provider to open the shoe url in the browser.
      */
-    private void openShoeUrlInBrowser(@NonNull Post post) {
-        String shoeUrl = post.getShoeUrl();
-        var intent = new Intent(Intent.ACTION_VIEW, Uri.parse(shoeUrl));
-        startActivity(intent);
+    private void showSharePopupMenu(View v) {
+        String shoeUrl = viewModel.getPost().getValue().getShoeUrl();
+
+        // Create a share intent
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, shoeUrl);
+
+        var shareIntent2 = new Intent(Intent.ACTION_VIEW, Uri.parse(shoeUrl));
+
+        // Set up the ShareActionProvider
+        var shareActionProvider = new ShareActionProvider(this);
+        shareActionProvider.setShareIntent(shareIntent);
+
+        shareActionProvider.setOnShareTargetSelectedListener((source, intent) -> {
+            // Handle share target selected
+            startActivity(shareIntent2);
+            return false;
+        });
+
+        var popup = new PopupMenu(v.getContext(), v);
+        popup.inflate(R.menu.post_share_menu);
+
+        MenuItem openItem = popup.getMenu().findItem(R.id.menu_item_open);
+        openItem.setActionProvider(shareActionProvider);
+
+        popup.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.menu_item_open) {
+                return true;
+            }
+            return false;
+        });
+
+        popup.show();
     }
 
     private void confirmDeletePostWithDialog() {
