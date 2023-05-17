@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import com.google.android.material.snackbar.Snackbar;
 import com.styleshow.R;
 import com.styleshow.databinding.FragmentProfileBinding;
 import com.styleshow.domain.model.Post;
@@ -47,7 +48,13 @@ public class ProfileFragment extends Fragment {
                 viewModel.postUpdated(index, post);
                 binding.viewDynamicPosts.getAdapter().notifyItemChanged(index, post);
             } else if (result instanceof PostActivity.PostResult.PostDeleted postDeleted) {
+                // Inform user of deletion
+                Snackbar.make(binding.getRoot(), R.string.delete_post_success,
+                                Snackbar.LENGTH_SHORT)
+                        .show();
+
                 int index = postDeleted.index;
+
                 viewModel.postDeleted(index);
                 binding.viewDynamicPosts.getAdapter().notifyItemRemoved(index);
             }

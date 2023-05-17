@@ -58,11 +58,8 @@ public class PostActivity extends AppCompatActivity {
             confirmDeletePostWithDialog();
         });
 
-        // Open shoe url in browser
         binding.viewPostActions.setOnOpenInBrowserClickListener(v -> {
-            String shoeUrl = post.getShoeUrl();
-            var intent = new Intent(Intent.ACTION_VIEW, Uri.parse(shoeUrl));
-            startActivity(intent);
+            openShoeUrlInBrowser(post);
         });
 
         // Setup comments recycler view
@@ -112,6 +109,15 @@ public class PostActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Use intents to open the shoe url in the browser.
+     */
+    private void openShoeUrlInBrowser(@NonNull Post post) {
+        String shoeUrl = post.getShoeUrl();
+        var intent = new Intent(Intent.ACTION_VIEW, Uri.parse(shoeUrl));
+        startActivity(intent);
+    }
+
     private void confirmDeletePostWithDialog() {
         var builder = new AlertDialog.Builder(this)
                 .setTitle(R.string.delete_post_dialog_title)
@@ -122,11 +128,6 @@ public class PostActivity extends AppCompatActivity {
 
                     // Delete the post
                     viewModel.deletePost();
-
-                    // Inform user of deletion
-                    Snackbar.make(binding.getRoot(), R.string.delete_post_success,
-                                    Snackbar.LENGTH_SHORT)
-                            .show();
 
                     // Return to previous activity
                     var data = new Intent();

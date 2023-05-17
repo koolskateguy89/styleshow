@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.util.Pair;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import com.google.android.material.snackbar.Snackbar;
+import com.styleshow.R;
 import com.styleshow.common.Constants;
 import com.styleshow.databinding.ActivityUserProfileBinding;
 import com.styleshow.domain.model.Post;
@@ -55,7 +57,13 @@ public class UserProfileActivity extends AppCompatActivity {
                 viewModel.postUpdated(index, post);
                 binding.viewDynamicPosts.getAdapter().notifyItemChanged(index, post);
             } else if (result instanceof PostActivity.PostResult.PostDeleted postDeleted) {
+                // Inform user of deletion
+                Snackbar.make(binding.getRoot(), R.string.delete_post_success,
+                                Snackbar.LENGTH_SHORT)
+                        .show();
+
                 int index = postDeleted.index;
+
                 viewModel.postDeleted(index);
                 binding.viewDynamicPosts.getAdapter().notifyItemRemoved(index);
             }

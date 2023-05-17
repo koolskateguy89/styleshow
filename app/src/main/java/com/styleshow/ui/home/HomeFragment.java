@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import com.google.android.material.snackbar.Snackbar;
+import com.styleshow.R;
 import com.styleshow.adapters.PostAdapter;
 import com.styleshow.adapters.ProfilePreviewAdapter;
 import com.styleshow.common.AfterTextChangedTextWatcher;
@@ -73,7 +75,13 @@ public class HomeFragment extends Fragment {
                 viewModel.postUpdated(index, post);
                 binding.rvPosts.getAdapter().notifyItemChanged(index, post);
             } else if (result instanceof PostActivity.PostResult.PostDeleted postDeleted) {
+                // Inform user of deletion
+                Snackbar.make(binding.getRoot(), R.string.delete_post_success,
+                                Snackbar.LENGTH_SHORT)
+                        .show();
+
                 int index = postDeleted.index;
+
                 viewModel.postDeleted(index);
                 binding.rvPosts.getAdapter().notifyItemRemoved(index);
             }
