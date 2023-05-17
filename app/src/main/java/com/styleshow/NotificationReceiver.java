@@ -30,7 +30,7 @@ public class NotificationReceiver extends BroadcastReceiver {
         var builder = new NotificationCompat.Builder(context, channelId)
                 .setContentTitle(title)
                 .setContentText(content)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.ic_styleshow)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         Timber.d("Displaying noti with content: '%s'", content);
