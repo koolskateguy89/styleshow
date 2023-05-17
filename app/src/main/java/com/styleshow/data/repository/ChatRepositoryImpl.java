@@ -1,13 +1,11 @@
 package com.styleshow.data.repository;
 
-import java.util.List;
-
 import android.app.Activity;
 import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.Task;
 import com.styleshow.data.remote.ChatDataSource;
-import com.styleshow.domain.model.ChatMessage;
 import com.styleshow.domain.repository.ChatRepository;
+import io.reactivex.rxjava3.core.Observable;
 
 public class ChatRepositoryImpl implements ChatRepository {
 
@@ -15,11 +13,6 @@ public class ChatRepositoryImpl implements ChatRepository {
 
     public ChatRepositoryImpl(@NonNull ChatDataSource dataSource) {
         this.dataSource = dataSource;
-    }
-
-    @Override
-    public Task<List<ChatMessage>> getMessagesBetween(@NonNull String receiverId) {
-        return dataSource.getMessagesBetween(receiverId);
     }
 
     @Override
@@ -36,5 +29,10 @@ public class ChatRepositoryImpl implements ChatRepository {
     public void listenForMessagesBetween(@NonNull Activity activity, @NonNull String receiverId,
                                          @NonNull ChatListener listener) {
         dataSource.listenForMessagesBetween(activity, receiverId, listener);
+    }
+
+    @Override
+    public Observable<MessageEvent> listenForMessageEvents(@NonNull String currentUserId) {
+        return dataSource.listenForMessageEvents(currentUserId);
     }
 }

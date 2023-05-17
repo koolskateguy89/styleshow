@@ -1,15 +1,12 @@
 package com.styleshow.data.remote;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import android.app.Activity;
 import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.Filter;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -18,6 +15,8 @@ import com.styleshow.common.Constants;
 import com.styleshow.data.remote.dto.ChatMessageDto;
 import com.styleshow.domain.model.ChatMessage;
 import com.styleshow.domain.repository.ChatRepository;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.subjects.BehaviorSubject;
 import timber.log.Timber;
 
 public class ChatDataSource {
@@ -51,37 +50,6 @@ public class ChatDataSource {
                         Filter.equalTo(Constants.Chat.FIELD_RECEIVER_UID, uid1)
                 )
         ));
-    }
-
-    public Task<List<ChatMessage>> getMessagesBetween(@NonNull String receiverId) {
-        String currentUserId = loginDataSource.getCurrentUser().getUid();
-
-        return chatsBetweenUsersReference(currentUserId, receiverId)
-                .orderBy(Constants.Chat.FIELD_SENT_AT, Query.Direction.ASCENDING) // oldest first
-                .get()
-                .addOnFailureListener(e -> {
-                    Timber.w(e, "Failed to get messages between me and %s", receiverId);
-                })
-                .continueWith(task -> {
-                    if (!task.isSuccessful())
-                        //return (Task<List<ChatMessageDto>>) ((Object)task);
-                        return List.<ChatMessage>of();
-
-                    var querySnapshot = task.getResult();
-
-                    var chatMessageDtos = querySnapshot.toObjects(ChatMessageDto.class);
-
-                    return chatMessageDtos.stream()
-                            .map(dto -> dto.toChatMessage(currentUserId))
-                            .collect(Collectors.toList());
-                })
-                .addOnSuccessListener(messages -> {
-                    Timber.d("Messages between me and '%s' : %s", receiverId, messages);
-                })
-                //.addOnFailureListener(e -> {
-                //    Timber.w(e, "Failed to get messages between me and %s", receiverId);
-                //})
-                ;
     }
 
     public void sendMessage(@NonNull String receiverUid, @NonNull String content) {
@@ -126,24 +94,71 @@ public class ChatDataSource {
                 return;
             }
 
-            assert snapshots != null;
+            if (snapshots == null)
+                return;
+
+            List<ChatMessage> added = new ArrayList<>();
 
             snapshots.getDocumentChanges().forEach(dc -> {
                 switch (dc.getType()) {
                     case ADDED -> {
-                        Timber.d("New message: %s", dc.getDocument().getData());
                         var dto = dc.getDocument().toObject(ChatMessageDto.class);
                         var message = dto.toChatMessage(currentUserId);
-                        listener.onNewMessage(message);
+
+                        Timber.d("New message: %s", message);
+                        added.add(message);
                     }
                     case REMOVED -> {
-                        Timber.d("Deleted message: %s", dc.getDocument().getData());
                         var dto = dc.getDocument().toObject(ChatMessageDto.class);
                         var message = dto.toChatMessage(currentUserId);
+
+                        Timber.d("Deleted message: %s", message);
                         listener.onMessageDeleted(message);
                     }
                 }
             });
+
+            if (!added.isEmpty())
+                listener.onNewMessages(added);
         });
+    }
+
+    public Observable<ChatRepository.MessageEvent> listenForMessageEvents(
+            @NonNull String currentUserId) {
+        BehaviorSubject<ChatRepository.MessageEvent> subject = BehaviorSubject.create();
+
+        var listenerRegistration = mChatsRef
+                .whereEqualTo(Constants.Chat.FIELD_RECEIVER_UID, currentUserId)
+                .addSnapshotListener((snapshots, e) -> {
+                    if (e != null) {
+                        Timber.w(e, "Listen failed.");
+                        return;
+                    }
+
+                    if (snapshots == null)
+                        return;
+
+                    snapshots.getDocumentChanges().forEach(dc -> {
+                        switch (dc.getType()) {
+                            case ADDED -> {
+                                var dto = dc.getDocument().toObject(ChatMessageDto.class);
+                                var message = dto.toChatMessage(currentUserId);
+
+                                Timber.d("New message: %s", message);
+                                subject.onNext(new ChatRepository.MessageEvent.MessageSentEvent(message));
+                            }
+                            case REMOVED -> {
+                                var dto = dc.getDocument().toObject(ChatMessageDto.class);
+                                var message = dto.toChatMessage(currentUserId);
+
+                                Timber.d("Deleted message: %s", message);
+                                subject.onNext(new ChatRepository.MessageEvent.MessageDeletedEvent(message));
+                            }
+                        }
+                    });
+                });
+
+        // Remove listener when observable is disposed
+        return subject.doOnDispose(listenerRegistration::remove);
     }
 }

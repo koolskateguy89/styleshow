@@ -17,6 +17,8 @@ import timber.log.Timber;
 
 /**
  * Screen for chatting with another user.
+ * <p>
+ * User can send messages and delete their own messages.
  */
 @AndroidEntryPoint
 public class ChatActivity extends AppCompatActivity {
@@ -30,10 +32,11 @@ public class ChatActivity extends AppCompatActivity {
 
         var receiver = (UserProfile) getIntent().getSerializableExtra(Constants.NAME_PROFILE);
         Timber.i("receiver = %s", receiver);
+        
+        // TODO?: click on image to open profile screen
 
         viewModel = new ViewModelProvider(this).get(ChatViewModel.class);
         viewModel.setReceiver(receiver);
-        viewModel.loadMessages();
 
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -49,7 +52,7 @@ public class ChatActivity extends AppCompatActivity {
         });
 
         // Setup message recycler view
-        var adapter = new ChatMessageAdapter(viewModel.getMessages().getValue());
+        var adapter = new ChatMessageAdapter(viewModel.getMessages());
 
         // On long click on message, confirm message deletion
         adapter.setItemLongClickListener((index, message) -> {
@@ -58,29 +61,10 @@ public class ChatActivity extends AppCompatActivity {
         });
 
         binding.rvMessages.setAdapter(adapter);
-        viewModel.getMessages().observe(this, messages -> {
-            adapter.setItems(messages);
-            // Scroll to bottom on messages loaded
-            binding.rvMessages.smoothScrollToPosition(messages.size());
 
-            // Start listening for message updates
-            // Smooth scroll to bottom on new message
-            viewModel.listenForMessage(this, adapter, binding.rvMessages::smoothScrollToPosition);
-        });
-
-        // Handle initial messages loading state
-        viewModel.getLoadingState().observe(this, loadingState -> {
-            switch (loadingState) {
-                case LOADING -> {
-                    // Display progress indicator
-                    binding.viewSwitcher.setDisplayedChild(1);
-                }
-                case SUCCESS_IDLE -> {
-                    // Display messages
-                    binding.viewSwitcher.setDisplayedChild(0);
-                }
-            }
-        });
+        // Start listening for message updates
+        // Smooth scroll to bottom on new message
+        viewModel.listenForMessage(this, adapter, binding.rvMessages::smoothScrollToPosition);
     }
 
     private void confirmDeleteMessageWithDialog(ChatMessage message) {
