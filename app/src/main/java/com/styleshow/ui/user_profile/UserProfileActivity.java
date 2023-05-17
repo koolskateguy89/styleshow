@@ -3,6 +3,8 @@ package com.styleshow.ui.user_profile;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.snackbar.Snackbar;
@@ -27,6 +29,30 @@ public class UserProfileActivity extends AppCompatActivity {
     private ActivityUserProfileBinding binding;
     private UserProfileViewModel viewModel;
 
+    private final ActivityResultLauncher<Pair<Integer, Post>> openPost =
+            registerForActivityResult(new PostActivity.OpenPostContract(), result -> {
+                if (result == null)
+                    return;
+
+                if (result instanceof PostActivity.PostResult.LikeChanged likeChanged) {
+                    int index = likeChanged.index;
+                    Post post = likeChanged.post;
+
+                    viewModel.postUpdated(index, post);
+                    binding.viewDynamicPosts.getAdapter().notifyItemChanged(index, post);
+                } else if (result instanceof PostActivity.PostResult.PostDeleted postDeleted) {
+                    // Inform user of deletion
+                    Snackbar.make(binding.getRoot(), R.string.delete_post_success,
+                                    Snackbar.LENGTH_SHORT)
+                            .show();
+
+                    int index = postDeleted.index;
+
+                    viewModel.postDeleted(index);
+                    binding.viewDynamicPosts.getAdapter().notifyItemRemoved(index);
+                }
+            });
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,29 +70,6 @@ public class UserProfileActivity extends AppCompatActivity {
         binding.setProfile(userProfile);
         binding.setViewModel(viewModel);
         binding.setCanMessage(viewModel.canMessage(userProfile.getUid()));
-
-        var openPost = registerForActivityResult(new PostActivity.OpenPostContract(), result -> {
-            if (result == null)
-                return;
-
-            if (result instanceof PostActivity.PostResult.LikeChanged likeChanged) {
-                int index = likeChanged.index;
-                Post post = likeChanged.post;
-
-                viewModel.postUpdated(index, post);
-                binding.viewDynamicPosts.getAdapter().notifyItemChanged(index, post);
-            } else if (result instanceof PostActivity.PostResult.PostDeleted postDeleted) {
-                // Inform user of deletion
-                Snackbar.make(binding.getRoot(), R.string.delete_post_success,
-                                Snackbar.LENGTH_SHORT)
-                        .show();
-
-                int index = postDeleted.index;
-
-                viewModel.postDeleted(index);
-                binding.viewDynamicPosts.getAdapter().notifyItemRemoved(index);
-            }
-        });
 
         // Manage post loading state
         viewModel.getLoadingState().observe(this, loadingState -> {
@@ -86,9 +89,7 @@ public class UserProfileActivity extends AppCompatActivity {
         });
 
         // Open post (fullscreen) on click
-        binding.viewDynamicPosts.setItemClickListener((index, post) -> {
-            openPost.launch(new Pair<>(index, post));
-        });
+        binding.viewDynamicPosts.setItemClickListener(this::launchPostActivity);
 
         // Message user on click
         binding.btnMessage.setOnClickListener(v -> {
@@ -96,5 +97,9 @@ public class UserProfileActivity extends AppCompatActivity {
                     .putExtra(Constants.NAME_PROFILE, userProfile);
             startActivity(intent);
         });
+    }
+
+    private void launchPostActivity(int index, @NonNull Post post) {
+        openPost.launch(new Pair<>(index, post));
     }
 }

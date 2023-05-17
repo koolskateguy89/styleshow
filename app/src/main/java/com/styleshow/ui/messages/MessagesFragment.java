@@ -23,13 +23,16 @@ import com.styleshow.R;
 import com.styleshow.adapters.ProfilePreviewAdapter;
 import com.styleshow.common.Constants;
 import com.styleshow.databinding.FragmentMessagesBinding;
+import com.styleshow.domain.model.UserProfile;
 import com.styleshow.ui.chat.ChatActivity;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class MessagesFragment extends Fragment {
 
-    // Declare the launcher at the top of your Activity/Fragment:
+    private FragmentMessagesBinding binding;
+    private MessagesViewModel viewModel;
+
     private final ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
@@ -39,8 +42,6 @@ public class MessagesFragment extends Fragment {
                     Toast.makeText(requireContext(), R.string.no_notifications, Toast.LENGTH_LONG).show();
                 }
             });
-    private FragmentMessagesBinding binding;
-    private MessagesViewModel viewModel;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -67,9 +68,7 @@ public class MessagesFragment extends Fragment {
         // Setup users recycler view
         var adapter = new ProfilePreviewAdapter(List.of());
         adapter.setItemClickListener((index, user) -> {
-            var intent = new Intent(requireContext(), ChatActivity.class)
-                    .putExtra(Constants.NAME_PROFILE, user);
-            startActivity(intent);
+            openChat(user);
         });
 
         binding.rvUsers.setAdapter(adapter);
@@ -79,6 +78,12 @@ public class MessagesFragment extends Fragment {
         askNotificationPermission();
 
         return binding.getRoot();
+    }
+
+    private void openChat(@NonNull UserProfile user) {
+        var intent = new Intent(requireContext(), ChatActivity.class)
+                .putExtra(Constants.NAME_PROFILE, user);
+        startActivity(intent);
     }
 
     /**

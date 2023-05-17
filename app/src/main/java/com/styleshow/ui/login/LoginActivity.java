@@ -108,7 +108,6 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(v -> login.run());
     }
 
-    // TODO?: rename
     private void updateUiWithUser(UserProfile user) {
         Timber.d("login success, user: %s", user.getUsername());
 

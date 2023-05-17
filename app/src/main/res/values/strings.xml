@@ -32,6 +32,7 @@
     <string name="no_image_selected">You need to select an image!</string>
     <string name="post_successful">Post published!</string>
     <string name="post_failed">Error publishing post...</string>
+    <string name="cannot_post">You cannot make a post without an image.</string>
 
     <!-- Profile fragment -->
     <string name="action_sign_out">Sign Out</string>

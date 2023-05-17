@@ -10,19 +10,17 @@ p = perhaps, not really sure what it is/how to do/where to do
 - [m] (3%) Work properly with the app lifecycle (including rotate screen changes).
 - [m] (2%) Use permissions and use them responsibly.
 - [m] (2%) Use intents to move inside your app.
-- [m] TODO: (2%) Use intents to move to an outside app.
-  - will use to open shoe in browser, see https://developer.android.com/training/basics/intents/sending#view-web-page
-- [n] TODO: (6%) Create and use your own content provider.
+- [m] (2%) Use intents to move to an outside app.
+- [ ] (6%) Create and use your own content provider.
 - [m] (2%) Use SharedPreferences.
 - [ ] (4%) Create and use a local database.
 - [m] (4%) Use firebase for storing and retrieving data.
 - [m] (2%) Receive Broadcast events and make use of them in meaningful ways.
-  - TODO handle ACTION_BOOT_COMPLETED to start service
 - [m] (2%) Extend and use an existing View class.
-- [p] (2%) Implement and use a ShareActionProvider.
-- [m] TODO (6%) Implement and use your own service.
-- [ ] (2%) Use the AlarmManager.
-- [m] TODO (4%) Use Notifications.
+- [m] (2%) Implement and use a ShareActionProvider.
+- [m] (6%) Implement and use your own service.
+- [m] (2%) Use the AlarmManager.
+- [m] (4%) Use Notifications.
 - [m] (3%) Capture touch gestures and make reasonable use of them
 
 Max 40

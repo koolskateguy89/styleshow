@@ -9,6 +9,7 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -53,6 +54,19 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private HomeViewModel viewModel;
 
+    private final ActivityResultLauncher<Uri> makeNewPost = registerForActivityResult(new NewPostActivity.NewPostContract(), resultCode -> {
+        switch (resultCode) {
+            case NewPostActivity.RESULT_POST_CREATED -> {
+                // reload posts
+                viewModel.loadPosts();
+            }
+            case NewPostActivity.RESULT_POST_NOT_CREATED -> {
+                // do nothing
+                Timber.d("Post not created");
+            }
+        }
+    });
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -87,21 +101,8 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        var makeNewPost = registerForActivityResult(new NewPostActivity.NewPostContract(), resultCode -> {
-            switch (resultCode) {
-                case NewPostActivity.RESULT_POST_CREATED -> {
-                    // reload posts
-                    viewModel.loadPosts();
-                }
-                case NewPostActivity.RESULT_POST_NOT_CREATED -> {
-                    // do nothing
-                    Timber.d("Post not created");
-                }
-            }
-        });
-
         binding.fabNewPost.setOnClickListener(v -> {
-            makeNewPost.launch(null);
+            openNewPostActivity();
         });
 
         // Setup post recycler view
@@ -175,6 +176,10 @@ public class HomeFragment extends Fragment {
         }
 
         return binding.getRoot();
+    }
+
+    private void openNewPostActivity() {
+        makeNewPost.launch(null);
     }
 
     @Override

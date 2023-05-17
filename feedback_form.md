@@ -18,14 +18,13 @@ What is the highest (i.e., latest) API level which you tested your app with? (14
 
 Which of the following screen types does your app support and has been tested on (select all which apply)?
 - [x] Phone portrait
-- [] Phone landscape
-- [] Tablet portrait
-- [] Tablet landscape
+- [x] Phone landscape
+- [x] Tablet portrait
+- [x] Tablet landscape
 - [] Other
 
 If you selected "Other" at the supported screen types, please give a short description:
-TODO
-
+NONE
 
 Did you manually edit the gradle file of your Android project?
 Yes
@@ -37,9 +36,8 @@ Use at most 100 characters to describe the kind of app you implemented (e.g., "t
 Social media app for shoes.
 
 Does your app implement the functionalities of your specification in week 5?
-TODO
 - [ ] Yes, it satisfies all aspects of the specification.
-- [ ] Yes, with only minor changes to the functionalities.
+- [x] Yes, with only minor changes to the functionalities.
 - [ ] No, the feedback for my original specification suggested to change the specification.
 - [ ] No, I decided to change the specification.
 
@@ -49,10 +47,10 @@ If you were allowed to change your specification, did you submit a new specifica
 - [ ] No
 
 If your app does not implement all aspects of the specification in week 5 (or week 8), give a short reason why.
-TODO (probably empty)
+Features including creating user accounts and updating user profiles are not implemented. They are not key features of the app and I did not have time to implement it.
 
 If you added features to the specification in week 5 (or week 8), give a short description:
-TODO (i think added comments, need to check)
+NONE
 
 Is your app using a login mechanism?
 - [x] Yes
@@ -67,44 +65,42 @@ Please specify any other test users (login/password/role/etc.).
 eee@eee.com / eeeeee
 aaa@aaa.com / aaaaaa
 bbb@bbb.com / bbbbbb
+ccc@ccc.com / cccccc
+ddd@ddd.com / dddddd
 
 Does your app have a minimum of two distinct screens (excluding the user guide and potential login screens)?
 - [x] Yes
 - [ ] No
 
 (a) List the names of the xml layout files of all your screens (including potential login screens, one per line) and indicate potential qualifier values which are implemented in the design:
+activity_chat.xml
+activity_chat.xml  (land)
 activity_login.xml
 activity_main.xml
 activity_main_navigation.xml
 activity_new_post.xml
+activity_new_post.xml (land)
 activity_post.xml
+activity_post.xml (land)
 activity_user_profile.xml
 fragment_home.xml
+fragment_home.xml (land)
 fragment_messages.xml
+fragment_messages.xml (land)
 fragment_profile.xml
-item_comment.xml
-item_post.xml
-item_post_carousel.xml
-item_post_preview.xml
-item_profile_preview.xml
-view_dynamic_posts.xml
-view_post_actions.xml
-view_post_caption.xml
-view_progress.xml
-TODO: activity_conversation/activity_messsage
 
 (a) List the names of the class files of all your screens (including potential login screens, one per line), indicate whether it is an activity or a fragment, and give the corresponding xml layout file names:
 Base package: com.styleshow
-.MainActivity.java, activity, activity_main.xml
-.ui.login.LoginActivity.java, activity, activity_login.xml
-.ui.MainNavigationActivity.java, activity, activity_main_navigation.xml
-.ui.home.HomeFragment.java, fragment, fragment_home.xml
-.ui.messages.MessagesFragment.java, fragment, fragment_messages.xml
-.ui.profile.ProfileFragment.java, fragment, fragment_profile.xml
-.ui.post.PostActivity.java, activity, activity_post.xml
-.ui.new_post.NewPostActivity.java, activity, activity_new_post.xml
-.ui.user_profile.UserProfileActivity.java, activity, activity_user_profile.xml
-TODO: activity_conversation/activity_messsage
+.MainActivity, activity, activity_main.xml
+.ui.login.LoginActivity, activity, activity_login.xml
+.ui.MainNavigationActivity, activity, activity_main_navigation.xml
+.ui.home.HomeFragment, fragment, fragment_home.xml
+.ui.messages.MessagesFragment, fragment, fragment_messages.xml
+.ui.profile.ProfileFragment, fragment, fragment_profile.xml
+.ui.post.PostActivity, activity, activity_post.xml
+.ui.new_post.NewPostActivity, activity, activity_new_post.xml
+.ui.user_profile.UserProfileActivity, activity, activity_user_profile.xml
+.ui.chat.ChatActivity, activity, activity_chat.xml
 
 (a) Which APIs, libraries or third party code did you use when implementing feature a (list one per line)?
 RecyclerView
@@ -115,102 +111,170 @@ Does your app work properly with the lifecycle (including rotate screen changes)
 - [ ] No
 
 (b) List the names of the class files which implement non-trivial behaviour (i.e., not just calling the respective super method) for at least one of the lifecycle methods onStart(), onResume(), onPause(), onStop(), onDestroy():
-TODO: all activities & fragments?
+Base package: com.styleshow
+.MainActivity
+.ui.login.LoginActivity
+.ui.MainNavigationActivity,
+.ui.home.HomeFragment
+.ui.messages.MessagesFragment
+.ui.profile.ProfileFragment
+.ui.post.PostActivity
+.ui.new_post.NewPostActivity
+.ui.user_profile.UserProfileActivity
+.ui.chat.ChatActivity
 
 (b) Which APIs, libraries or third party code did you use when implementing feature b (list one per line)?
-
 
 Does your app use permissions and use them responsibly?
 - [x] Yes
 - [] No
 
 (c) List the permissions which your app uses (one per line); for each permission give the name of at least one method (including the name of its class) where this permission is required.
+Base package: com.styleshow
 INTERNET - .data.remote.LoginDataSource#login
-READ_MEDIA_IMAGES - new post activity
-TODO
+READ_MEDIA_IMAGES - .ui.new_post.NewPostActivity#openImagePicker
+READ_EXTERNAL_STORAGE - .ui.new_post.NewPostActivity#openImagePicker
+RECEIVE_BOOT_COMPLETED - .BootCompletedReceiver#onReceive
+POST_NOTIFICATIONS - .NotificationReceiver#onReceive
+WAKE_LOCK - .service.MessageNotificationService#onCreate
 
 (c) For each of the above permissions, indicate whether your app checks that it has not been revoked before using it.
 INTERNET - no
-TODO
+READ_MEDIA_IMAGES - no
+READ_EXTERNAL_STORAGE - no
+RECEIVE_BOOT_COMPLETED - no
+POST_NOTIFICATIONS - yes
+WAKE_LOCK - no
 
 (c) Which APIs, libraries or third party code did you use when implementing feature c (list one per line)?
-TODO
+https://firebase.google.com/docs/cloud-messaging/android/client#request-permission13
 
 Does your app use intents to move inside your app?
 - [x] Yes
 - [ ] No
 
-(d) For each intent moving inside your app, give the name of the method (including the name of its class) starting the intent as well as the name of the action which is started by it (one per line).
+(d) For each intent moving inside your app, give the name of the method (including the name of its class) starting the intent as well as the name of the action which is
+started by it (one per line).
+Base package: com.styleshow
+.MainActivity#onCreate - explicit intent
+.ui.login.LoginActivity#openMainActivity - activity launcher
+.ui.home.HomeFragment#updateUiWithUser - explicit intent
+.ui.messages.MessagesFragment#openChat - explicit intent
+.ui.new_post.NewPostActivity.NewPostContract#createIntent - explicit intent (activity launcher result)
+.ui.post.PostActivity.OpenPostContract#createIntent - explicit intent (activity launcher result)
+.ui.post.user_profile.UserProfileActivity#launchPostActivity - activity launcher
+
 (d) Which APIs, libraries or third party code did you use when implementing feature d (list one per line)?
+NONE except ActivityResultLaunchers which are built into Android.
 
 Does your app use intents to move to an outside app?
 - [x] Yes
 - [ ] No
 
 (e) For each intent moving to an outside app, give the name of the method (including the name of its class) starting the intent as well as the name of the action which is started by it (one per line).
+Base package: com.styleshow
+.ui.post.PostActivity#showSharePopupMenu - "android.intent.action.VIEW"
+
 (e) Which APIs, libraries or third party code did you use when implementing feature e (list one per line)?
+NONE
 
 Did you create and use your own content provider in your app?
 - [ ] Yes
-- [ ] No
+- [x] No
 
 (f) List all the class files involved in the implementation of your content provider.
+NONE
+
 (f) List the names of all methods (including their class name) which are accessing the content provider (one per line).
+NONE
+
 (f) Which APIs, libraries or third party code did you use when implementing feature f (list one per line)?
+NONE
 
 Does your app use SharedPreferences?
 - [x] Yes
 - [ ] No
 
 (g) List the names of all methods (including their class name) which are using SharedPreferences (one per line).
-TODO: DynamicPostsView.java
+Base package: com.styleshow
+.components.DynamicPostsView#init
+.components.DynamicPostsView#getLayoutFromSharedPrefs
+.components.DynamicPostsView#saveLayoutToSharedPrefs
 
 (g) Which APIs, libraries or third party code did you use when implementing feature g (list one per line)?
+SharedPreferences
 
 Did you create and use a local database in your app?
 - [ ] Yes
 - [x] No
 
 (h) List all the class files involved in the implementation of your local database(s).
+NONE
+
 (h) List the names of all methods (including their class name) which are directly accessing the local databases (and not indirectly via, e.g., a content provider; one per line).
+NONE
+
 (h) Which APIs, libraries or third party code did you use when implementing feature h (list one per line)?
+NONE
+
 Is your app using firebase for storing and retrieving data?
-
-Is your app using firebase for storing and retrieving data?<i class="icon fa fa-exclamation-circle text-danger fa-fw " title="Required field" aria-label="Required field"></i>
-
-Yes
-
-No
+- [x] Yes
+- [ ] No
 
 (i) List the names of all methods (including their class name) which are directly accessing firebase (one per line).
+Base package: com.styleshow
+.remote.data.ChatDataSource#sendMessage
+.remote.data.ChatDataSource#deleteMessage
+.remote.data.ChatDataSource#listenForMessagesBetween
+.remote.data.ChatDataSource#listenForMessageEvents
+
+.remote.data.CommentDataSource#getCommentsForPost
+.remote.data.CommentDataSource#postComment
+.remote.data.CommentDataSource#deleteComment
+
+.remote.data.LoginDataSource#getCurrentUser
+.remote.data.LoginDataSource#login
+.remote.data.LoginDataSource#logout
+
+.remote.data.PostDataSource#getAllPosts
+.remote.data.PostDataSource#getPostsByUser(UserProfile)
+.remote.data.PostDataSource#getPostsByUser(String)
+.remote.data.PostDataSource#likePost
+.remote.data.PostDataSource#unlikePost
+.remote.data.PostDataSource#publishPost
+.remote.data.PostDataSource#deletePost
+
+.remote.data.UserProfileDataSource#getAllProfilesExceptMe
+.remote.data.UserProfileDataSource#getProfileForUid
+.remote.data.UserProfileDataSource#getProfilesForUids
+.remote.data.UserProfileDataSource#searchProfiles
+
 (i) Which APIs, libraries or third party code did you use when implementing feature i (list one per line)?
+Firebase Auth
+Firebase Cloud Firestore
+Firebase Cloud Storage
+
 Does your app receive Broadcast events and make use of them in meaningful ways?
-
-Does your app receive Broadcast events and make use of them in meaningful ways?<i class="icon fa fa-exclamation-circle text-danger fa-fw " title="Required field" aria-label="Required field"></i>
-
-Yes
-
-No
+- [x] Yes
+- [ ] No
 
 (j) List the names of all your class files which are receiving Broadcast events; also list the type of the event (one per line).
+Base package: com.styleshow
+.BootCompletedReceiver - BOOT_COMPLETED
+
 (j) Which APIs, libraries or third party code did you use when implementing feature j (list one per line)?
 Did you extend and use an existing View class in your app?
-
-Did you extend and use an existing View class in your app?<i class="icon fa fa-exclamation-circle text-danger fa-fw " title="Required field" aria-label="Required field"></i>
-
-Yes
-
-No
+- [x] Yes
+- [ ] No
 
 (k) List the names of all your class files which extend an existing View class; also list the name of the View class it extends (one per line).
+
 (k) Which APIs, libraries or third party code did you use when implementing feature k (list one per line)?
+Picasso https://github.com/square/picasso
+
 Did you use a ShareActionProvider in your app?
-
-Did you use a ShareActionProvider in your app?<i class="icon fa fa-exclamation-circle text-danger fa-fw " title="Required field" aria-label="Required field"></i>
-
-Yes
-
-No
+- [x] Yes
+- [ ] No
 
 (l) List the names of all methods (including their class name) which using a ShareActionProvider (one per line).
 (l) What kind of information are you sharing via the ShareActionProvider? Keywords are sufficient in your answer.

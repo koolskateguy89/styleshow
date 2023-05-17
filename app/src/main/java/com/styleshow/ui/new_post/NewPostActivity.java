@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia;
@@ -34,6 +35,21 @@ public class NewPostActivity extends AppCompatActivity {
     private ActivityNewPostBinding binding;
     private NewPostViewModel viewModel;
 
+    // Registers a photo picker activity launcher in single-select mode.
+    ActivityResultLauncher<PickVisualMediaRequest> pickMedia = registerForActivityResult(new PickVisualMedia(), uri -> {
+        if (uri != null) {
+            Timber.i("Selected URI = %s", uri);
+            viewModel.setImageUri(uri);
+
+            // https://developer.android.com/training/data-storage/shared/photopicker#persist-media-file-access
+            // Persist access permissions so can access the file while uploading
+            int flag = Intent.FLAG_GRANT_READ_URI_PERMISSION;
+            getContentResolver().takePersistableUriPermission(uri, flag);
+        } else {
+            Toast.makeText(this, R.string.no_image_selected, Toast.LENGTH_LONG).show();
+        }
+    });
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,28 +64,8 @@ public class NewPostActivity extends AppCompatActivity {
         binding.setLifecycleOwner(this);
         binding.setViewModel(viewModel);
 
-        // Registers a photo picker activity launcher in single-select mode.
-        var pickMedia = registerForActivityResult(new PickVisualMedia(), uri -> {
-            if (uri != null) {
-                Timber.i("Selected URI = %s", uri);
-                viewModel.setImageUri(uri);
-
-                // https://developer.android.com/training/data-storage/shared/photopicker#persist-media-file-access
-                // Persist access permissions so can access the file while uploading
-                int flag = Intent.FLAG_GRANT_READ_URI_PERMISSION;
-                getContentResolver().takePersistableUriPermission(uri, flag);
-            } else {
-                Toast.makeText(this, R.string.no_image_selected, Toast.LENGTH_LONG).show();
-            }
-        });
-
         binding.ivImage.setOnClickListener(v -> {
-            // TODO?: runtime ask for permission to read external storage/images
-
-            // Launch the photo picker and let the user choose only images.
-            pickMedia.launch(new PickVisualMediaRequest.Builder()
-                    .setMediaType(PickVisualMedia.ImageOnly.INSTANCE)
-                    .build());
+            openImagePicker();
         });
 
         binding.etCaption.addTextChangedListener(new AfterTextChangedTextWatcher(s -> {
@@ -106,6 +102,15 @@ public class NewPostActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void openImagePicker() {
+        // TODO?: runtime ask for permission to read external storage/images
+
+        // Launch the photo picker and let the user choose only images.
+        pickMedia.launch(new PickVisualMediaRequest.Builder()
+                .setMediaType(PickVisualMedia.ImageOnly.INSTANCE)
+                .build());
     }
 
     /**
