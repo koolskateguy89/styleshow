@@ -49,12 +49,17 @@ public class PostRepositoryImpl implements PostRepository {
     public Task<String> publishPost(
             @NonNull Uri imageUri,
             @NonNull String caption,
-            @NonNull String shoeUrl // might have to change this to a URI or smthn, need to upload to storage
+            @NonNull String shoeUrl
     ) {
         return postDataSource.publishPost(
                 imageUri,
                 caption,
                 shoeUrl
         );
+    }
+
+    @Override
+    public Task<Void> deletePost(@NonNull Post post) {
+        return postDataSource.deletePost(post);
     }
 }

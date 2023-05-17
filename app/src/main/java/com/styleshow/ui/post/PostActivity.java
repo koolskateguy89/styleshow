@@ -30,7 +30,7 @@ import timber.log.Timber;
 
 // TODO: comment et action DONE
 
-// TODO: if my post, allow delete
+// TODO: btn to open shoe url in browser (post actions)
 
 @AndroidEntryPoint
 public class PostActivity extends AppCompatActivity {
@@ -135,6 +135,7 @@ public class PostActivity extends AppCompatActivity {
     }
 
     public static sealed abstract class PostResult permits PostResult.LikeChanged, PostResult.PostDeleted {
+
         public static final class LikeChanged extends PostResult {
             public final int index;
             public final @NonNull Post post;

@@ -24,9 +24,8 @@ public interface PostRepository {
     Task<String> publishPost(
             @NonNull Uri imageUri,
             @NonNull String caption,
-            @NonNull String shoeUrl // might have to change this to a URI or smthn, need to upload to storage
+            @NonNull String shoeUrl
     );
 
-    // TODO: delete post with ID
-
+    Task<Void> deletePost(@NonNull Post post);
 }

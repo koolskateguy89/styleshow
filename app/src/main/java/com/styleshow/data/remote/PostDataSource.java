@@ -22,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.styleshow.common.FirebaseUtils;
 import com.styleshow.data.remote.dto.PostDto;
 import com.styleshow.domain.model.Post;
 import com.styleshow.domain.model.UserProfile;
@@ -29,20 +30,21 @@ import timber.log.Timber;
 
 public class PostDataSource {
 
-    private final CollectionReference mPostRef;
+    private final CollectionReference mPostsRef;
     private final StorageReference mPostImagesRef;
+
     private final LoginDataSource mLoginDataSource;
     private final UserProfileDataSource mUserProfileDataSource;
 
-    private final Executor executor = Executors.newSingleThreadExecutor();
+    private final Executor executor = Executors.newWorkStealingPool();
 
     public PostDataSource(
-            FirebaseFirestore firestore,
-            FirebaseStorage storage,
-            LoginDataSource loginDataSource,
-            UserProfileDataSource userProfileDataSource
+            @NonNull FirebaseFirestore firestore,
+            @NonNull FirebaseStorage storage,
+            @NonNull LoginDataSource loginDataSource,
+            @NonNull UserProfileDataSource userProfileDataSource
     ) {
-        mPostRef = firestore.collection("posts");
+        mPostsRef = firestore.collection("posts");
         mPostImagesRef = storage.getReference("postImages");
         mLoginDataSource = loginDataSource;
         mUserProfileDataSource = userProfileDataSource;
@@ -63,7 +65,7 @@ public class PostDataSource {
         // This can only be called when the user is logged in so we can safely get the uid
         String currentUserId = mLoginDataSource.getCurrentUser().getUid();
 
-        return mPostRef
+        return mPostsRef
                 .orderBy("postedAt", Query.Direction.DESCENDING) // newest first
                 .get()
                 .continueWith(executor, task -> {
@@ -125,7 +127,7 @@ public class PostDataSource {
         // This can only be called when the user is logged in so we can safely get the uid
         String currentUserId = mLoginDataSource.getCurrentUser().getUid();
 
-        return mPostRef.whereEqualTo("uid", author.getUid())
+        return mPostsRef.whereEqualTo("uid", author.getUid())
                 .orderBy("postedAt", Query.Direction.DESCENDING) // newest first
                 .get()
                 .continueWith(task -> {
@@ -166,9 +168,9 @@ public class PostDataSource {
     public Task<Void> likePost(@NonNull String postId) {
         String currentUserId = mLoginDataSource.getCurrentUser().getUid();
 
-        return mPostRef.document(postId)
+        return mPostsRef.document(postId)
                 .update("likes", FieldValue.arrayUnion(currentUserId))
-                .addOnSuccessListener(aVoid -> {
+                .addOnSuccessListener(ignore -> {
                     Timber.d("liked post %s", postId);
                 })
                 .addOnFailureListener(e -> {
@@ -179,9 +181,9 @@ public class PostDataSource {
     public Task<Void> unlikePost(@NonNull String postId) {
         String currentUserId = mLoginDataSource.getCurrentUser().getUid();
 
-        return mPostRef.document(postId)
+        return mPostsRef.document(postId)
                 .update("likes", FieldValue.arrayRemove(currentUserId))
-                .addOnSuccessListener(aVoid -> {
+                .addOnSuccessListener(ignore -> {
                     Timber.d("unliked post %s", postId);
                 })
                 .addOnFailureListener(e -> {
@@ -192,7 +194,7 @@ public class PostDataSource {
     public Task<String> publishPost(
             @NonNull Uri imageUri,
             @NonNull String caption,
-            @NonNull String shoeUrl // might have to change this to a URI or smthn, need to upload to storage
+            @NonNull String shoeUrl
     ) {
         String currentUserId = mLoginDataSource.getCurrentUser().getUid();
 
@@ -225,7 +227,7 @@ public class PostDataSource {
             data.put("postedAt", FieldValue.serverTimestamp());
             data.put("likes", List.of());
 
-            return mPostRef.add(data);
+            return mPostsRef.add(data);
         }).continueWith(postsTask -> {
             if (!postsTask.isSuccessful())
                 return null;
@@ -237,5 +239,49 @@ public class PostDataSource {
         }).addOnFailureListener(e -> {
             Timber.w(e, "Failed to publish post");
         });
+    }
+
+    public Task<Void> deletePost(@NonNull Post post) {
+        Timber.d("Deleting post %s", post);
+
+        var imageId = post.getImageId();
+        Task<?> deleteImageTask = null;
+
+        if (imageId != null) {
+            var imageRef = mPostImagesRef.child(imageId);
+
+            deleteImageTask = imageRef.delete()
+                    .addOnSuccessListener(ignore -> {
+                        Timber.d("Deleted image %s", imageId);
+                    })
+                    .addOnFailureListener(e -> {
+                        Timber.w(e, "Failed to delete image %s", imageId);
+                    });
+        }
+
+        var postRef = mPostsRef.document(post.getId());
+        var postCommentsRef = postRef.collection("comments");
+
+        // Run in background thread
+        executor.execute(() -> {
+            Timber.i("Deleting comments for post %s", post.getId());
+            try {
+                FirebaseUtils.deleteCollection(postCommentsRef, 20);
+                Timber.i("Finished deleting comments for post %s", post.getId());
+            } catch (Exception e) {
+                Timber.w(e, "Error deleting comments for post %s", post.getId());
+            }
+        });
+
+        var deletePostTask = postRef
+                .delete()
+                .addOnSuccessListener(ignore -> {
+                    Timber.d("Deleted post %s", post.getId());
+                })
+                .addOnFailureListener(e -> {
+                    Timber.w(e, "Failed to delete post %s", post.getId());
+                });
+
+        return Tasks.whenAll(deleteImageTask, deletePostTask);
     }
 }

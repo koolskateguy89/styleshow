@@ -45,14 +45,14 @@ public class AppModule {
 
     @Provides
     @Singleton
-    FirebaseMessaging provideFirebaseMessaging() {
-        return FirebaseMessaging.getInstance();
+    FirebaseStorage provideFirebaseStorage() {
+        return FirebaseStorage.getInstance();
     }
 
     @Provides
     @Singleton
-    FirebaseStorage provideStorageReference() {
-        return FirebaseStorage.getInstance();
+    FirebaseMessaging provideFirebaseMessaging() {
+        return FirebaseMessaging.getInstance();
     }
 
     @Provides
@@ -70,12 +70,17 @@ public class AppModule {
     @Provides
     @Singleton
     PostDataSource providePostDataSource(
-            FirebaseFirestore firestore,
-            FirebaseStorage storage,
-            LoginDataSource loginDataSource,
-            UserProfileDataSource userProfileDataSource
+            @NonNull FirebaseFirestore firestore,
+            @NonNull FirebaseStorage storage,
+            @NonNull LoginDataSource loginDataSource,
+            @NonNull UserProfileDataSource userProfileDataSource
     ) {
-        return new PostDataSource(firestore, storage, loginDataSource, userProfileDataSource);
+        return new PostDataSource(
+                firestore,
+                storage,
+                loginDataSource,
+                userProfileDataSource
+        );
     }
 
     @Provides

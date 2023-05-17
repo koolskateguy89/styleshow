@@ -102,7 +102,6 @@ public class PostViewModel extends ViewModel {
 
         commentRepository.getCommentsForPost(mPost.getValue().getId())
                 .addOnSuccessListener(comments -> {
-                    Timber.d("loaded comments: %s", comments);
                     mComments.setValue(comments);
                     mCommentLoadingState.setValue(LoadingState.SUCCESS_IDLE);
                 })
@@ -144,8 +143,7 @@ public class PostViewModel extends ViewModel {
             return;
         }
 
-        // TODO: actually delete
-        Timber.d("deleting post: %s", post);
+        postRepository.deletePost(post);
     }
 
     public void tryPostComment() {
@@ -171,7 +169,6 @@ public class PostViewModel extends ViewModel {
                     postingComment = false;
                 })
                 .addOnSuccessListener(ignore -> {
-                    Timber.d("posted comment: %");
                     mComment.setValue("");
                     loadComments();
                 });
@@ -209,7 +206,6 @@ public class PostViewModel extends ViewModel {
                     deletingComment = false;
                 })
                 .addOnSuccessListener(ignore -> {
-                    Timber.d("deleted comment: %s", comment);
                     loadComments();
                 });
     }
