@@ -1,31 +1,35 @@
 package com.styleshow.ui.messages;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
-import android.os.Handler;
-import android.os.Looper;
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.styleshow.data.LoadingState;
-import com.styleshow.domain.repository.ChatRepository;
+import com.styleshow.domain.model.UserProfile;
+import com.styleshow.domain.repository.UserProfileRepository;
 import dagger.hilt.android.lifecycle.HiltViewModel;
-
-// TODO: get list of convos from firebasemessaging
 
 @HiltViewModel
 public class MessagesViewModel extends ViewModel {
 
-    private final @NonNull ChatRepository chatRepository;
+    private final @NonNull UserProfileRepository userProfileRepository;
 
+    private final MutableLiveData<List<UserProfile>> mUsers = new MutableLiveData<>(List.of());
     private final MutableLiveData<LoadingState> mLoadingState =
             new MutableLiveData<>(LoadingState.IDLE);
 
     @Inject
-    public MessagesViewModel(@NonNull ChatRepository chatRepository) {
-        this.chatRepository = chatRepository;
+    public MessagesViewModel(@NonNull UserProfileRepository userProfileRepository) {
+        this.userProfileRepository = userProfileRepository;
+    }
+
+    public LiveData<List<UserProfile>> getUsers() {
+        return mUsers;
     }
 
     public LiveData<LoadingState> getLoadingState() {
@@ -33,21 +37,14 @@ public class MessagesViewModel extends ViewModel {
     }
 
     @MainThread
-    public void loadMessages() {
+    public void loadUsers() {
         mLoadingState.setValue(LoadingState.LOADING);
 
-        var handler = new Handler(Looper.getMainLooper());
-        handler.postDelayed(() -> {
+        userProfileRepository.getAllProfilesExceptMe().addOnSuccessListener(users -> {
+            mUsers.setValue(users);
             mLoadingState.setValue(LoadingState.SUCCESS_IDLE);
-        },
-                1
-                //1500
-        );
-    }
-
-    // this is a test, it almost defo won't be in this viewmodel,
-    // it will be in the one specific to the receiver of the message
-    public void sendMessage(@NonNull String receiverUid, @NonNull String content) {
-        chatRepository.sendMessage(receiverUid, content);
+        }).addOnFailureListener(e -> {
+            mLoadingState.setValue(LoadingState.ERROR);
+        });
     }
 }

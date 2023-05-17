@@ -46,6 +46,22 @@ public class ChatMessage {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o instanceof ChatMessage that) {
+            return id.equals(that.id);
+        }
+
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    @Override
     public @NonNull String toString() {
         return "ChatMessage{" +
                 "id='" + id + '\'' +

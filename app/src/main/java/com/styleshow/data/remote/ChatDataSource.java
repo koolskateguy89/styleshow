@@ -1,11 +1,15 @@
 package com.styleshow.data.remote;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+import android.app.Activity;
 import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.Filter;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -13,6 +17,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.styleshow.common.Constants;
 import com.styleshow.data.remote.dto.ChatMessageDto;
 import com.styleshow.domain.model.ChatMessage;
+import com.styleshow.domain.repository.ChatRepository;
 import timber.log.Timber;
 
 public class ChatDataSource {
@@ -33,21 +38,25 @@ public class ChatDataSource {
         this.loginDataSource = loginDataSource;
     }
 
+    private Query chatsBetweenUsersReference(@NonNull String uid1, @NonNull String uid2) {
+        return mChatsRef.where(Filter.or(
+                // Messages uid1 -> uid2
+                Filter.and(
+                        Filter.equalTo(Constants.Chat.FIELD_SENDER_UID, uid1),
+                        Filter.equalTo(Constants.Chat.FIELD_RECEIVER_UID, uid2)
+                ),
+                // Messages uid2 -> uid1
+                Filter.and(
+                        Filter.equalTo(Constants.Chat.FIELD_SENDER_UID, uid2),
+                        Filter.equalTo(Constants.Chat.FIELD_RECEIVER_UID, uid1)
+                )
+        ));
+    }
+
     public Task<List<ChatMessage>> getMessagesBetween(@NonNull String receiverId) {
         String currentUserId = loginDataSource.getCurrentUser().getUid();
 
-        return mChatsRef.where(Filter.or(
-                        // Messages me -> receiver
-                        Filter.and(
-                                Filter.equalTo(Constants.Chat.FIELD_SENDER_UID, currentUserId),
-                                Filter.equalTo(Constants.Chat.FIELD_RECEIVER_UID, receiverId)
-                        ),
-                        // Messages receiver -> me
-                        Filter.and(
-                                Filter.equalTo(Constants.Chat.FIELD_SENDER_UID, receiverId),
-                                Filter.equalTo(Constants.Chat.FIELD_RECEIVER_UID, currentUserId)
-                        )
-                ))
+        return chatsBetweenUsersReference(currentUserId, receiverId)
                 .orderBy(Constants.Chat.FIELD_SENT_AT, Query.Direction.ASCENDING) // oldest first
                 .get()
                 .addOnFailureListener(e -> {
@@ -78,16 +87,10 @@ public class ChatDataSource {
     public void sendMessage(@NonNull String receiverUid, @NonNull String content) {
         String currentUserId = loginDataSource.getCurrentUser().getUid();
 
-        ChatMessageDto dto = new ChatMessageDto();
+        var dto = new ChatMessageDto();
         dto.senderUid = currentUserId;
         dto.receiverUid = receiverUid;
         dto.content = content;
-
-        //Map<String, Object> data = new HashMap<>();
-        //data.put(Constants.Chat.FIELD_SENDER_UID, currentUserId);
-        //data.put(Constants.Chat.FIELD_RECEIVER_UID, receiverUid);
-        //data.put(Constants.Chat.FIELD_CONTENT, content);
-        //data.put(Constants.Chat.FIELD_SENT_AT, FieldValue.serverTimestamp());
 
         mChatsRef.add(dto)
                 .addOnSuccessListener(documentReference -> {
@@ -110,6 +113,37 @@ public class ChatDataSource {
             Timber.d("Deleted message with id '%s'", messageId);
         }).addOnFailureListener(e -> {
             Timber.w(e, "Failed to delete message with id '%s'", messageId);
+        });
+    }
+
+    public void listenForMessagesBetween(@NonNull Activity activity, @NonNull String receiverId,
+                                         @NonNull ChatRepository.ChatListener listener) {
+        String currentUserId = loginDataSource.getCurrentUser().getUid();
+
+        chatsBetweenUsersReference(currentUserId, receiverId).addSnapshotListener(activity, (snapshots, e) -> {
+            if (e != null) {
+                Timber.w(e, "Listen failed.");
+                return;
+            }
+
+            assert snapshots != null;
+
+            snapshots.getDocumentChanges().forEach(dc -> {
+                switch (dc.getType()) {
+                    case ADDED -> {
+                        Timber.d("New message: %s", dc.getDocument().getData());
+                        var dto = dc.getDocument().toObject(ChatMessageDto.class);
+                        var message = dto.toChatMessage(currentUserId);
+                        listener.onNewMessage(message);
+                    }
+                    case REMOVED -> {
+                        Timber.d("Deleted message: %s", dc.getDocument().getData());
+                        var dto = dc.getDocument().toObject(ChatMessageDto.class);
+                        var message = dto.toChatMessage(currentUserId);
+                        listener.onMessageDeleted(message);
+                    }
+                }
+            });
         });
     }
 }

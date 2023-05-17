@@ -1,10 +1,12 @@
 package com.styleshow.data.remote.dto;
 
+import java.util.Date;
+
 import androidx.annotation.NonNull;
-import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.ServerTimestamp;
 import com.styleshow.domain.model.ChatMessage;
+import timber.log.Timber;
 
 /**
  * DTO for {@link ChatMessage}.
@@ -23,12 +25,12 @@ public class ChatMessageDto {
     public String content;
 
     @ServerTimestamp
-    public Timestamp sentAt;
+    public Date sentAt;
 
     public ChatMessage toChatMessage(@NonNull String currentUserId) {
         boolean isMyMessage = currentUserId.equals(senderUid);
 
-        return new ChatMessage(id, content, sentAt.toDate(), isMyMessage);
+        return new ChatMessage(id, content, sentAt, isMyMessage);
     }
 
     @Override

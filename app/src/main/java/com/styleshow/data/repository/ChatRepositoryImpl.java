@@ -2,6 +2,7 @@ package com.styleshow.data.repository;
 
 import java.util.List;
 
+import android.app.Activity;
 import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.Task;
 import com.styleshow.data.remote.ChatDataSource;
@@ -29,5 +30,11 @@ public class ChatRepositoryImpl implements ChatRepository {
     @Override
     public Task<Void> deleteMessage(@NonNull String messageId) {
         return dataSource.deleteMessage(messageId);
+    }
+
+    @Override
+    public void listenForMessagesBetween(@NonNull Activity activity, @NonNull String receiverId,
+                                         @NonNull ChatListener listener) {
+        dataSource.listenForMessagesBetween(activity, receiverId, listener);
     }
 }

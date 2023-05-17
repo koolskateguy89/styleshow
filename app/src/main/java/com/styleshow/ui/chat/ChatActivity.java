@@ -1,7 +1,5 @@
 package com.styleshow.ui.chat;
 
-import java.util.List;
-
 import android.os.Bundle;
 import android.view.inputmethod.EditorInfo;
 import androidx.appcompat.app.AlertDialog;
@@ -17,6 +15,9 @@ import com.styleshow.domain.model.UserProfile;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
+/**
+ * Screen for chatting with another user.
+ */
 @AndroidEntryPoint
 public class ChatActivity extends AppCompatActivity {
 
@@ -33,7 +34,6 @@ public class ChatActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(ChatViewModel.class);
         viewModel.setReceiver(receiver);
         viewModel.loadMessages();
-        // TODO: listen to messages (if not already listening)
 
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -49,7 +49,7 @@ public class ChatActivity extends AppCompatActivity {
         });
 
         // Setup message recycler view
-        var adapter = new ChatMessageAdapter(List.of());
+        var adapter = new ChatMessageAdapter(viewModel.getMessages().getValue());
 
         // On long click on message, confirm message deletion
         adapter.setItemLongClickListener((index, message) -> {
@@ -58,7 +58,15 @@ public class ChatActivity extends AppCompatActivity {
         });
 
         binding.rvMessages.setAdapter(adapter);
-        viewModel.getMessages().observe(this, adapter::setItems);
+        viewModel.getMessages().observe(this, messages -> {
+            adapter.setItems(messages);
+            // Scroll to bottom on messages loaded
+            binding.rvMessages.smoothScrollToPosition(messages.size());
+
+            // Start listening for message updates
+            // Smooth scroll to bottom on new message
+            viewModel.listenForMessage(this, adapter, binding.rvMessages::smoothScrollToPosition);
+        });
 
         // Handle initial messages loading state
         viewModel.getLoadingState().observe(this, loadingState -> {

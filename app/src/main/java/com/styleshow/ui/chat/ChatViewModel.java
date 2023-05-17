@@ -1,13 +1,17 @@
 package com.styleshow.ui.chat;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.IntConsumer;
 
 import javax.inject.Inject;
 
+import android.app.Activity;
 import androidx.annotation.MainThread;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.Task;
 import com.styleshow.data.LoadingState;
 import com.styleshow.domain.model.ChatMessage;
@@ -27,7 +31,7 @@ public class ChatViewModel extends ViewModel {
     private final MutableLiveData<UserProfile> mReceiver = new MutableLiveData<>();
 
     private final MutableLiveData<List<ChatMessage>> mMessages =
-            new MutableLiveData<>(List.of());
+            new MutableLiveData<>(new ArrayList<>());
     private final MutableLiveData<LoadingState> mLoadingState =
             new MutableLiveData<>(LoadingState.IDLE);
 
@@ -71,6 +75,31 @@ public class ChatViewModel extends ViewModel {
                 .addOnFailureListener(e -> {
                     mLoadingState.setValue(LoadingState.ERROR);
                 });
+    }
+
+    public void listenForMessage(@NonNull Activity activity, RecyclerView.Adapter<?> adapter,
+                                 @NonNull IntConsumer scrollToBottom) {
+        var messages = mMessages.getValue();
+        assert messages != null;
+
+        chatRepository.listenForMessagesBetween(activity, mReceiver.getValue().getUid(), new ChatRepository.ChatListener() {
+            @Override
+            public void onNewMessage(ChatMessage message) {
+                int indexAdded = messages.size();
+
+                messages.add(message);
+                adapter.notifyItemInserted(indexAdded);
+                scrollToBottom.accept(indexAdded);
+            }
+
+            @Override
+            public void onMessageDeleted(ChatMessage message) {
+                int indexRemoved = messages.indexOf(message);
+
+                //messages.remove(message);
+                adapter.notifyItemRemoved(indexRemoved);
+            }
+        });
     }
 
     @MainThread

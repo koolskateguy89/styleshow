@@ -1,5 +1,7 @@
 package com.styleshow.ui.messages;
 
+import java.util.List;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,11 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import com.styleshow.adapters.ProfilePreviewAdapter;
+import com.styleshow.common.Constants;
 import com.styleshow.databinding.FragmentMessagesBinding;
-import com.styleshow.ui.select_chat.SelectChatActivity;
+import com.styleshow.ui.chat.ChatActivity;
 import dagger.hilt.android.AndroidEntryPoint;
-
-// TODO: display recent conversations
 
 @AndroidEntryPoint
 public class MessagesFragment extends Fragment {
@@ -25,23 +27,11 @@ public class MessagesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         viewModel = new ViewModelProvider(this).get(MessagesViewModel.class);
-        viewModel.loadMessages();
+        viewModel.loadUsers();
 
         binding = FragmentMessagesBinding.inflate(inflater, container, false);
 
-        // TODO: setup the recycler view
-
-        binding.fabNewMessage.setOnClickListener(v -> {
-            var intent = new Intent(requireContext(), SelectChatActivity.class);
-            startActivity(intent);
-        });
-
-        // TODO (remove): this is a TEST!!
-        binding.fabTestSendMessage.setOnClickListener(v -> {
-            // sends to aaa@aaa.com
-            viewModel.sendMessage("UEl9dsIOexVlZG010enL4VoL15f2", "Test!!");
-        });
-
+        // Handle loading state
         viewModel.getLoadingState().observe(getViewLifecycleOwner(), loadingState -> {
             switch (loadingState) {
                 case LOADING -> {
@@ -49,11 +39,22 @@ public class MessagesFragment extends Fragment {
                     binding.viewSwitcher.setDisplayedChild(1);
                 }
                 case SUCCESS_IDLE -> {
-                    // Display messages
+                    // Display users
                     binding.viewSwitcher.setDisplayedChild(0);
                 }
             }
         });
+
+        // Setup users recycler view
+        var adapter = new ProfilePreviewAdapter(List.of());
+        adapter.setItemClickListener((index, user) -> {
+            var intent = new Intent(requireContext(), ChatActivity.class)
+                    .putExtra(Constants.NAME_PROFILE, user);
+            startActivity(intent);
+        });
+
+        binding.rvUsers.setAdapter(adapter);
+        viewModel.getUsers().observe(getViewLifecycleOwner(), adapter::setItems);
 
         return binding.getRoot();
     }
