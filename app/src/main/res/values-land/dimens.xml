@@ -1,3 +1,7 @@
 <resources>
     <dimen name="fab_margin">48dp</dimen>
+
+    <!-- Profile -->
+    <dimen name="profile_picture_size">100dp</dimen>
+
 </resources>

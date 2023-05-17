@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".ui.home.HomeFragment"
+        >
+    <data>
+        <variable
+                name="viewModel"
+                type="com.styleshow.ui.home.HomeViewModel" />
+    </data>
+
+    <ViewSwitcher
+            android:id="@+id/view_switcher"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+        >
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+
+            <!-- NestedScrollingChild goes here (NestedScrollView, RecyclerView, etc.). -->
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_posts"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="@integer/post_grid_columns"
+                    tools:listitem="@layout/item_post"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+
+            <com.styleshow.components.MovableFloatingActionButton
+                    android:id="@+id/fab_new_post"
+                    app:srcCompat="@drawable/ic_add_24dp"
+                    android:contentDescription="@string/new_post_btn_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:layout_anchor="@id/rv_posts"
+                    app:layout_anchorGravity="bottom|end"
+                    />
+
+            <com.google.android.material.appbar.AppBarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <com.google.android.material.search.SearchBar
+                        android:id="@+id/search_bar"
+                        android:hint="@string/hint_query"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        />
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <com.google.android.material.search.SearchView
+                    android:id="@+id/sv"
+                    android:hint="@string/hint_query"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_anchor="@id/search_bar">
+
+                <!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
+                <ViewSwitcher
+                        android:id="@+id/view_switcher_search"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_profiles"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginEnd="4dp"
+                            />
+
+                    <include layout="@layout/view_progress" />
+
+                </ViewSwitcher>
+
+            </com.google.android.material.search.SearchView>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <include layout="@layout/view_progress" />
+
+    </ViewSwitcher>
+</layout>

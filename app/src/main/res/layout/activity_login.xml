@@ -12,12 +12,8 @@
             android:hint="@string/hint_email"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="260dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
             >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -35,16 +31,10 @@
             app:endIconMode="password_toggle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:imeActionLabel="action_sign_in_short"
             android:imeOptions="actionDone"
             android:inputType="textPassword"
             android:selectAllOnFocus="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_email"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
             >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -62,16 +52,22 @@
             android:enabled="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="64dp"
             android:text="@string/action_sign_in"
+            />
+
+    <androidx.constraintlayout.helper.widget.Flow
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="layout_email,layout_password,btn_login"
+            android:id="@+id/flow2"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_password"
-            app:layout_constraintVertical_bias="0.142"
-            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:orientation="vertical"
+            android:layout_marginStart="64dp"
+            android:layout_marginEnd="64dp"
+            app:flow_verticalGap="32dp"
             />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

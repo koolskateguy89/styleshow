@@ -90,12 +90,8 @@ public class ProfileFragment extends Fragment {
             openPost.launch(new Pair<>(index, post));
         });
 
-        binding.btnEditProfile.setOnClickListener(v -> {
-            // TODO
-        });
-
-        binding.btnOpenSettings.setOnClickListener(v -> {
-            // TODO
+        binding.btnUserGuide.setOnClickListener(v -> {
+            // TODO!!!: open user guide activity
         });
 
         return binding.getRoot();

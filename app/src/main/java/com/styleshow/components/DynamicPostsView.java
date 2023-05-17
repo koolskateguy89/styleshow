@@ -160,7 +160,7 @@ public class DynamicPostsView extends ConstraintLayout {
             gridAdapter = new PostPreviewAdapter(posts);
         }
         if (gridLayoutManager == null) {
-            int numColumns = getContext().getResources().getInteger(R.integer.dynamic_posts_view_grid_columns);
+            int numColumns = getContext().getResources().getInteger(R.integer.post_grid_columns);
             gridLayoutManager = new GridLayoutManager(getContext(), numColumns);
         }
 

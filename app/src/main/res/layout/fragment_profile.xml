@@ -61,15 +61,8 @@
                     />
 
             <Button
-                    android:id="@+id/btn_edit_profile"
-                    android:text="@string/action_edit_profile"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    />
-
-            <Button
-                    android:id="@+id/btn_open_settings"
-                    android:text="@string/action_open_settings"
+                    android:id="@+id/btn_user_guide"
+                    android:text="@string/action_user_guide"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     />
@@ -96,7 +89,7 @@
                     android:id="@+id/flow_actions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:constraint_referenced_ids="btn_sign_out,btn_edit_profile,btn_open_settings"
+                    app:constraint_referenced_ids="btn_sign_out,btn_user_guide"
                     android:paddingStart="@dimen/profile_actions_gap"
                     android:paddingEnd="@dimen/profile_actions_gap"
                     app:flow_horizontalGap="@dimen/profile_actions_gap"
@@ -119,9 +112,10 @@
                     app:posts="@{viewModel.posts}"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/flow_actions"
+                    android:layout_marginTop="16dp"
                     />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
