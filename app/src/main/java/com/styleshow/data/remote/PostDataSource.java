@@ -3,7 +3,6 @@ package com.styleshow.data.remote;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -51,16 +50,6 @@ public class PostDataSource {
         mUserProfileDataSource = userProfileDataSource;
     }
 
-    private static @Nullable PostDto getPostDtoFromDocument(DocumentSnapshot document) {
-        var postDto = document.toObject(PostDto.class);
-
-        if (postDto != null) {
-            postDto.id = document.getId();
-        }
-
-        return postDto;
-    }
-
     // TODO: impl. pagination
     public Task<List<Post>> getAllPosts() {
         // This can only be called when the user is logged in so we can safely get the uid
@@ -73,20 +62,15 @@ public class PostDataSource {
                     if (!task.isSuccessful())
                         return null;
 
-                    var documents = task.getResult().getDocuments();
+                    var querySnapshot = task.getResult();
 
-                    return documents.stream()
-                            .map(PostDataSource::getPostDtoFromDocument)
-                            .filter(Objects::nonNull)
-                            ;
+                    return querySnapshot.toObjects(PostDto.class);
                 })
                 .continueWithTask(executor, task -> {
                     if (!task.isSuccessful() && task.getException() != null)
                         return Tasks.forException(task.getException());
 
-                    // Can't re-use streams
-                    var postDtos = task.getResult()
-                            .collect(Collectors.toList());
+                    var postDtos = task.getResult();
 
                     var uids = postDtos.stream()
                             .map(postDto -> postDto.uid)
@@ -113,7 +97,8 @@ public class PostDataSource {
                                 return postDtos
                                         .stream()
                                         .map(postDto -> postDto.toPost(profilesMap.get(postDto.uid), currentUserId))
-                                        .collect(Collectors.toList());
+                                        .collect(Collectors.toList())
+                                        ;
                             });
                 })
                 .addOnSuccessListener(posts -> {
@@ -137,11 +122,13 @@ public class PostDataSource {
 
                     var documents = task.getResult().getDocuments();
 
-                    return documents.stream()
-                            .map(PostDataSource::getPostDtoFromDocument)
-                            .filter(Objects::nonNull)
+                    var querySnapshot = task.getResult();
+
+                    return querySnapshot.toObjects(PostDto.class)
+                            .stream()
                             .map(postDto -> postDto.toPost(author, currentUserId))
-                            .collect(Collectors.toList());
+                            .collect(Collectors.toList())
+                            ;
                 })
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

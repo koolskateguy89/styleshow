@@ -5,6 +5,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentId;
 import com.styleshow.domain.model.Post;
 import com.styleshow.domain.model.UserProfile;
 
@@ -15,9 +16,7 @@ import com.styleshow.domain.model.UserProfile;
  */
 public class PostDto {
 
-    /**
-     * Has to be separately set, cannot be inferred by Firestore serialization.
-     */
+    @DocumentId
     public String id;
 
     public String uid;
@@ -27,10 +26,6 @@ public class PostDto {
     public String shoeUrl;
     public Timestamp postedAt;
     public List<String> likes;
-
-    // Required no-args constructor for Firestore serialization
-    public PostDto() {
-    }
 
     public Post toPost(UserProfile author, String currentUserId) {
         boolean liked = likes.contains(currentUserId);

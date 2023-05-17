@@ -3,6 +3,7 @@ package com.styleshow.data.remote.dto;
 
 import androidx.annotation.NonNull;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentId;
 import com.styleshow.domain.model.Comment;
 import com.styleshow.domain.model.UserProfile;
 
@@ -13,9 +14,7 @@ import com.styleshow.domain.model.UserProfile;
  */
 public class CommentDto {
 
-    /**
-     * Has to be separately set, cannot be inferred by Firestore serialization.
-     */
+    @DocumentId
     public String id;
 
     public String uid;

@@ -1,14 +1,11 @@
 package com.styleshow.data.remote;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.styleshow.common.Constants;
@@ -29,20 +26,6 @@ public class UserProfileDataSource {
         mProfiles = firestore.collection(Constants.UserProfile.COLLECTION_NAME);
     }
 
-    /**
-     * Parse a {@link DocumentSnapshot} into a {@link UserProfile}.
-     */
-    private static @Nullable UserProfile getUserProfileFromDocument(@NonNull DocumentSnapshot documentSnapshot) {
-        var userProfileDto = documentSnapshot.toObject(UserProfileDto.class);
-
-        if (userProfileDto == null) {
-            return null;
-        }
-
-        userProfileDto.uid = documentSnapshot.getId();
-        return userProfileDto.toUserProfile();
-    }
-
     public Task<List<UserProfile>> getAllProfilesExceptMe() {
         String currentUserId = mLoginDataSource.getCurrentUser().getUid();
 
@@ -53,12 +36,13 @@ public class UserProfileDataSource {
                     if (!task.isSuccessful())
                         return null;
 
-                    var documents = task.getResult().getDocuments();
+                    var querySnapshot = task.getResult();
 
-                    return documents.stream()
-                            .map(UserProfileDataSource::getUserProfileFromDocument)
-                            .filter(Objects::nonNull)
-                            .collect(Collectors.toList());
+                    return querySnapshot.toObjects(UserProfileDto.class)
+                            .stream()
+                            .map(UserProfileDto::toUserProfile)
+                            .collect(Collectors.toList())
+                            ;
                 })
                 .addOnSuccessListener(profiles -> {
                     Timber.d("Got all profiles except me: %s", profiles);
@@ -81,13 +65,14 @@ public class UserProfileDataSource {
 
                     var documentSnapshot = task.getResult();
 
-                    var userProfile = getUserProfileFromDocument(documentSnapshot);
+                    var userProfileDto = documentSnapshot.toObject(UserProfileDto.class);
 
-                    if (userProfile == null) {
-                        Timber.w("User profile for uid '%s' is null", uid);
+                    if (userProfileDto == null) {
+                        Timber.w("User profile dto for uid '%s' is null", uid);
+                        return null;
                     }
 
-                    return userProfile;
+                    return userProfileDto.toUserProfile();
                 })
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -116,12 +101,13 @@ public class UserProfileDataSource {
                     if (!task.isSuccessful())
                         return null;
 
-                    var documents = task.getResult().getDocuments();
+                    var querySnapshot = task.getResult();
 
-                    return documents.stream()
-                            .map(UserProfileDataSource::getUserProfileFromDocument)
-                            .filter(Objects::nonNull)
-                            .collect(Collectors.toList());
+                    return querySnapshot.toObjects(UserProfileDto.class)
+                            .stream()
+                            .map(UserProfileDto::toUserProfile)
+                            .collect(Collectors.toList())
+                            ;
                 })
                 .addOnFailureListener(e -> {
                     Timber.w(e, "Failed to search profiles for query '%s'", query);
@@ -140,12 +126,13 @@ public class UserProfileDataSource {
                     if (!task.isSuccessful())
                         return null;
 
-                    var documents = task.getResult().getDocuments();
+                    var querySnapshot = task.getResult();
 
-                    return documents.stream()
-                            .map(UserProfileDataSource::getUserProfileFromDocument)
-                            .filter(Objects::nonNull)
-                            .collect(Collectors.toList());
+                    return querySnapshot.toObjects(UserProfileDto.class)
+                            .stream()
+                            .map(UserProfileDto::toUserProfile)
+                            .collect(Collectors.toList())
+                            ;
                 })
                 .addOnSuccessListener(userProfiles -> {
                     Timber.d("Got profiles for uids %s: %s", uids, userProfiles);

@@ -51,16 +51,9 @@ public class CommentDataSource {
                     if (!task.isSuccessful())
                         return null;
 
-                    var documents = task.getResult().getDocuments();
+                    var querySnapshot = task.getResult();
 
-                    return documents.stream()
-                            .map(document -> {
-                                var commentDto = document.toObject(CommentDto.class);
-                                if (commentDto != null)
-                                    commentDto.id = document.getId();
-                                return commentDto;
-                            })
-                            .filter(Objects::nonNull);
+                    return querySnapshot.toObjects(CommentDto.class);
                 });
 
         // Combines profiles and comments
@@ -68,7 +61,7 @@ public class CommentDataSource {
                     if (!task.isSuccessful())
                         return Tasks.forException(task.getException());
 
-                    var commentDtos = task.getResult().collect(Collectors.toList());
+                    var commentDtos = task.getResult();
 
                     if (commentDtos.isEmpty())
                         return Tasks.forResult(List.<Comment>of());

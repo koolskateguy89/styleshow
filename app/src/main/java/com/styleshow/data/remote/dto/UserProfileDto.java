@@ -1,6 +1,7 @@
 package com.styleshow.data.remote.dto;
 
 import androidx.annotation.NonNull;
+import com.google.firebase.firestore.DocumentId;
 import com.styleshow.domain.model.UserProfile;
 
 /**
@@ -10,18 +11,12 @@ import com.styleshow.domain.model.UserProfile;
  */
 public class UserProfileDto {
 
-    /**
-     * Has to be separately set, cannot be inferred by Firestore serialization.
-     */
+    @DocumentId
     public String uid;
 
     public String username;
     public String bio;
     public String imageUrl;
-
-    // Required no-args constructor for Firestore serialization
-    public UserProfileDto() {
-    }
 
     public UserProfile toUserProfile() {
         return new UserProfile(

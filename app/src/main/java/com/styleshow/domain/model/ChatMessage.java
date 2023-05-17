@@ -9,25 +9,35 @@ import androidx.annotation.NonNull;
  */
 public class ChatMessage {
 
+    private final @NonNull String id;
+
     private final @NonNull String content;
 
     private final @NonNull Date sentAt;
 
     private final boolean isMyMessage;
 
-    public ChatMessage(@NonNull String content, @NonNull Date sentAt, boolean isMyMessage) {
+    public ChatMessage(
+            @NonNull String id,
+            @NonNull String content,
+            @NonNull Date sentAt,
+            boolean isMyMessage
+    ) {
+        this.id = id;
         this.content = content;
         this.sentAt = sentAt;
         this.isMyMessage = isMyMessage;
     }
 
-    @NonNull
-    public String getContent() {
+    public @NonNull String getId() {
+        return id;
+    }
+
+    public @NonNull String getContent() {
         return content;
     }
 
-    @NonNull
-    public Date getSentAt() {
+    public @NonNull Date getSentAt() {
         return sentAt;
     }
 
@@ -38,7 +48,8 @@ public class ChatMessage {
     @Override
     public @NonNull String toString() {
         return "ChatMessage{" +
-                "content='" + content + '\'' +
+                "id='" + id + '\'' +
+                ", content='" + content + '\'' +
                 ", sentAt=" + sentAt +
                 ", isMyMessage=" + isMyMessage +
                 '}';
