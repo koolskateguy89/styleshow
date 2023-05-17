@@ -2,16 +2,21 @@ package com.styleshow.ui.select_chat;
 
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.styleshow.adapters.ProfilePreviewAdapter;
+import com.styleshow.common.Constants;
 import com.styleshow.databinding.ActivitySelectChatBinding;
+import com.styleshow.ui.chat.ChatActivity;
 import dagger.hilt.android.AndroidEntryPoint;
-import timber.log.Timber;
 
 // TODO: back button
 
+/**
+ * Displays a list of users, that the user can select to start a chat with.
+ */
 @AndroidEntryPoint
 public class SelectChatActivity extends AppCompatActivity {
 
@@ -42,17 +47,16 @@ public class SelectChatActivity extends AppCompatActivity {
             }
         });
 
-        // TODO: setup users recycler view
+        // Setup users recycler view
         var adapter = new ProfilePreviewAdapter(List.of());
-
         adapter.setItemClickListener((index, user) -> {
-            // TODO: open activity to message that user, and finish this one
-            // or maybe make this an activity result?
-            Timber.d("Clicked on user %s", user);
+            var intent = new Intent(this, ChatActivity.class)
+                    .putExtra(Constants.NAME_PROFILE, user);
+            startActivity(intent);
+            finish();
         });
 
         binding.rvUsers.setAdapter(adapter);
-
         viewModel.getUsers().observe(this, adapter::setItems);
     }
 }

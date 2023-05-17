@@ -3,9 +3,11 @@ package com.styleshow.ui.chat;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import com.styleshow.common.Constants;
 import com.styleshow.databinding.ActivityChatBinding;
-import com.styleshow.databinding.ActivityPostBinding;
+import com.styleshow.domain.model.UserProfile;
 import dagger.hilt.android.AndroidEntryPoint;
+import timber.log.Timber;
 
 @AndroidEntryPoint
 public class ChatActivity extends AppCompatActivity {
@@ -16,6 +18,9 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        var receiver = (UserProfile) getIntent().getSerializableExtra(Constants.NAME_PROFILE);
+        Timber.i("receiver = %s", receiver);
 
         viewModel = new ViewModelProvider(this).get(ChatViewModel.class);
         // viewModel.loadMessages();

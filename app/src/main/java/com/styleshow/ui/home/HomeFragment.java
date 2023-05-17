@@ -113,7 +113,7 @@ public class HomeFragment extends Fragment {
         // Open profile on caption click
         postAdapter.setCaptionClickListener((index, post) -> {
             var intent = new Intent(requireContext(), UserProfileActivity.class)
-                    .putExtra(Constants.PROFILE_NAME, post.getAuthor());
+                    .putExtra(Constants.NAME_PROFILE, post.getAuthor());
             startActivity(intent);
         });
 
@@ -143,7 +143,7 @@ public class HomeFragment extends Fragment {
         // On click open user profile activity, display the clicked user's profile
         profilePreviewAdapter.setItemClickListener((index, profile) -> {
             var intent = new Intent(requireContext(), UserProfileActivity.class)
-                    .putExtra(Constants.PROFILE_NAME, profile);
+                    .putExtra(Constants.NAME_PROFILE, profile);
             startActivity(intent);
         });
 

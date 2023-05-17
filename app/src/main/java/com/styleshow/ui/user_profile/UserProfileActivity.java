@@ -33,7 +33,7 @@ public class UserProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        var userProfile = (UserProfile) getIntent().getSerializableExtra(Constants.PROFILE_NAME);
+        var userProfile = (UserProfile) getIntent().getSerializableExtra(Constants.NAME_PROFILE);
         Timber.d("opened profile: %s", userProfile);
 
         viewModel = new ViewModelProvider(this).get(UserProfileViewModel.class);

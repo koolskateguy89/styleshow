@@ -41,7 +41,7 @@ public class PostActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        var post = (Post) getIntent().getSerializableExtra(Constants.POST_NAME);
+        var post = (Post) getIntent().getSerializableExtra(Constants.NAME_POST);
         Timber.d("opened post: %s", post);
 
         viewModel = new ViewModelProvider(this).get(PostViewModel.class);
@@ -101,9 +101,9 @@ public class PostActivity extends AppCompatActivity {
         }
 
         var data = new Intent();
-        data.putExtra(Constants.POST_NAME, viewModel.getPost().getValue());
-        data.putExtra(Constants.POST_INDEX_NAME,
-                getIntent().getIntExtra(Constants.POST_INDEX_NAME, -1));
+        data.putExtra(Constants.NAME_POST, viewModel.getPost().getValue());
+        data.putExtra(Constants.NAME_POST_INDEX,
+                getIntent().getIntExtra(Constants.NAME_POST_INDEX, -1));
 
         setResult(RESULT_OK, data);
         finish();
@@ -131,9 +131,9 @@ public class PostActivity extends AppCompatActivity {
 
                     // Return to previous activity
                     var data = new Intent();
-                    data.putExtra(Constants.POST_NAME, (Serializable) null);
-                    data.putExtra(Constants.POST_INDEX_NAME,
-                            getIntent().getIntExtra(Constants.POST_INDEX_NAME, -1));
+                    data.putExtra(Constants.NAME_POST, (Serializable) null);
+                    data.putExtra(Constants.NAME_POST_INDEX,
+                            getIntent().getIntExtra(Constants.NAME_POST_INDEX, -1));
 
                     setResult(RESULT_OK, data);
                     finish();
@@ -195,15 +195,15 @@ public class PostActivity extends AppCompatActivity {
         @Override
         public @NonNull Intent createIntent(@NonNull Context context, Pair<Integer, Post> pair) {
             return new Intent(context, PostActivity.class)
-                    .putExtra(Constants.POST_NAME, pair.second)
-                    .putExtra(Constants.POST_INDEX_NAME, (int) pair.first);
+                    .putExtra(Constants.NAME_POST, pair.second)
+                    .putExtra(Constants.NAME_POST_INDEX, (int) pair.first);
         }
 
         @Override
         public PostResult parseResult(int resultCode, @Nullable Intent intent) {
             if (resultCode == RESULT_OK && intent != null) {
-                int index = intent.getIntExtra(Constants.POST_INDEX_NAME, -1);
-                Post post = (Post) intent.getSerializableExtra(Constants.POST_NAME);
+                int index = intent.getIntExtra(Constants.NAME_POST_INDEX, -1);
+                Post post = (Post) intent.getSerializableExtra(Constants.NAME_POST);
 
                 if (post == null) {
                     return new PostResult.PostDeleted(index);

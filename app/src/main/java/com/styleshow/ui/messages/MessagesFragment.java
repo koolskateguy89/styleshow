@@ -13,6 +13,8 @@ import com.styleshow.databinding.FragmentMessagesBinding;
 import com.styleshow.ui.select_chat.SelectChatActivity;
 import dagger.hilt.android.AndroidEntryPoint;
 
+// TODO: display recent conversations
+
 @AndroidEntryPoint
 public class MessagesFragment extends Fragment {
 

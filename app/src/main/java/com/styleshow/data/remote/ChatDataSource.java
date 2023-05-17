@@ -1,14 +1,23 @@
 package com.styleshow.data.remote;
 
 import androidx.annotation.NonNull;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.styleshow.common.Constants;
 import timber.log.Timber;
 
-public class MessageDataSource {
+public class ChatDataSource {
 
     private final @NonNull FirebaseMessaging messaging;
 
-    public MessageDataSource(@NonNull FirebaseMessaging messaging) {
+    private final @NonNull CollectionReference mChatsRef;
+
+    public ChatDataSource(
+            @NonNull FirebaseFirestore firestore,
+            @NonNull FirebaseMessaging messaging
+    ) {
+        mChatsRef = firestore.collection(Constants.COLLECTION_CHATS);
         this.messaging = messaging;
     }
 

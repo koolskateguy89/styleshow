@@ -7,19 +7,19 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
+import com.styleshow.data.remote.ChatDataSource;
 import com.styleshow.data.remote.CommentDataSource;
 import com.styleshow.data.remote.LoginDataSource;
-import com.styleshow.data.remote.MessageDataSource;
 import com.styleshow.data.remote.PostDataSource;
 import com.styleshow.data.remote.UserProfileDataSource;
 import com.styleshow.data.repository.CommentRepositoryImpl;
 import com.styleshow.data.repository.LoginRepositoryImpl;
-import com.styleshow.data.repository.MessageRepositoryImpl;
+import com.styleshow.data.repository.ChatRepositoryImpl;
 import com.styleshow.data.repository.PostRepositoryImpl;
 import com.styleshow.data.repository.UserProfileRepositoryImpl;
 import com.styleshow.domain.repository.CommentRepository;
 import com.styleshow.domain.repository.LoginRepository;
-import com.styleshow.domain.repository.MessageRepository;
+import com.styleshow.domain.repository.ChatRepository;
 import com.styleshow.domain.repository.PostRepository;
 import com.styleshow.domain.repository.UserProfileRepository;
 import dagger.Module;
@@ -121,13 +121,16 @@ public class AppModule {
 
     @Provides
     @Singleton
-    MessageDataSource provideMessageDataSource(@NonNull FirebaseMessaging messaging) {
-        return new MessageDataSource(messaging);
+    ChatDataSource provideChatDataSource(
+            @NonNull FirebaseFirestore firestore,
+            @NonNull FirebaseMessaging messaging
+    ) {
+        return new ChatDataSource(firestore, messaging);
     }
 
     @Provides
     @Singleton
-    MessageRepository provideMessageRepository(@NonNull MessageDataSource dataSource) {
-        return new MessageRepositoryImpl(dataSource);
+    ChatRepository provideChatRepository(@NonNull ChatDataSource dataSource) {
+        return new ChatRepositoryImpl(dataSource);
     }
 }

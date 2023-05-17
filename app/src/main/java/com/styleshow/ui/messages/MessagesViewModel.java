@@ -10,7 +10,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.styleshow.data.LoadingState;
-import com.styleshow.domain.repository.MessageRepository;
+import com.styleshow.domain.repository.ChatRepository;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 
 // TODO: get list of convos from firebasemessaging
@@ -18,14 +18,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 @HiltViewModel
 public class MessagesViewModel extends ViewModel {
 
-    private final @NonNull MessageRepository messageRepository;
+    private final @NonNull ChatRepository chatRepository;
 
     private final MutableLiveData<LoadingState> mLoadingState =
             new MutableLiveData<>(LoadingState.IDLE);
 
     @Inject
-    public MessagesViewModel(@NonNull MessageRepository messageRepository) {
-        this.messageRepository = messageRepository;
+    public MessagesViewModel(@NonNull ChatRepository chatRepository) {
+        this.chatRepository = chatRepository;
     }
 
     public LiveData<LoadingState> getLoadingState() {
@@ -45,6 +45,6 @@ public class MessagesViewModel extends ViewModel {
     // this is a test, it almost defo won't be in this viewmodel,
     // it will be in the one specific to the receiver of the message
     public void sendMessage(@NonNull String receiverUid, @NonNull String content) {
-        messageRepository.sendMessage(receiverUid, content);
+        chatRepository.sendMessage(receiverUid, content);
     }
 }

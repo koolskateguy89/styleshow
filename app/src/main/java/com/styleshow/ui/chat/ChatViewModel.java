@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.styleshow.data.LoadingState;
-import com.styleshow.domain.repository.MessageRepository;
+import com.styleshow.domain.repository.ChatRepository;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 import io.reactivex.rxjava3.annotations.NonNull;
 
@@ -17,14 +17,14 @@ import io.reactivex.rxjava3.annotations.NonNull;
 public class ChatViewModel extends ViewModel {
 
     // TODO: inform this view model of the chat id
-    private final @NonNull MessageRepository messageRepository;
+    private final @NonNull ChatRepository chatRepository;
 
     private final MutableLiveData<LoadingState> mLoadingState =
             new MutableLiveData<>(LoadingState.IDLE);
 
     @Inject
-    public ChatViewModel(@NonNull MessageRepository messageRepository) {
-        this.messageRepository = messageRepository;
+    public ChatViewModel(@NonNull ChatRepository chatRepository) {
+        this.chatRepository = chatRepository;
     }
 
     public LiveData<LoadingState> getLoadingState() {

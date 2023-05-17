@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import androidx.annotation.NonNull;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 
@@ -27,6 +28,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // FCM registration token to your app server.
         //sendRegistrationToServer(token);
         // TODO ^ idk what the impl. of sendRegistrationToServer would look like, or if i even need it
+    }
+
+    @Override
+    public void onMessageSent(@NonNull String msgId) {
+        super.onMessageSent(msgId);
+    }
+
+    @Override
+    public void onMessageReceived(@NonNull RemoteMessage message) {
+        super.onMessageReceived(message);
     }
 
     @Override
