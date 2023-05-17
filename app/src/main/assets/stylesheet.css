@@ -1,0 +1,28 @@
+* {
+    --styleshow-bg: #209CEE;
+}
+
+body {
+    /*background-color: #209CEE;*/
+    /*color: white;*/
+}
+
+img {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+#logo {
+    width: 25vh;
+    height: 25vh;
+}
+
+h1 {
+    text-align: center;
+}
+
+img:not(#logo) {
+    border: 4px solid var(--styleshow-bg);
+    border-radius: 6%;
+}

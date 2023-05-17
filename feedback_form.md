@@ -358,7 +358,12 @@ Does your app capture touch gestures and make reasonable use of them?
 (p) List the names of all your own methods and classes which capture touch gestures. Which kind of touch gesture are they capturing and what is the action performed?
 Base package: com.styleshow
 .components.MovableFloatingActionButton#onTouch - captures touch events to move the FAB around the screen
-TODO: onclicks & onlonglclicks in custom adapters
+.adapters.ChatMessageAdapter.SentMessageHolder#SentMessageHolder - activate callback on long click
+.adapters.ChatMessageAdapter.ReceivedMessageHolder#ReceivedMessageHolder - activate callback on long click
+.adapters.CommentAdapter.CommentHolder#CommentHolder - activate callback on long click
+.adapters.PostCarouselAdapter.PostHolder#PostHolder - activate callback on click
+.adapters.PostPreviewAdapter.PostPreviewHolder#PostPreviewHolder - activate callback on click
+.adapters.ProfilePreviewAdapter.ProfilePreviewHolder#ProfilePreviewHolder - activate callback on click
 
 (p) Which APIs, libraries or third party code did you use when implementing feature p (list one per line)?
 NONE
@@ -369,8 +374,13 @@ Did you create a user guide and upload it in the assets folder of your app?
 - [ ] No
 
 How many different pages (e.g., html files) does you user guide consist of?
+1
+
 What is the name of the method (including its class name) which starts the WebView containing the user guide?
+com.styleshow.ui.guide.GuideActivity#onCreate
+
 List up to 6 features of your user guide which make it responsive (keywords are sufficient; one per line).
+Viewport units
 
 Apart from the ones mentioned above, which other APIs, libraries or third party code did you use in your app (write "none" or list one per line)?
 Material Components for Android
@@ -392,7 +402,7 @@ What kind of systematic testing did you do (e.g., none, unit testing of all meth
 System testing
 
 Did you use any frameworks for testing (e.g., JUnit, TestNG, Mockito, etc.)? If yes, which ones?
-None
+NONE
 
 This is the place for providing any additional information which is necessary for testing and marking your app.
-TODO: None?
+NONE

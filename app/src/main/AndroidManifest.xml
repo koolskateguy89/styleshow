@@ -34,7 +34,8 @@
         <!-- Guide Activity -->
         <activity
                 android:name=".ui.guide.GuideActivity"
-                android:exported="false" />
+                android:exported="false"
+                android:launchMode="singleInstance" />
 
         <!-- Chat Activity -->
         <activity
