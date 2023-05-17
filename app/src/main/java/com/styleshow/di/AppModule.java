@@ -12,14 +12,14 @@ import com.styleshow.data.remote.CommentDataSource;
 import com.styleshow.data.remote.LoginDataSource;
 import com.styleshow.data.remote.PostDataSource;
 import com.styleshow.data.remote.UserProfileDataSource;
+import com.styleshow.data.repository.ChatRepositoryImpl;
 import com.styleshow.data.repository.CommentRepositoryImpl;
 import com.styleshow.data.repository.LoginRepositoryImpl;
-import com.styleshow.data.repository.ChatRepositoryImpl;
 import com.styleshow.data.repository.PostRepositoryImpl;
 import com.styleshow.data.repository.UserProfileRepositoryImpl;
+import com.styleshow.domain.repository.ChatRepository;
 import com.styleshow.domain.repository.CommentRepository;
 import com.styleshow.domain.repository.LoginRepository;
-import com.styleshow.domain.repository.ChatRepository;
 import com.styleshow.domain.repository.PostRepository;
 import com.styleshow.domain.repository.UserProfileRepository;
 import dagger.Module;
@@ -123,9 +123,10 @@ public class AppModule {
     @Singleton
     ChatDataSource provideChatDataSource(
             @NonNull FirebaseFirestore firestore,
-            @NonNull FirebaseMessaging messaging
+            @NonNull FirebaseMessaging messaging,
+            @NonNull LoginDataSource loginDataSource
     ) {
-        return new ChatDataSource(firestore, messaging);
+        return new ChatDataSource(firestore, messaging, loginDataSource);
     }
 
     @Provides

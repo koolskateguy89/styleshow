@@ -10,6 +10,8 @@ import com.styleshow.domain.model.UserProfile;
 
 /**
  * DTO for {@link Post}.
+ *
+ * @see com.styleshow.data.remote.PostDataSource
  */
 public class PostDto {
 

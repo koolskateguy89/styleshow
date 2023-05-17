@@ -16,6 +16,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.styleshow.common.Constants;
 import com.styleshow.data.remote.dto.CommentDto;
 import com.styleshow.domain.model.Comment;
 import com.styleshow.domain.model.UserProfile;
@@ -34,16 +35,17 @@ public class CommentDataSource {
             @NonNull LoginDataSource loginDataSource,
             @NonNull UserProfileDataSource userProfileDataSource
     ) {
-        mPostRef = firestore.collection("posts");
+        mPostRef = firestore.collection(Constants.Post.COLLECTION_NAME);
         mLoginDataSource = loginDataSource;
         mUserProfileDataSource = userProfileDataSource;
     }
 
     public Task<List<Comment>> getCommentsForPost(@NonNull String postId) {
-        var commentsRef = mPostRef.document(postId).collection("comments");
+        var commentsRef = mPostRef.document(postId)
+                .collection(Constants.Comment.COLLECTION_NAME);
 
         var commentDtosTask = commentsRef
-                .orderBy("postedAt", Query.Direction.DESCENDING) // newest first
+                .orderBy(Constants.Comment.FIELD_POSTED_AT, Query.Direction.DESCENDING) // newest first
                 .get()
                 .continueWith(executor, task -> {
                     if (!task.isSuccessful())
@@ -108,11 +110,11 @@ public class CommentDataSource {
         String currentUserId = mLoginDataSource.getCurrentUser().getUid();
 
         Map<String, Object> data = new HashMap<>();
-        data.put("uid", currentUserId);
-        data.put("content", content);
-        data.put("postedAt", FieldValue.serverTimestamp());
+        data.put(Constants.Comment.FIELD_POSTER_UID, currentUserId);
+        data.put(Constants.Comment.FIELD_CONTENT, content);
+        data.put(Constants.Comment.FIELD_POSTED_AT, FieldValue.serverTimestamp());
 
-        return mPostRef.document(postId).collection("comments")
+        return mPostRef.document(postId).collection(Constants.Comment.COLLECTION_NAME)
                 .add(data)
                 .addOnSuccessListener(a -> {
                     Timber.d("Added comment to post %s", postId);
@@ -124,7 +126,8 @@ public class CommentDataSource {
     }
 
     public Task<Void> deleteComment(@NonNull String postId, @NonNull String commentId) {
-        return mPostRef.document(postId).collection("comments").document(commentId)
+        return mPostRef.document(postId).collection(Constants.Comment.COLLECTION_NAME)
+                .document(commentId)
                 .delete()
                 .addOnSuccessListener(ignore -> {
                     Timber.d("Deleted comment %s from post %s", commentId, postId);

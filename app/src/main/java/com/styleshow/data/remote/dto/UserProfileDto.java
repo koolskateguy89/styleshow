@@ -5,6 +5,8 @@ import com.styleshow.domain.model.UserProfile;
 
 /**
  * DTO for {@link UserProfile}.
+ *
+ * @see com.styleshow.data.remote.UserProfileDataSource
  */
 public class UserProfileDto {
 

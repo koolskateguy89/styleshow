@@ -11,6 +11,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.styleshow.common.Constants;
 import com.styleshow.data.remote.dto.UserProfileDto;
 import com.styleshow.domain.model.UserProfile;
 import timber.log.Timber;
@@ -25,7 +26,7 @@ public class UserProfileDataSource {
             @NonNull FirebaseFirestore firestore
     ) {
         mLoginDataSource = loginDataSource;
-        mProfiles = firestore.collection("userProfiles");
+        mProfiles = firestore.collection(Constants.UserProfile.COLLECTION_NAME);
     }
 
     /**
@@ -42,7 +43,6 @@ public class UserProfileDataSource {
         return userProfileDto.toUserProfile();
     }
 
-    // TODO: use for messaging
     public Task<List<UserProfile>> getAllProfilesExceptMe() {
         String currentUserId = mLoginDataSource.getCurrentUser().getUid();
 
@@ -59,6 +59,12 @@ public class UserProfileDataSource {
                             .map(UserProfileDataSource::getUserProfileFromDocument)
                             .filter(Objects::nonNull)
                             .collect(Collectors.toList());
+                })
+                .addOnSuccessListener(profiles -> {
+                    Timber.d("Got all profiles except me: %s", profiles);
+                })
+                .addOnFailureListener(e -> {
+                    Timber.w(e, "Failed to get all profiles except me");
                 })
                 ;
     }
@@ -78,7 +84,7 @@ public class UserProfileDataSource {
                     var userProfile = getUserProfileFromDocument(documentSnapshot);
 
                     if (userProfile == null) {
-                        Timber.w("user profile for %s is null", uid);
+                        Timber.w("User profile for uid '%s' is null", uid);
                     }
 
                     return userProfile;
@@ -88,7 +94,7 @@ public class UserProfileDataSource {
                         var userProfile = task.getResult();
                         Timber.d("userProfile for %s: %s", uid, userProfile);
                     } else {
-                        Timber.w(task.getException(), "failed to get userProfile for %s", uid);
+                        Timber.w(task.getException(), "Failed to get userProfile for uid %s", uid);
                     }
                 })
                 ;
@@ -101,10 +107,10 @@ public class UserProfileDataSource {
      */
     public Task<List<UserProfile>> searchProfiles(@NonNull String query) {
         return mProfiles
-                .orderBy("username")
+                .orderBy(Constants.UserProfile.FIELD_USERNAME)
                 .limit(10)
-                .whereGreaterThanOrEqualTo("username", query)
-                .whereLessThanOrEqualTo("username", query + "\uf8ff")
+                .whereGreaterThanOrEqualTo(Constants.UserProfile.FIELD_USERNAME, query)
+                .whereLessThanOrEqualTo(Constants.UserProfile.FIELD_USERNAME, query + "\uf8ff")
                 .get()
                 .continueWith(task -> {
                     if (!task.isSuccessful())
@@ -118,7 +124,7 @@ public class UserProfileDataSource {
                             .collect(Collectors.toList());
                 })
                 .addOnFailureListener(e -> {
-                    Timber.w(e, "failed to search profiles for query '%s'", query);
+                    Timber.w(e, "Failed to search profiles for query '%s'", query);
                 })
                 ;
     }
@@ -142,10 +148,10 @@ public class UserProfileDataSource {
                             .collect(Collectors.toList());
                 })
                 .addOnSuccessListener(userProfiles -> {
-                    Timber.d("got profiles for uids %s: %s", uids, userProfiles);
+                    Timber.d("Got profiles for uids %s: %s", uids, userProfiles);
                 })
                 .addOnFailureListener(e -> {
-                    Timber.w(e, "failed to get profiles for uids '%s'", uids);
+                    Timber.w(e, "Failed to get profiles for uids '%s'", uids);
                 })
                 ;
     }

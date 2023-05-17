@@ -6,6 +6,11 @@ import com.google.firebase.Timestamp;
 import com.styleshow.domain.model.Comment;
 import com.styleshow.domain.model.UserProfile;
 
+/**
+ * DTO for {@link Comment}.
+ *
+ * @see com.styleshow.data.remote.CommentDataSource
+ */
 public class CommentDto {
 
     /**

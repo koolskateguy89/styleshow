@@ -1,7 +1,11 @@
 package com.styleshow.data.repository;
 
+import java.util.List;
+
 import androidx.annotation.NonNull;
+import com.google.android.gms.tasks.Task;
 import com.styleshow.data.remote.ChatDataSource;
+import com.styleshow.domain.model.ChatMessage;
 import com.styleshow.domain.repository.ChatRepository;
 
 public class ChatRepositoryImpl implements ChatRepository {
@@ -10,6 +14,11 @@ public class ChatRepositoryImpl implements ChatRepository {
 
     public ChatRepositoryImpl(@NonNull ChatDataSource dataSource) {
         this.dataSource = dataSource;
+    }
+
+    @Override
+    public Task<List<ChatMessage>> getMessagesBetween(@NonNull String receiverId) {
+        return dataSource.getMessagesBetween(receiverId);
     }
 
     @Override

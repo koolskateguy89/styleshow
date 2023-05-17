@@ -23,7 +23,8 @@ public class ChatActivity extends AppCompatActivity {
         Timber.i("receiver = %s", receiver);
 
         viewModel = new ViewModelProvider(this).get(ChatViewModel.class);
-        // viewModel.loadMessages();
+        viewModel.setReceiver(receiver);
+        viewModel.loadMessages();
 
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

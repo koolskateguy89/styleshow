@@ -22,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.styleshow.common.Constants;
 import com.styleshow.common.FirebaseUtils;
 import com.styleshow.data.remote.dto.PostDto;
 import com.styleshow.domain.model.Post;
@@ -44,8 +45,8 @@ public class PostDataSource {
             @NonNull LoginDataSource loginDataSource,
             @NonNull UserProfileDataSource userProfileDataSource
     ) {
-        mPostsRef = firestore.collection("posts");
-        mPostImagesRef = storage.getReference("postImages");
+        mPostsRef = firestore.collection(Constants.Post.COLLECTION_NAME);
+        mPostImagesRef = storage.getReference(Constants.Post.IMAGES_STORAGE_PATH);
         mLoginDataSource = loginDataSource;
         mUserProfileDataSource = userProfileDataSource;
     }
@@ -66,7 +67,7 @@ public class PostDataSource {
         String currentUserId = mLoginDataSource.getCurrentUser().getUid();
 
         return mPostsRef
-                .orderBy("postedAt", Query.Direction.DESCENDING) // newest first
+                .orderBy(Constants.Post.FIELD_POSTED_AT, Query.Direction.DESCENDING) // newest first
                 .get()
                 .continueWith(executor, task -> {
                     if (!task.isSuccessful())
@@ -127,8 +128,8 @@ public class PostDataSource {
         // This can only be called when the user is logged in so we can safely get the uid
         String currentUserId = mLoginDataSource.getCurrentUser().getUid();
 
-        return mPostsRef.whereEqualTo("uid", author.getUid())
-                .orderBy("postedAt", Query.Direction.DESCENDING) // newest first
+        return mPostsRef.whereEqualTo(Constants.Post.FIELD_AUTHOR_UID, author.getUid())
+                .orderBy(Constants.Post.FIELD_POSTED_AT, Query.Direction.DESCENDING) // newest first
                 .get()
                 .continueWith(task -> {
                     if (!task.isSuccessful())
@@ -169,7 +170,7 @@ public class PostDataSource {
         String currentUserId = mLoginDataSource.getCurrentUser().getUid();
 
         return mPostsRef.document(postId)
-                .update("likes", FieldValue.arrayUnion(currentUserId))
+                .update(Constants.Post.FIELD_LIKES, FieldValue.arrayUnion(currentUserId))
                 .addOnSuccessListener(ignore -> {
                     Timber.d("liked post %s", postId);
                 })
@@ -182,7 +183,7 @@ public class PostDataSource {
         String currentUserId = mLoginDataSource.getCurrentUser().getUid();
 
         return mPostsRef.document(postId)
-                .update("likes", FieldValue.arrayRemove(currentUserId))
+                .update(Constants.Post.FIELD_LIKES, FieldValue.arrayRemove(currentUserId))
                 .addOnSuccessListener(ignore -> {
                     Timber.d("unliked post %s", postId);
                 })
@@ -219,13 +220,13 @@ public class PostDataSource {
             var imageDownloadUri = imageTask.getResult();
 
             Map<String, Object> data = new HashMap<>();
-            data.put("uid", currentUserId);
-            data.put("caption", caption);
-            data.put("imageUrl", imageDownloadUri.toString());
-            data.put("imageId", imageId);
-            data.put("shoeUrl", shoeUrl);
-            data.put("postedAt", FieldValue.serverTimestamp());
-            data.put("likes", List.of());
+            data.put(Constants.Post.FIELD_AUTHOR_UID, currentUserId);
+            data.put(Constants.Post.FIELD_CAPTION, caption);
+            data.put(Constants.Post.FIELD_IMAGE_URL, imageDownloadUri.toString());
+            data.put(Constants.Post.FIELD_IMAGE_ID, imageId);
+            data.put(Constants.Post.FIELD_SHOE_URL, shoeUrl);
+            data.put(Constants.Post.FIELD_POSTED_AT, FieldValue.serverTimestamp());
+            data.put(Constants.Post.FIELD_LIKES, List.of());
 
             return mPostsRef.add(data);
         }).continueWith(postsTask -> {
@@ -260,7 +261,7 @@ public class PostDataSource {
         }
 
         var postRef = mPostsRef.document(post.getId());
-        var postCommentsRef = postRef.collection("comments");
+        var postCommentsRef = postRef.collection(Constants.Comment.COLLECTION_NAME);
 
         // Run in background thread
         executor.execute(() -> {
